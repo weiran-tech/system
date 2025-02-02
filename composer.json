@@ -1,0 +1,48 @@
+{
+    "name": "poppy/system",
+    "description": "An admin management module for poppy.",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Mark Zhao",
+            "email": "zhaody901@126.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "ext-bcmath": "*",
+        "ext-json": "*",
+        "ezyang/htmlpurifier": "^4.16",
+        "intervention/image": "2.*",
+        "mews/captcha": "^3.3",
+        "mlocati/ip-lib": "^1.16",
+        "poppy/ext-app": "10.0.x-dev",
+        "poppy/core": "10.0.x-dev",
+        "tucker-eric/eloquentfilter": "^3",
+        "tymon/jwt-auth": "^2.1.1"
+    },
+    "require-dev": {
+        "roave/security-advisories": "dev-latest"
+    },
+    "suggest": {
+        "ext-imagick": "Needed to support HEIC format image upload"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poppy\\System\\": "src/"
+        },
+        "files": [
+            "src/Support/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppy\\System\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
+}
