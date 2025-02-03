@@ -14,7 +14,7 @@ use Request;
 
 /**
  * Class Helpers.
- * @see        \Poppy\Framework\Classes\Traits\PjaxTrait
+ * @see        \Weiran\Framework\Classes\Traits\PjaxTrait
  * @deprecated 5.0
  */
 trait PjaxTrait
