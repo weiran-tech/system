@@ -16,8 +16,7 @@
         "intervention/image": "2.*",
         "mews/captcha": "^3.3",
         "mlocati/ip-lib": "^1.16",
-        "poppy/ext-app": "10.0.x-dev",
-        "poppy/core": "10.0.x-dev",
+        "weiran/core": "1.0.x-dev",
         "tucker-eric/eloquentfilter": "^3",
         "tymon/jwt-auth": "^2.1.1"
     },
