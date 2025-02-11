@@ -13,7 +13,7 @@ use Weiran\Framework\Classes\Traits\PoppyTrait;
 use Weiran\Framework\Events\PoppyOptimized;
 use Weiran\Framework\Events\PoppySchedule;
 use Weiran\Framework\Exceptions\ModuleNotFoundException;
-use Weiran\Framework\Support\PoppyServiceProvider;
+use Weiran\Framework\Support\WeiranServiceProvider;
 use Weiran\System\Classes\Api\Sign\DefaultApiSignProvider;
 use Weiran\System\Classes\Auth\Password\DefaultPasswordProvider;
 use Weiran\System\Classes\Auth\Provider\BackendProvider;
@@ -35,7 +35,7 @@ use Weiran\System\Models\Policies\PamRolePolicy;
 /**
  * @property $listens;
  */
-class ServiceProvider extends PoppyServiceProvider
+class ServiceProvider extends WeiranServiceProvider
 {
     use PoppyTrait;
 
