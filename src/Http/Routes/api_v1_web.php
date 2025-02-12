@@ -26,7 +26,7 @@ Route::group([
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('auth/login', 'AuthController@login')
-        ->name('py-system:pam.auth.login');
+        ->name('weiran-system:pam.auth.login');
     $route->post('auth/exists', 'AuthController@exists');
 
     // captcha
@@ -44,9 +44,9 @@ Route::group([
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('upload/image', 'UploadController@image')
-        ->name('py-system:api_v1.upload.image');
+        ->name('weiran-system:api_v1.upload.image');
     $route->post('upload/file', 'UploadController@file')
-        ->name('py-system:api_v1.upload.file');
+        ->name('weiran-system:api_v1.upload.file');
 });
 
 // 单点登录
@@ -55,9 +55,9 @@ Route::group([
     'namespace'  => 'Poppy\System\Http\Request\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('auth/access', 'AuthController@access')
-        ->name('py-system:pam.auth.access');
+        ->name('weiran-system:pam.auth.access');
     $route->post('auth/renew', 'AuthController@renew')
-        ->name('py-system:pam.auth.renew');
+        ->name('weiran-system:pam.auth.renew');
     $route->post('auth/logout', 'AuthController@logout')
-        ->name('py-system:pam.auth.logout');
+        ->name('weiran-system:pam.auth.logout');
 });

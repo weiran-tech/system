@@ -18,7 +18,7 @@ class ClearCacheListener
     public function handle(PoppyOptimized $event)
     {
         // 清空所有缓存的设置项目
-        sys_tag('py-system')->clear();
+        sys_tag('weiran-system')->clear();
     }
 }
 

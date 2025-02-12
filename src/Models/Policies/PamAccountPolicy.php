@@ -19,7 +19,7 @@ class PamAccountPolicy
 
 
     protected static array $permissionMap = [
-        'password' => 'backend:py-system.pam.password',
+        'password' => 'backend:weiran-system.pam.password',
     ];
 
     /**

@@ -52,7 +52,7 @@ class MaintainMail extends Mailable
      */
     public function build(): self
     {
-        $view = $this->view('py-system::mail.maintain');
+        $view = $this->view('weiran-system::mail.maintain');
         if ($this->file) {
             $view->attach($this->file);
         }

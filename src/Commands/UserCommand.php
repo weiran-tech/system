@@ -23,7 +23,7 @@ class UserCommand extends Command
      * 前端部署.
      * @var string
      */
-    protected $signature = 'py-system:user 
+    protected $signature = 'weiran-system:user 
 		{do : actions}
 		{--account= : Account Name}
 		{--pwd= : Account password}

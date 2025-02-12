@@ -40,7 +40,7 @@ class SettingRepository implements SettingContract
     public function __construct()
     {
         if (!self::$rds) {
-            self::$rds = sys_tag('py-system');
+            self::$rds = sys_tag('weiran-system');
         }
     }
 

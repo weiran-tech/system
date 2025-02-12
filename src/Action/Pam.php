@@ -194,13 +194,13 @@ class Pam
         // 完善主账号类型规则
         if ($type === PamAccount::REG_TYPE_USERNAME) {
             if (preg_match('/\s+/', $passport)) {
-                return $this->setError(trans('py-system::action.pam.user_name_not_space'));
+                return $this->setError(trans('weiran-system::action.pam.user_name_not_space'));
             }
             // 注册用户时候的正则匹配
             if ($this->parentId) {
                 // 子用户中必须包含 ':' 冒号
                 if (strpos($initDb[$type], ':') === false) {
-                    return $this->setError(trans('py-system::action.pam.sub_user_account_need_colon'));
+                    return $this->setError(trans('weiran-system::action.pam.sub_user_account_need_colon'));
                 }
                 // 初始化子用户数据
                 $initDb['parent_id'] = $this->parentId;
@@ -237,7 +237,7 @@ class Pam
         }
 
         if (!$role->count()) {
-            return $this->setError(trans('py-system::action.pam.role_not_exists'));
+            return $this->setError(trans('weiran-system::action.pam.role_not_exists'));
         }
 
         // 自动设置前缀
@@ -246,7 +246,7 @@ class Pam
             $hasAccountName = false;
             // 检查是否设置了前缀
             if (!$prefix) {
-                return $this->setError(trans('py-system::action.pam.not_set_name_prefix'));
+                return $this->setError(trans('weiran-system::action.pam.not_set_name_prefix'));
             }
             $username = $prefix . '_' . Carbon::now()->format('YmdHis') . Str::random(6);
         }
@@ -371,7 +371,7 @@ class Pam
 
         event(new LoginFailedEvent($credentials));
 
-        return $this->setError(trans('py-system::action.pam.login_fail_again'));
+        return $this->setError(trans('weiran-system::action.pam.login_fail_again'));
 
     }
 
@@ -576,8 +576,8 @@ class Pam
                 Rule::string(),
                 Rule::dateFormat('Y-m-d H:i:s'),
             ], [], [
-                'disable_reason' => trans('py-system::action.pam.disable_reason'),
-                'disable_to'     => trans('py-system::action.pam.disable_to'),
+                'disable_reason' => trans('weiran-system::action.pam.disable_reason'),
+                'disable_to'     => trans('weiran-system::action.pam.disable_to'),
             ],
         ]);
         if ($validator->fails()) {
@@ -588,7 +588,7 @@ class Pam
         $pam = PamAccount::find($id);
         //当前用户已禁用
         if (!$pam->is_enable) {
-            return $this->setError(trans('py-system::action.pam.account_disabled'));
+            return $this->setError(trans('weiran-system::action.pam.account_disabled'));
         }
 
         $disableTo = Carbon::parse($data['disable_to']);
@@ -620,7 +620,7 @@ class Pam
             return $this->setError('用户不存在');
         }
         if ($pam->is_enable === SysConfig::YES) {
-            return $this->setError(trans('py-system::action.pam.account_enabled'));
+            return $this->setError(trans('weiran-system::action.pam.account_enabled'));
         }
 
         $pam->is_enable = SysConfig::ENABLE;
@@ -706,7 +706,7 @@ class Pam
 
     public function checkPwdStrength($type, $password): bool
     {
-        $key      = "py-system::pam.{$type}_pwd_strength";
+        $key      = "weiran-system::pam.{$type}_pwd_strength";
         $strength = array_filter((array) sys_setting($key, []));
         if (!count($strength)) {
             return true;

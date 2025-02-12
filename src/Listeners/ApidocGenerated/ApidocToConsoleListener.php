@@ -21,7 +21,7 @@ class ApidocToConsoleListener
     {
         $Sso = new Console();
         if ($event->type === 'web' && !$Sso->apidocCapture($event->type)) {
-            sys_info('py-system.apidoc', $Sso->getError()->getMessage());
+            sys_info('weiran-system.apidoc', $Sso->getError()->getMessage());
         }
     }
 }

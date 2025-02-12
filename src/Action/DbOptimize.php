@@ -20,7 +20,7 @@ class DbOptimize
      */
     public function isOpen(): bool
     {
-        return sys_tag('py-system-persist')->get(PySystemDef::ckDbOptimize('is_open')) === 'Y';
+        return sys_tag('weiran-system-persist')->get(PySystemDef::ckDbOptimize('is_open')) === 'Y';
     }
 
     /**
@@ -39,7 +39,7 @@ class DbOptimize
         }
 
         if (is_null($opened)) {
-            $opened = (array) sys_tag('py-system-persist')->hGetAll(PySystemDef::ckDbOptimize('on'));
+            $opened = (array) sys_tag('weiran-system-persist')->hGetAll(PySystemDef::ckDbOptimize('on'));
         }
 
         if (!count($opened)) {
@@ -61,10 +61,10 @@ class DbOptimize
 
         $md5Key = md5($event->sql);
         $tbKey  = PySystemDef::ckDbOptimize($eventTable);
-        if (sys_tag('py-system-persist')->hExists($tbKey, $md5Key)) {
+        if (sys_tag('weiran-system-persist')->hExists($tbKey, $md5Key)) {
             return false;
         }
-        sys_tag('py-system-persist')->hSet($tbKey, $md5Key, [
+        sys_tag('weiran-system-persist')->hSet($tbKey, $md5Key, [
             'sql'      => $event->sql,
             'bindings' => $event->bindings,
             'time'     => $event->time,

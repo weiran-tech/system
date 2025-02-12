@@ -20,10 +20,10 @@ class PamRolePolicy
      * @var array 权限映射
      */
     protected static array $permissionMap = [
-        'edit'       => 'backend:py-system.role.manage',
-        'delete'     => 'backend:py-system.role.manage',
-        'create'     => 'backend:py-system.role.manage',
-        'permission' => 'backend:py-system.role.permissions',
+        'edit'       => 'backend:weiran-system.role.manage',
+        'delete'     => 'backend:weiran-system.role.manage',
+        'create'     => 'backend:weiran-system.role.manage',
+        'permission' => 'backend:weiran-system.role.permissions',
     ];
 
 

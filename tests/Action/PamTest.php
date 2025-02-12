@@ -132,7 +132,7 @@ class PamTest extends TestCase
     {
         $Pam  = new Pam();
         $type = 'user';
-        $key  = "py-system::pam.{$type}_pwd_strength";
+        $key  = "weiran-system::pam.{$type}_pwd_strength";
         $old  = sys_setting($key);
         app('poppy.system.setting')->set($key, array_keys(PamAccount::kvPwdStrength()));
         $this->assertFalse($Pam->checkPwdStrength($type, '123456'));

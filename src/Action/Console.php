@@ -102,7 +102,7 @@ class Console
         $env    = (string) env('APP_ENV');
         $url    = $this->host . '/api_v1/op/app/project/save-secret';
         $secret = md5(microtime(true) . Str::random());
-        app('poppy.system.setting')->set('py-system::_.secret', $secret);
+        app('poppy.system.setting')->set('weiran-system::_.secret', $secret);
 
         if (!$this->checkAppId()) {
             return false;

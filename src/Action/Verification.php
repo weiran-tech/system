@@ -51,7 +51,7 @@ class Verification
 
     public function __construct()
     {
-        self::$db = sys_tag('py-system-persist');
+        self::$db = sys_tag('weiran-system-persist');
     }
 
     /**
@@ -231,7 +231,7 @@ class Verification
             }
             return true;
         }
-        return $this->setError(trans('py-system::action.verification.verify_code_error'));
+        return $this->setError(trans('weiran-system::action.verification.verify_code_error'));
     }
 
     public function removeOnceCode($code): bool
@@ -312,7 +312,7 @@ class Verification
             $passportType = self::TYPE_MOBILE;
         }
         else {
-            return $this->setError(trans('py-system::action.verification.passport_not_support'));
+            return $this->setError(trans('weiran-system::action.verification.passport_not_support'));
         }
         $this->passportKey = $passportType . '-' . $passport;
         return true;

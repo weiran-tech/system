@@ -43,7 +43,7 @@ class PermissionTest extends TestCase
         $role = PamRole::where('name', 'user')->first();
 
 
-        $key = 'backend:py-system.global.manage';
+        $key = 'backend:weiran-system.global.manage';
 
         /** @var Permission $permission */
         $permission = $this->corePermission()->permissions()->offsetGet($key);

@@ -1,6 +1,6 @@
 -
   description : 系统权限
-  slug : backend:py-system
+  slug : backend:weiran-system
   title : 系统
   groups :
     -

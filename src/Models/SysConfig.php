@@ -128,8 +128,8 @@ class SysConfig extends Model
      */
     public static function tableExists(string $table)
     {
-        $statusKey  = 'py-system::db.table_status';
-        $expiredKey = 'py-system::db.table_expired';
+        $statusKey  = 'weiran-system::db.table_status';
+        $expiredKey = 'weiran-system::db.table_expired';
 
         $tbStatus = (array) sys_setting($statusKey, []);
         $expired  = (int) sys_setting($expiredKey, 0);

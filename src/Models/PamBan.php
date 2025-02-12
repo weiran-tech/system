@@ -118,7 +118,7 @@ class PamBan extends Model
      */
     public static function banDeviceIsOpen(string $type): string
     {
-        $key = 'py-system::ban.type-' . $type;
+        $key = 'weiran-system::ban.type-' . $type;
         $bw  = sys_setting($key, PamBan::WB_TYPE_BLACK);
         return sys_setting('weiran-system::ban.device_' . $bw . '_' . $type . '_is_open', 'Y');
     }

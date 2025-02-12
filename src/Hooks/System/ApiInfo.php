@@ -11,7 +11,7 @@ class ApiInfo implements ServiceArray
 
     public function key(): string
     {
-        return 'py-system';
+        return 'weiran-system';
     }
 
     public function data(): array

@@ -30,7 +30,7 @@ class Ban
 
     public function __construct()
     {
-        self::$rds = sys_tag('py-system');
+        self::$rds = sys_tag('weiran-system');
     }
 
     /**

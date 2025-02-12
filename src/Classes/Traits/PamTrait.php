@@ -52,7 +52,7 @@ trait PamTrait
     public function checkPam(): bool
     {
         if (!$this->pam) {
-            return $this->setError(trans('py-system::action.pam.check_permission_need_login'));
+            return $this->setError(trans('weiran-system::action.pam.check_permission_need_login'));
         }
 
         return true;

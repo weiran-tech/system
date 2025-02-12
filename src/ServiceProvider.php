@@ -122,14 +122,14 @@ class ServiceProvider extends WeiranServiceProvider
     {
         app('events')->listen(PoppySchedule::class, function (Schedule $schedule) {
 
-            $schedule->command('py-system:user', ['auto_enable'])
+            $schedule->command('weiran-system:user', ['auto_enable'])
                 ->everyFifteenMinutes()->appendOutputTo($this->consoleLog());
-            $schedule->command('py-system:user', ['clear_log'])
+            $schedule->command('weiran-system:user', ['clear_log'])
                 ->dailyAt('04:00')->appendOutputTo($this->consoleLog());
             // 每天清理一次
-            $schedule->command('py-system:user', ['clear_expired'])
+            $schedule->command('weiran-system:user', ['clear_expired'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
-            $schedule->command('py-system:op', ['gen-secret'])
+            $schedule->command('weiran-system:op', ['gen-secret'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
         });
     }

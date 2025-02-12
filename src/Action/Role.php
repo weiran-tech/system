@@ -70,13 +70,13 @@ class Role
         $this->init($role_id);
 
         if ($this->pam->can('savePermission', PamRole::class)) {
-            return $this->setError(trans('py-system::action.role.no_policy_to_save_permission'));
+            return $this->setError(trans('weiran-system::action.role.no_policy_to_save_permission'));
         }
 
         if ($permission_ids) {
             $objPermissions = PamPermission::whereIn('id', $permission_ids)->get();
             if (!$objPermissions->count()) {
-                return $this->setError(trans('py-system::action.role.permission_error'));
+                return $this->setError(trans('weiran-system::action.role.permission_error'));
             }
             $this->role->syncPermission($objPermissions);
         }
@@ -205,11 +205,11 @@ class Role
         $id && $this->init($id);
 
         if (!$this->pam->can('delete', $this->role)) {
-            return $this->setError(trans('py-system::action.role.no_policy_to_delete'));
+            return $this->setError(trans('weiran-system::action.role.no_policy_to_delete'));
         }
 
         if (PamRoleAccount::where('role_id', $id)->exists()) {
-            return $this->setError(trans('py-system::action.role.role_has_account'));
+            return $this->setError(trans('weiran-system::action.role.role_has_account'));
         }
 
         // 删除权限

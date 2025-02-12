@@ -9,7 +9,7 @@ use Weiran\System\Action\Console;
 
 class OpCommand extends Command
 {
-    protected $signature = 'py-system:op
+    protected $signature = 'weiran-system:op
         {action : Operation Type}
     ';
 

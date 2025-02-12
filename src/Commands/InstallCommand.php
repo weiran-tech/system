@@ -16,7 +16,7 @@ class InstallCommand extends Command
      * 前端部署.
      * @var string
      */
-    protected $signature = 'py-system:install';
+    protected $signature = 'weiran-system:install';
 
     /**
      * 描述
@@ -41,7 +41,7 @@ class InstallCommand extends Command
         /* Role
          -------------------------------------------- */
         $this->warn('Init UserRole Ing...');
-        $this->call('py-system:user', [
+        $this->call('weiran-system:user', [
             'do' => 'init_role',
         ]);
         $this->info('Install User Roles Success');

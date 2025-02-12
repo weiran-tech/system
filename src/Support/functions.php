@@ -205,7 +205,7 @@ if (!function_exists('sys_parent_id')) {
         }
 
         if (!$rel) {
-            $rel = sys_cache('py-system')->get(PySystemDef::ckPamRelParent());
+            $rel = sys_cache('weiran-system')->get(PySystemDef::ckPamRelParent());
         }
 
         $pamId = ($pam instanceof PamAccount) ? $pam->id : $pam;
@@ -217,7 +217,7 @@ if (!function_exists('sys_parent_id')) {
 
         if (!isset($rel[$pamId])) {
             $rel[$pamId] = $pam->parent_id ?: $pam->id;
-            sys_cache('py-system')->forever(PySystemDef::ckPamRelParent(), $rel);
+            sys_cache('weiran-system')->forever(PySystemDef::ckPamRelParent(), $rel);
         }
 
         return $rel[$pamId] ?? 0;

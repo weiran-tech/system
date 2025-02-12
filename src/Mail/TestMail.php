@@ -38,6 +38,6 @@ class TestMail extends Mailable
      */
     public function build()
     {
-        return $this->view('py-system::mail.test');
+        return $this->view('weiran-system::mail.test');
     }
 }
