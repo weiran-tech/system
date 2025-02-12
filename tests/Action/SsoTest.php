@@ -35,8 +35,8 @@ class SsoTest extends TestCase
      */
     public function testDeviceNum(): void
     {
-        $oldSsoType      = (string) sys_setting('wr-system::pam.sso_type');
-        $oldMaxDeviceNum = (int) (sys_setting('wr-system::pam.sso_device_num') ?: 10);
+        $oldSsoType      = (string) sys_setting('weiran-system::pam.sso_type');
+        $oldMaxDeviceNum = (int) (sys_setting('weiran-system::pam.sso_device_num') ?: 10);
 
         app('poppy.system.setting')->set('py-system::pam.sso_type', Sso::SSO_DEVICE_NUM);
         app('poppy.system.setting')->set('py-system::pam.sso_device_num', 3);
@@ -83,7 +83,7 @@ class SsoTest extends TestCase
      */
     public function testGroupUnlimited(): void
     {
-        $oldSsoType = (string) sys_setting('wr-system::pam.sso_type');
+        $oldSsoType = (string) sys_setting('weiran-system::pam.sso_type');
 
         app('poppy.system.setting')->set('py-system::pam.sso_type', Sso::SSO_GROUP);
 
@@ -118,7 +118,7 @@ class SsoTest extends TestCase
      */
     public function testGroupKicked(): void
     {
-        $oldSsoType = (string) sys_setting('wr-system::pam.sso_type');
+        $oldSsoType = (string) sys_setting('weiran-system::pam.sso_type');
 
         app('poppy.system.setting')->set('py-system::pam.sso_type', Sso::SSO_GROUP);
 

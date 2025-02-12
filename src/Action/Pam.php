@@ -241,7 +241,7 @@ class Pam
         }
 
         // 自动设置前缀
-        $prefix = strtoupper(strtolower((string) sys_setting('wr-system::pam.prefix', 'PF')));
+        $prefix = strtoupper(strtolower((string) sys_setting('weiran-system::pam.prefix', 'PF')));
         if ($type !== PamAccount::REG_TYPE_USERNAME) {
             $hasAccountName = false;
             // 检查是否设置了前缀
@@ -668,7 +668,7 @@ class Pam
      */
     public function clearLog(): bool
     {
-        $days = sys_setting('wr-system::log.days');
+        $days = sys_setting('weiran-system::log.days');
         if ($days === FormSettingLog::DAYS_FOREVER) {
             return true;
         }

@@ -119,7 +119,7 @@ class UserCommand extends Command
                 $this->info('Init Role success');
                 break;
             case 'auto_enable':
-                if (!sys_setting('wr-system::pam.auto_enable')) {
+                if (!sys_setting('weiran-system::pam.auto_enable')) {
                     $this->info(sys_gen_mk(self::class, 'auto enable disabled!'));
                     return;
                 }

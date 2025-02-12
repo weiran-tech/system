@@ -12,8 +12,8 @@ class ServicesTest extends TestCase
     {
         parent::setUp();
 
-        sys_tag('wr-core')->del(PyCoreDef::ckModule('hook'));
-        sys_tag('wr-core')->del(PyCoreDef::ckModule('module'));
+        sys_tag('weiran-core')->del(PyCoreDef::ckModule('hook'));
+        sys_tag('weiran-core')->del(PyCoreDef::ckModule('module'));
     }
 
     public function testUploadType()

@@ -134,7 +134,7 @@ trait FixTrait
             'method'  => $this->fix['method'],
         ]);
 
-        return view('wr-mgr-page::tpl.progress', [
+        return view('weiran-mgr-page::tpl.progress', [
             'total'         => $this->fix['total'],
             'section'       => $this->fix['section'],
             'left'          => $this->fix['left'],

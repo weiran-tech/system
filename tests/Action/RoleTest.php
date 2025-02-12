@@ -53,7 +53,7 @@ class RoleTest extends TestCase
 
         $role->attachPermission($first);
 
-        $this->assertNotTrue(sys_tag('wr-core-rbac')->exists(PyCoreDef::rbacCkRolePermissions($role->id)), '存在角色权限缓存标签');
+        $this->assertNotTrue(sys_tag('weiran-core-rbac')->exists(PyCoreDef::rbacCkRolePermissions($role->id)), '存在角色权限缓存标签');
 
         $this->assertEquals($permissions->count(), $role->cachedPermissions()->count());
 
@@ -68,7 +68,7 @@ class RoleTest extends TestCase
         $Role->setPam($pam);
 
         if ($Role->delete($id)) {
-            $this->assertNotTrue(sys_tag('wr-core-rbac')->exists(PyCoreDef::rbacCkRolePermissions($id)), '存在角色权限缓存标签');
+            $this->assertNotTrue(sys_tag('weiran-core-rbac')->exists(PyCoreDef::rbacCkRolePermissions($id)), '存在角色权限缓存标签');
         }
         else {
             $this->fail('此角色未删除 : ' . $Role->getError());

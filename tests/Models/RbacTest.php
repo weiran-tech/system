@@ -38,7 +38,7 @@ class RbacTest extends TestCase
         $role = TestingRole::randBackend();
         // 获取用户的缓存角色, 缓存存在值
         $pam->cachedRoles();
-        $this->assertTrue(sys_tag('wr-core-rbac')->exists($key));
+        $this->assertTrue(sys_tag('weiran-core-rbac')->exists($key));
         $pam->attachRole($role);
         $pam->detachRole($role);
         $pam->attachRole($role->id);
@@ -49,13 +49,13 @@ class RbacTest extends TestCase
         $pam->detachRole([$role->id]);
 
         // 缓存不存在
-        $this->assertNotTrue(sys_tag('wr-core-rbac')->exists($key));
+        $this->assertNotTrue(sys_tag('weiran-core-rbac')->exists($key));
 
         // 缓存成功
         $pam->cachedRoles();
 
         // 缓存存在
-        $this->assertTrue(sys_tag('wr-core-rbac')->exists($key));
+        $this->assertTrue(sys_tag('weiran-core-rbac')->exists($key));
     }
 
 

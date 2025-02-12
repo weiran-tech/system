@@ -51,7 +51,7 @@ class Sso
             $this->groups = config('poppy.system.sso_group');
         }
 
-        $ssoType = (string) sys_setting('wr-system::pam.sso_type');
+        $ssoType = (string) sys_setting('weiran-system::pam.sso_type');
         if (!$ssoType) {
             $ssoType = self::SSO_NONE;
         }
@@ -68,14 +68,14 @@ class Sso
      */
     public function handle(PamAccount $pam, string $device_id, string $device_type, string $token): bool
     {
-        $maxDeviceNum = (int) (sys_setting('wr-system::pam.sso_device_num') ?: 10);
+        $maxDeviceNum = (int) (sys_setting('weiran-system::pam.sso_device_num') ?: 10);
         // 不启用
         if (!self::isEnable()) {
             return true;
         }
 
         // 不对空 os 进行拦截
-        $emptyHold = (string) sys_setting('wr-system::pam.sso_os_empty_hold') ?: SysConfig::STR_NO;
+        $emptyHold = (string) sys_setting('weiran-system::pam.sso_os_empty_hold') ?: SysConfig::STR_NO;
         if (!$device_type && $emptyHold === SysConfig::STR_NO) {
             return true;
         }
@@ -331,7 +331,7 @@ class Sso
      */
     public static function isEnable(): bool
     {
-        $ssoType = (string) sys_setting('wr-system::pam.sso_type');
+        $ssoType = (string) sys_setting('weiran-system::pam.sso_type');
         return !($ssoType === '' || $ssoType === self::SSO_NONE);
     }
 
