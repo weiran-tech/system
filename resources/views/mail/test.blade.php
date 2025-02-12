@@ -4,7 +4,7 @@
 	@include('weiran-system::tpl.mail.article_start')
 	{!! $content ?? '' !!}
 	@include('weiran-system::tpl.mail.article_end')
-	@include('py-system::tpl.mail.feature_start')
+	@include('weiran-system::tpl.mail.feature_start')
 	{!! $content ?? '' !!}
-	@include('py-system::tpl.mail.feature_end')
+	@include('weiran-system::tpl.mail.feature_end')
 @endsection
