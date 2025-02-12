@@ -23,8 +23,8 @@ class SiteOpen
     public function handle(Request $request, Closure $next)
     {
         $type = x_header('type') ?? 'user';
-        if (!sys_setting('wr-system::site.is_open') && $type === 'user') {
-            $reason = sys_setting('wr-system::site.close_reason');
+        if (!sys_setting('weiran-system::site.is_open') && $type === 'user') {
+            $reason = sys_setting('weiran-system::site.close_reason');
             return Resp::error('网站临时关闭, 原因:' . $reason);
         }
 
