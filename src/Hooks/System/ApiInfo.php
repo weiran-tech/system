@@ -17,8 +17,8 @@ class ApiInfo implements ServiceArray
     public function data(): array
     {
         return [
-            'title' => sys_setting('py-system::site.name'),
-            'logo'  => sys_setting('py-system::site.logo'),
+            'title' => sys_setting('wr-system::site.name'),
+            'logo'  => sys_setting('wr-system::site.logo'),
         ];
     }
 }

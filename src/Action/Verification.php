@@ -106,10 +106,10 @@ class Verification
 
         /* 测试账号验证码/正确的验证码即可登录
          * ---------------------------------------- */
-        $strAccount = trim(sys_setting('py-system::pam.test_account') ?? '');
+        $strAccount = trim(sys_setting('wr-system::pam.test_account') ?? '');
         if ($strAccount) {
             $explode     = EnvHelper::isWindows() ? "\n" : PHP_EOL;
-            $testAccount = explode($explode, sys_setting('py-system::pam.test_account'));
+            $testAccount = explode($explode, sys_setting('wr-system::pam.test_account'));
             if (count($testAccount)) {
                 $testAccount = collect(array_map(function ($item) {
                     $account = explode(':', $item);

@@ -39,8 +39,8 @@ class CaptchaController extends JwtApiController
         }
 
         $Verification = new Verification();
-        $expired      = (int) sys_setting('py-system::pam.captcha_expired') ?: 5;
-        $length       = ((int) sys_setting('py-system::pam.captcha_length')) ?: 6;
+        $expired      = (int) sys_setting('wr-system::pam.captcha_expired') ?: 5;
+        $length       = ((int) sys_setting('wr-system::pam.captcha_length')) ?: 6;
 
         if (!$Verification->isPassThrottle('send-' . $passport)) {
             return Resp::error($Verification->getError());

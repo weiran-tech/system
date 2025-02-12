@@ -13,8 +13,8 @@ class FunctionsTest extends TestCase
     {
         parent::setUp();
 
-        sys_tag('py-core')->del(PyCoreDef::ckModule('hook'));
-        sys_tag('py-core')->del(PyCoreDef::ckModule('module'));
+        sys_tag('wr-core')->del(PyCoreDef::ckModule('hook'));
+        sys_tag('wr-core')->del(PyCoreDef::ckModule('module'));
     }
 
     public function testPoppyFriendly()

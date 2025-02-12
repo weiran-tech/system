@@ -91,7 +91,7 @@ class ServiceProvider extends WeiranServiceProvider
      */
     public function boot(): void
     {
-        parent::boot('poppy.system');
+        parent::boot('weiran.system');
 
         $this->bootConfigs();
     }
@@ -157,7 +157,7 @@ class ServiceProvider extends WeiranServiceProvider
         /* 文件上传提供者
          * ---------------------------------------- */
         $this->app->bind('poppy.system.uploader', function () {
-            $uploadType = sys_setting('py-system::picture.save_type');
+            $uploadType = sys_setting('wr-system::picture.save_type');
             $hooks      = sys_hook('poppy.system.upload_type');
             if (!$uploadType) {
                 $uploadType = 'default';
@@ -171,7 +171,7 @@ class ServiceProvider extends WeiranServiceProvider
         /* 文件提供者
          * ---------------------------------------- */
         $this->app->bind('poppy.system.file', function () {
-            $uploadType = sys_setting('py-system::picture.save_type');
+            $uploadType = sys_setting('wr-system::picture.save_type');
             $hooks      = sys_hook('poppy.system.upload_type');
             if (!$uploadType) {
                 $uploadType = 'default';
@@ -210,19 +210,19 @@ class ServiceProvider extends WeiranServiceProvider
     private function bootConfigs(): void
     {
         config([
-            'mail.driver'       => sys_setting('py-system::mail.driver') ?: config('mail.driver'),
-            'mail.encryption'   => sys_setting('py-system::mail.encryption') ?: config('mail.encryption'),
-            'mail.port'         => sys_setting('py-system::mail.port') ?: config('mail.port'),
-            'mail.host'         => sys_setting('py-system::mail.host') ?: config('mail.host'),
-            'mail.from.address' => sys_setting('py-system::mail.from') ?: config('mail.from.address'),
-            'mail.from.name'    => sys_setting('py-system::mail.from') ?: config('mail.from.name'),
-            'mail.username'     => sys_setting('py-system::mail.username') ?: config('mail.username'),
-            'mail.password'     => sys_setting('py-system::mail.password') ?: config('mail.password'),
+            'mail.driver'       => sys_setting('wr-system::mail.driver') ?: config('mail.driver'),
+            'mail.encryption'   => sys_setting('wr-system::mail.encryption') ?: config('mail.encryption'),
+            'mail.port'         => sys_setting('wr-system::mail.port') ?: config('mail.port'),
+            'mail.host'         => sys_setting('wr-system::mail.host') ?: config('mail.host'),
+            'mail.from.address' => sys_setting('wr-system::mail.from') ?: config('mail.from.address'),
+            'mail.from.name'    => sys_setting('wr-system::mail.from') ?: config('mail.from.name'),
+            'mail.username'     => sys_setting('wr-system::mail.username') ?: config('mail.username'),
+            'mail.password'     => sys_setting('wr-system::mail.password') ?: config('mail.password'),
         ]);
 
         config([
-            'poppy.framework.title'       => sys_setting('py-system::site.name'),
-            'poppy.framework.description' => sys_setting('py-system::site.description'),
+            'poppy.framework.title'       => sys_setting('wr-system::site.name'),
+            'poppy.framework.description' => sys_setting('wr-system::site.description'),
         ]);
 
     }

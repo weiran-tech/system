@@ -35,8 +35,8 @@ class Ban
 
         }
 
-        $status  = sys_setting('py-system::ban.status-' . $type, SysConfig::STR_NO);
-        $isBlack = sys_setting('py-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
+        $status  = sys_setting('wr-system::ban.status-' . $type, SysConfig::STR_NO);
+        $isBlack = sys_setting('wr-system::ban.type-' . $type, PamBan::WB_TYPE_BLACK) === PamBan::WB_TYPE_BLACK;
 
         /* 未开启风险拦截
          * ---------------------------------------- */

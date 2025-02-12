@@ -49,7 +49,7 @@ class InstallCommand extends Command
         /* permission
          -------------------------------------------- */
         $this->warn('Init Rbac Permission...');
-        $this->call('py-core:permission', [
+        $this->call('wr-core:permission', [
             'do' => 'init',
         ]);
         $this->info('Init Rbac Permission Success');

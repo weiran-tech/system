@@ -76,7 +76,7 @@ class FileManager
      */
     public static function previewRules(): array
     {
-        $strRules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
+        $strRules = preg_replace('/\s+/', ';', sys_setting('wr-system::picture.preview_rule'));
         $arrRules = explode(';', $strRules);
         $rules    = [];
         if (count($arrRules)) {
@@ -94,7 +94,7 @@ class FileManager
 
     public static function previewImage($url, $size = 40)
     {
-        $strRules = preg_replace('/\s+/', ';', sys_setting('py-system::picture.preview_rule'));
+        $strRules = preg_replace('/\s+/', ';', sys_setting('wr-system::picture.preview_rule'));
         $arrRules = explode(';', $strRules);
         $platform = '';
         if (count($arrRules)) {

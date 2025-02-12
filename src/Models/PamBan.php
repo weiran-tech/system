@@ -120,6 +120,6 @@ class PamBan extends Model
     {
         $key = 'py-system::ban.type-' . $type;
         $bw  = sys_setting($key, PamBan::WB_TYPE_BLACK);
-        return sys_setting('py-system::ban.device_' . $bw . '_' . $type . '_is_open', 'Y');
+        return sys_setting('wr-system::ban.device_' . $bw . '_' . $type . '_is_open', 'Y');
     }
 }

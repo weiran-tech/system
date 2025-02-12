@@ -128,7 +128,7 @@ class Console
      */
     public function secret()
     {
-        return sys_setting('py-system::_.secret');
+        return sys_setting('wr-system::_.secret');
     }
 
     /**
