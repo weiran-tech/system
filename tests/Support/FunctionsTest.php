@@ -20,11 +20,11 @@ class FunctionsTest extends TestCase
     public function testPoppyFriendly()
     {
         config('app.locale', 'en');
-        $name = poppy_friendly(PamAccount::class);
+        $name = weiran_friendly(PamAccount::class);
         $this->assertEquals(trans('weiran-system::util.classes.models.pam_account'), $name);
 
         config('app.locale', 'zh');
-        $name = poppy_friendly(PamAccount::class);
+        $name = weiran_friendly(PamAccount::class);
         $this->assertEquals(trans('weiran-system::util.classes.models.pam_account'), $name);
     }
 

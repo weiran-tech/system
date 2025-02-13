@@ -20,7 +20,7 @@ class UploadTest extends TestCase
     public function testUpload(): void
     {
         try {
-            $file   = poppy_path('weiran.system', 'tests/files/demo.jpg');
+            $file   = weiran_path('weiran.system', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
             $Upload = new DefaultFileProvider();
 
@@ -53,7 +53,7 @@ class UploadTest extends TestCase
     public function testDest(): void
     {
         try {
-            $file   = poppy_path('weiran.system', 'tests/files/demo.jpg');
+            $file   = weiran_path('weiran.system', 'tests/files/demo.jpg');
             $image  = new UploadedFile($file, 'test.jpg', null, null, true);
             $Upload = new DefaultFileProvider();
 
@@ -89,7 +89,7 @@ class UploadTest extends TestCase
     public function testHeic2Jpg(): void
     {
         try {
-            $file       = poppy_path('weiran.system', 'tests/files/single.heic');
+            $file       = weiran_path('weiran.system', 'tests/files/single.heic');
             $image      = new UploadedFile($file, 'single.heic', null, null, true);
             $image_type = input('image_type', 'default');
 
