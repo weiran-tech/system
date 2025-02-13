@@ -27,10 +27,10 @@ class Authenticate extends IlluminateAuthenticate
     public static function detectLocation($guards): string
     {
         $location = '';
-        if (in_array(PamAccount::GUARD_BACKEND, $guards, true) && $backendLogin = config('poppy.framework.prefix', 'mgr-page') . '/login') {
+        if (in_array(PamAccount::GUARD_BACKEND, $guards, true) && $backendLogin = config('weiran.framework.prefix', 'mgr-page') . '/login') {
             $location = $backendLogin;
         }
-        if (in_array(PamAccount::GUARD_WEB, $guards, true) && $userLogin = config('poppy.system.user_location')) {
+        if (in_array(PamAccount::GUARD_WEB, $guards, true) && $userLogin = config('weiran.system.user_location')) {
             $location = $userLogin;
         }
         return $location;

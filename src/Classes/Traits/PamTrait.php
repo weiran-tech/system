@@ -69,7 +69,7 @@ trait PamTrait
             return false;
         }
 
-        $corePermission = app('poppy.core.permission');
+        $corePermission = app('weiran.core.permission');
         $permission     = $corePermission->permissions()->offsetGet($permission_key);
 
         if ($permission) {

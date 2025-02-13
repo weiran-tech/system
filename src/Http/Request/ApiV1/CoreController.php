@@ -37,7 +37,7 @@ class CoreController extends JwtApiController
      */
     public function info()
     {
-        $hook   = sys_hook('poppy.system.api_info');
+        $hook   = sys_hook('weiran.system.api_info');
         $system = array_merge([], $hook);
         return Resp::success('获取系统配置信息', $system);
     }

@@ -21,7 +21,7 @@ if (!function_exists('sys_setting')) {
      */
     function sys_setting(string $key, $default = null)
     {
-        return app('poppy.system.setting')->get($key, $default);
+        return app('weiran.system.setting')->get($key, $default);
     }
 }
 
@@ -85,8 +85,8 @@ if (!function_exists('sys_seo')) {
     function sys_seo(...$args)
     {
         [$title, $description] = parse_seo($args);
-        $title       = $title ? $title . '-' . config('poppy.framework.title') : config('poppy.framework.title');
-        $description = $description ?: config('poppy.framework.description');
+        $title       = $title ? $title . '-' . config('weiran.framework.title') : config('weiran.framework.title');
+        $description = $description ?: config('weiran.framework.description');
         View::share([
             '_title'       => $title,
             '_description' => $description,
@@ -312,7 +312,7 @@ if (!function_exists('sys_api_demo')) {
     {
         $all = input();
         if (isset($all['_py_secret']) && $all['_py_secret']) {
-            return $all['_py_secret'] === config('poppy.system.secret');
+            return $all['_py_secret'] === config('weiran.system.secret');
         }
         return false;
     }
@@ -370,6 +370,6 @@ if (!function_exists('sys_is_demo')) {
      */
     function sys_is_demo(): bool
     {
-        return config('poppy.system.demo');
+        return config('weiran.system.demo');
     }
 }

@@ -23,8 +23,8 @@ class LogListener
         $ip = EnvHelper::ip();
 
         $areaText = '';
-        if (app()->bound('poppy.ext.ip_store')) {
-            $areaText = app('poppy.ext.ip_store')->area($ip);
+        if (app()->bound('weiran.ext.ip_store')) {
+            $areaText = app('weiran.ext.ip_store')->area($ip);
             if (is_array($areaText)) {
                 $areaText = implode(' ', $areaText);
             }

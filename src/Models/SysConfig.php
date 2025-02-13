@@ -135,12 +135,12 @@ class SysConfig extends Model
         $expired  = (int) sys_setting($expiredKey, 0);
 
         if (!isset($tbStatus[$table]) || !$expired || $expired <= Carbon::now()->timestamp) {
-            app('poppy.system.setting')->set($expiredKey, Carbon::now()->addMinutes(600)->timestamp);
+            app('weiran.system.setting')->set($expiredKey, Carbon::now()->addMinutes(600)->timestamp);
 
             // 重新查询表格是否存在
             $hasTable         = DB::getSchemaBuilder()->hasTable($table);
             $tbStatus[$table] = $hasTable;
-            app('poppy.system.setting')->set($statusKey, $tbStatus);
+            app('weiran.system.setting')->set($statusKey, $tbStatus);
         }
         return $tbStatus[$table];
     }

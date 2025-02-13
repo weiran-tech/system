@@ -24,7 +24,7 @@ class SettingServiceProvider extends ServiceProvider implements DeferrableProvid
      */
     public function register(): void
     {
-        $this->app->singleton('poppy.system.setting', function () {
+        $this->app->singleton('weiran.system.setting', function () {
             return new SettingRepository();
         });
         $this->app->bind(SettingContract::class, SettingRepository::class);

@@ -90,7 +90,7 @@ class Pam
             }
 
             // 不允许不在项目中的人登录
-            if (!config('poppy.system.captcha_register')) {
+            if (!config('weiran.system.captcha_register')) {
                 return $this->setError('该账号不存在, 无法登录');
             }
 

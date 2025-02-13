@@ -27,7 +27,7 @@ class PaymentManager
 	 */
 	public static function make($type)
 	{
-		self::$match = (array) config('poppy.system.payment_types');
+		self::$match = (array) config('weiran.system.payment_types');
 		if (!isset(self::$match[$type])) {
 			throw new ApplicationException('给定的类型不正确');
 		}

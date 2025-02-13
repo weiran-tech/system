@@ -41,10 +41,10 @@ trait UserSettingTrait
             $data[$k] = $v;
         }
 
-        if (!app('poppy.system.setting')->set([
+        if (!app('weiran.system.setting')->set([
             'user::pam-' . $account_id . '.' . $key => $data,
         ])) {
-            return $this->setError(app('poppy.system.setting')->getError());
+            return $this->setError(app('weiran.system.setting')->getError());
         }
         return true;
     }

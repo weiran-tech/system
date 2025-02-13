@@ -23,6 +23,6 @@ class SysConfigTest extends TestCase
 
     public function tearDown(): void
     {
-        app('poppy.system.setting')->removeNG('weiran-system::db');
+        app('weiran.system.setting')->removeNG('weiran-system::db');
     }
 }

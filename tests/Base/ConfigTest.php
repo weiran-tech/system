@@ -31,7 +31,7 @@ class ConfigTest extends TestCase
      */
     public function testSystemCaptchaRegister(): void
     {
-        $captchaRegister = config('poppy.system.captcha_register');
+        $captchaRegister = config('weiran.system.captcha_register');
         $this->assertIsBool($captchaRegister);
     }
 

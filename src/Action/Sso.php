@@ -47,8 +47,8 @@ class Sso
     public function __construct()
     {
         // 自定义的分组覆盖系统默认分组
-        if (config('poppy.system.sso_group')) {
-            $this->groups = config('poppy.system.sso_group');
+        if (config('weiran.system.sso_group')) {
+            $this->groups = config('weiran.system.sso_group');
         }
 
         $ssoType = (string) sys_setting('weiran-system::pam.sso_type');

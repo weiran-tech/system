@@ -67,7 +67,7 @@ class UploadController extends JwtApiController
 
         /* 图片上传大小限制,过大则需要手动进行缩放
          * ---------------------------------------- */
-        $district = config('poppy.system.upload_image_district');
+        $district = config('weiran.system.upload_image_district');
         if (isset($district[$image_type]) && (int) $district[$image_type] > 0) {
             $Image->setResizeDistrict((int) $district[$image_type]);
         }

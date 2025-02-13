@@ -139,26 +139,26 @@ class ServiceProvider extends WeiranServiceProvider
      */
     private function registerContracts(): void
     {
-        $this->app->bind('poppy.system.api_sign', function () {
+        $this->app->bind('weiran.system.api_sign', function () {
             /** @var ApiSignContract $signProvider */
-            $signProvider = config('poppy.system.api_sign_provider') ?: DefaultApiSignProvider::class;
+            $signProvider = config('weiran.system.api_sign_provider') ?: DefaultApiSignProvider::class;
             return new $signProvider();
         });
-        $this->app->alias('poppy.system.api_sign', ApiSignContract::class);
+        $this->app->alias('weiran.system.api_sign', ApiSignContract::class);
 
 
-        $this->app->bind('poppy.system.password', function () {
-            $pwdClass = config('poppy.system.password_provider') ?: DefaultPasswordProvider::class;
+        $this->app->bind('weiran.system.password', function () {
+            $pwdClass = config('weiran.system.password_provider') ?: DefaultPasswordProvider::class;
             return new $pwdClass();
         });
-        $this->app->alias('poppy.system.password', PasswordContract::class);
+        $this->app->alias('weiran.system.password', PasswordContract::class);
 
 
         /* 文件上传提供者
          * ---------------------------------------- */
-        $this->app->bind('poppy.system.uploader', function () {
+        $this->app->bind('weiran.system.uploader', function () {
             $uploadType = sys_setting('weiran-system::picture.save_type');
-            $hooks      = sys_hook('poppy.system.upload_type');
+            $hooks      = sys_hook('weiran.system.upload_type');
             if (!$uploadType) {
                 $uploadType = 'default';
             }
@@ -166,13 +166,13 @@ class ServiceProvider extends WeiranServiceProvider
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
             return new $uploaderClass();
         });
-        $this->app->alias('poppy.system.uploader', FileContract::class);
+        $this->app->alias('weiran.system.uploader', FileContract::class);
 
         /* 文件提供者
          * ---------------------------------------- */
-        $this->app->bind('poppy.system.file', function () {
+        $this->app->bind('weiran.system.file', function () {
             $uploadType = sys_setting('weiran-system::picture.save_type');
-            $hooks      = sys_hook('poppy.system.upload_type');
+            $hooks      = sys_hook('weiran.system.upload_type');
             if (!$uploadType) {
                 $uploadType = 'default';
             }
@@ -180,7 +180,7 @@ class ServiceProvider extends WeiranServiceProvider
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
             return new $uploaderClass();
         });
-        $this->app->alias('poppy.system.file', FileContract::class);
+        $this->app->alias('weiran.system.file', FileContract::class);
 
     }
 

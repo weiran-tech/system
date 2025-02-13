@@ -34,7 +34,7 @@ abstract class DefaultBaseApiSign implements ApiSignContract
     public function check(Request $request): bool
     {
         // 加密 debug, 不验证签名
-        $secret = (string) config('poppy.system.secret');
+        $secret = (string) config('weiran.system.secret');
         if ($secret && (string) $request->input('_py_secret') === $secret) {
             return true;
         }

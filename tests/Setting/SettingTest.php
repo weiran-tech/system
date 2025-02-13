@@ -48,23 +48,23 @@ class SettingTest extends TestCase
      */
     public function testGetGn(): void
     {
-        app('poppy.system.setting')->removeNG('testing::set');
+        app('weiran.system.setting')->removeNG('testing::set');
 
         // A : Str
         $keyA = $this->randKey('set');
         $valA = $this->faker()->lexify();
-        app('poppy.system.setting')->set($keyA, $valA);
+        app('weiran.system.setting')->set($keyA, $valA);
         $valGetA = sys_setting($keyA);
         $this->assertEquals($valA, $valGetA);
 
         // B : Array
         $keyB = $this->randKey('set');
         $valB = $this->faker()->words();
-        app('poppy.system.setting')->set($keyB, $valB);
+        app('weiran.system.setting')->set($keyB, $valB);
         $valGetB = sys_setting($keyB);
         $this->assertEquals($valB, $valGetB);
 
-        $gn = app('poppy.system.setting')->getNG('testing::set');
+        $gn = app('weiran.system.setting')->getNG('testing::set');
         $this->assertCount(2, $gn);
     }
 
@@ -75,7 +75,7 @@ class SettingTest extends TestCase
     public function testOutOfRange(): void
     {
         $this->expectException(SettingValueOutOfRangeException::class);
-        app('poppy.system.setting')->set($this->randKey(), str_pad('3', 65536));
+        app('weiran.system.setting')->set($this->randKey(), str_pad('3', 65536));
     }
 
     /**
@@ -84,7 +84,7 @@ class SettingTest extends TestCase
     public function testKeyNotMatch(): void
     {
         $this->expectException(SettingKeyNotMatchException::class);
-        app('poppy.system.setting')->set('testing::set.name.name', 'some value');
+        app('weiran.system.setting')->set('testing::set.name.name', 'some value');
     }
 
     /**
@@ -92,7 +92,7 @@ class SettingTest extends TestCase
      */
     public function tearDown(): void
     {
-        app('poppy.system.setting')->removeNG('testing::set');
+        app('weiran.system.setting')->removeNG('testing::set');
     }
 
     /**

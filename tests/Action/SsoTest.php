@@ -22,7 +22,7 @@ class SsoTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        config('poppy.system.sso_group', [
+        config('weiran.system.sso_group', [
             'app:' . Sso::GROUP_KICKED    => ['android', 'ios'],
             'web:' . Sso::GROUP_UNLIMITED => ['h5', 'webapp'],
         ]);
@@ -38,8 +38,8 @@ class SsoTest extends TestCase
         $oldSsoType      = (string) sys_setting('weiran-system::pam.sso_type');
         $oldMaxDeviceNum = (int) (sys_setting('weiran-system::pam.sso_device_num') ?: 10);
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_DEVICE_NUM);
-        app('poppy.system.setting')->set('weiran-system::pam.sso_device_num', 3);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_DEVICE_NUM);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_device_num', 3);
 
         $num  = 1;
         $Sso  = new Sso();
@@ -69,8 +69,8 @@ class SsoTest extends TestCase
         $this->runExpired($expired);
         $this->runSuccess($success);
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
-        app('poppy.system.setting')->set('weiran-system::pam.sso_device_num', $oldMaxDeviceNum);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_device_num', $oldMaxDeviceNum);
 
         $Sso->banUser($user->id);
     }
@@ -85,7 +85,7 @@ class SsoTest extends TestCase
     {
         $oldSsoType = (string) sys_setting('weiran-system::pam.sso_type');
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_GROUP);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_GROUP);
 
         $num  = 1;
         $Sso  = new Sso();
@@ -106,7 +106,7 @@ class SsoTest extends TestCase
 
         $this->runSuccess($success);
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
 
         $Sso->banUser($user->id);
     }
@@ -120,7 +120,7 @@ class SsoTest extends TestCase
     {
         $oldSsoType = (string) sys_setting('weiran-system::pam.sso_type');
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_GROUP);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', Sso::SSO_GROUP);
 
         $num  = 1;
         $Sso  = new Sso();
@@ -148,7 +148,7 @@ class SsoTest extends TestCase
         $this->runExpired($expired);
         $this->runSuccess($success);
 
-        app('poppy.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
+        app('weiran.system.setting')->set('weiran-system::pam.sso_type', $oldSsoType);
 
         $Sso->banUser($user->id);
     }

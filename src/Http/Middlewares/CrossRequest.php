@@ -24,7 +24,7 @@ class CrossRequest extends EnableCrossRequest
      */
     public function handle(Request $request, Closure $next)
     {
-        $origin = config('poppy.system.cross_origin');
+        $origin = config('weiran.system.cross_origin');
         if (!$origin) {
             $origin = '*';
         }
@@ -39,7 +39,7 @@ class CrossRequest extends EnableCrossRequest
                 return Resp::error('跨域访问, 访问受限');
             }
         }
-        $header = config('poppy.system.cross_headers');
+        $header = config('weiran.system.cross_headers');
         if (is_array($header)) {
             $header = implode(',', $header);
         }

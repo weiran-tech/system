@@ -120,7 +120,7 @@ class Role
         $type        = $role->type;
 
         // 权限映射
-        if ($map = config('poppy.system.role_type_map')) {
+        if ($map = config('weiran.system.role_type_map')) {
             $type = $map[$type] ?? $type;
         }
 

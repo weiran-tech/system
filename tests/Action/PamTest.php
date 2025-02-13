@@ -134,7 +134,7 @@ class PamTest extends TestCase
         $type = 'user';
         $key  = "weiran-system::pam.{$type}_pwd_strength";
         $old  = sys_setting($key);
-        app('poppy.system.setting')->set($key, array_keys(PamAccount::kvPwdStrength()));
+        app('weiran.system.setting')->set($key, array_keys(PamAccount::kvPwdStrength()));
         $this->assertFalse($Pam->checkPwdStrength($type, '123456'));
         $this->assertFalse($Pam->checkPwdStrength($type, '123456x'));
         $this->assertFalse($Pam->checkPwdStrength($type, '123456xX'));
@@ -143,6 +143,6 @@ class PamTest extends TestCase
         $this->assertFalse($Pam->checkPwdStrength($type, '123456*x'));
         $this->assertFalse($Pam->checkPwdStrength($type, 'X*x'));
         $this->assertTrue($Pam->checkPwdStrength($type, 'X*x1'));
-        app('poppy.system.setting')->set($key, $old);
+        app('weiran.system.setting')->set($key, $old);
     }
 }

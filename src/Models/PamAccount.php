@@ -277,8 +277,8 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      */
     public static function instance(): PamAccount
     {
-        if (config('poppy.core.rbac.account')) {
-            $pamClass = config('poppy.core.rbac.account');
+        if (config('weiran.core.rbac.account')) {
+            $pamClass = config('weiran.core.rbac.account');
             return new $pamClass();
         }
 

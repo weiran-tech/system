@@ -38,7 +38,7 @@ class LoggerFactory
     {
         $name = $name ?: $this->name();
 
-        $config = config('poppy.system.logging') ?: DefaultConfig::get();
+        $config = config('weiran.system.logging') ?: DefaultConfig::get();
 
         $handlers   = $this->handlers($config);
         $processors = $this->processors($config);

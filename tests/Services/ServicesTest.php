@@ -18,7 +18,7 @@ class ServicesTest extends TestCase
 
     public function testUploadType()
     {
-        $uploadTypes = sys_hook('poppy.system.upload_type');
+        $uploadTypes = sys_hook('weiran.system.upload_type');
         self::assertArrayHasKey('default', $uploadTypes);
     }
 }

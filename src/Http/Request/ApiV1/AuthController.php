@@ -79,7 +79,7 @@ class AuthController extends JwtApiController
     public function access(): JsonResponse
     {
         $pam    = (new PamResource($this->pam()))->toArray(app('request'));
-        $append = (array) sys_hook('poppy.system.auth_access');
+        $append = (array) sys_hook('weiran.system.auth_access');
         $all    = array_merge($pam, $append);
         return Resp::success(
             '有效登录',
