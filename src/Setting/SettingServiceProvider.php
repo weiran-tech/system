@@ -16,7 +16,7 @@ class SettingServiceProvider extends ServiceProvider implements DeferrableProvid
      */
     public function provides(): array
     {
-        return ['poppy.system.setting', SettingContract::class];
+        return ['weiran.system.setting', SettingContract::class];
     }
 
     /**

@@ -9,7 +9,7 @@ use Weiran\System\Action\Console;
 
 class OpCommand extends Command
 {
-    protected $signature = 'weiran-system:op
+    protected $signature = 'weiran:system:op
         {action : Operation Type}
     ';
 
@@ -63,7 +63,7 @@ class OpCommand extends Command
      */
     protected function keyReplacementPattern(): string
     {
-        $escaped = preg_quote('=' . $this->laravel['config']['poppy.system.secret'], '/');
+        $escaped = preg_quote('=' . $this->laravel['config']['weiran.system.secret'], '/');
         return "/^PY_SECRET{$escaped}/m";
     }
 }

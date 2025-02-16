@@ -23,7 +23,7 @@ class BanTest extends TestCase
         $ips = $this->genIps();
         $this->clearIps($ips);
         foreach ($ips as $ip) {
-            $code = Artisan::call('weiran-system:ban', [
+            $code = Artisan::call('weiran:system:ban', [
                 'type'  => 'backend',
                 'value' => $ip,
             ]);
@@ -33,7 +33,7 @@ class BanTest extends TestCase
 
 
         // 错误 IP
-        $code = Artisan::call('weiran-system:ban', [
+        $code = Artisan::call('weiran:system:ban', [
             'type'  => 'backend',
             'value' => 'error-ip',
         ]);
@@ -41,7 +41,7 @@ class BanTest extends TestCase
 
 
         // 错误的用户类型
-        $code = Artisan::call('weiran-system:ban', [
+        $code = Artisan::call('weiran:system:ban', [
             'type'  => 'error-type',
             'value' => '127.0.0.1',
         ]);

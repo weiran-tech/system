@@ -5,10 +5,8 @@ declare(strict_types = 1);
 namespace Weiran\System\Action;
 
 use Illuminate\Support\Str;
-use JsonException;
 use Weiran\Extension\App\Classes\AppClient;
 use Weiran\Framework\Classes\Traits\AppTrait;
-use Weiran\Framework\Helper\UtilHelper;
 
 /**
  * 对接 Console 中台
@@ -49,46 +47,6 @@ class Console
         $secret      = (string) env('CP_SECRET');
         $this->host  = (string) env('CP_URL');
         $this->client = (new AppClient())->setAppid($this->appid)->setSecret($secret);
-    }
-
-    /**
-     * 获取本地的文件上传
-     * @param $type
-     * @return bool
-     */
-    public function apidocCapture($type): bool
-    {
-        if (!$this->checkAppId()) {
-            return false;
-        }
-        $cwUrl = $this->host . '/api_v1/op/app/apidoc/capture';
-        $file  = public_path('docs/' . $type . '/assets/main.bundle.js');
-        if (!app('files')->exists($file)) {
-            return $this->setError('文件不存在');
-        }
-
-        $config = file_get_contents(basename('composer.json'));
-        if (UtilHelper::isJson($config)) {
-            try {
-                $compDefs = json_decode($config, true, 512, JSON_THROW_ON_ERROR);
-            } catch (JsonException $e) {
-                return $this->setError('错误的 composer.json 格式');
-            }
-        }
-        $version = $compDefs['version'] ?? 'latest';
-
-        $resp = $this->client->file($cwUrl, [
-            'name'    => env('APP_NAME'),
-            'version' => $type . '-' . $version,
-        ], $file);
-
-        $status  = data_get($resp, 'status');
-        $message = data_get($resp, 'message');
-        if ($status !== 0) {
-            return $this->setError($message);
-
-        }
-        return true;
     }
 
 

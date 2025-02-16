@@ -7,7 +7,6 @@ namespace Weiran\System;
 use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Events\QueryExecuted;
-use Weiran\Core\Events\ApidocGeneratedEvent;
 use Weiran\Core\Events\PermissionInitEvent;
 use Weiran\Framework\Classes\Traits\PoppyTrait;
 use Weiran\Framework\Events\PoppyOptimized;
@@ -43,9 +42,6 @@ class ServiceProvider extends WeiranServiceProvider
         // laravel
         AuthLoginEvent::class           => [
 
-        ],
-        ApidocGeneratedEvent::class     => [
-            Listeners\ApidocGenerated\ApidocToConsoleListener::class,
         ],
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
@@ -103,7 +99,7 @@ class ServiceProvider extends WeiranServiceProvider
     public function register(): void
     {
         // 配置文件
-        $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/system.php', 'poppy.system');
+        $this->mergeConfigFrom(dirname(__DIR__) . '/resources/config/system.php', 'weiran.system');
 
         $this->app->register(Http\MiddlewareServiceProvider::class);
         $this->app->register(Http\RouteServiceProvider::class);
@@ -221,8 +217,8 @@ class ServiceProvider extends WeiranServiceProvider
         ]);
 
         config([
-            'poppy.framework.title'       => sys_setting('weiran-system::site.name'),
-            'poppy.framework.description' => sys_setting('weiran-system::site.description'),
+            'weiran.framework.title'       => sys_setting('weiran-system::site.name'),
+            'weiran.framework.description' => sys_setting('weiran-system::site.description'),
         ]);
 
     }

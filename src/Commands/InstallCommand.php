@@ -16,7 +16,7 @@ class InstallCommand extends Command
      * 前端部署.
      * @var string
      */
-    protected $signature = 'weiran-system:install';
+    protected $signature = 'weiran:system:install';
 
     /**
      * 描述
@@ -41,7 +41,7 @@ class InstallCommand extends Command
         /* Role
          -------------------------------------------- */
         $this->warn('Init UserRole Ing...');
-        $this->call('weiran-system:user', [
+        $this->call('weiran:system:user', [
             'do' => 'init_role',
         ]);
         $this->info('Install User Roles Success');
@@ -49,7 +49,7 @@ class InstallCommand extends Command
         /* permission
          -------------------------------------------- */
         $this->warn('Init Rbac Permission...');
-        $this->call('weiran-core:permission', [
+        $this->call('weiran:core:permission', [
             'do' => 'init',
         ]);
         $this->info('Init Rbac Permission Success');

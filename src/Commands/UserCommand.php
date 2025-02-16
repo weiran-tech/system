@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Weiran\System\Commands;
 
 use Illuminate\Console\Command;
+use Throwable;
 use Weiran\System\Action\Ban;
 use Weiran\System\Action\Pam;
 use Weiran\System\Action\Sso;
@@ -12,7 +13,6 @@ use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamPermission;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\SysConfig;
-use Throwable;
 
 /**
  * User
@@ -23,7 +23,7 @@ class UserCommand extends Command
      * 前端部署.
      * @var string
      */
-    protected $signature = 'weiran-system:user 
+    protected $signature = 'weiran:system:user 
 		{do : actions}
 		{--account= : Account Name}
 		{--pwd= : Account password}
