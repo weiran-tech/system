@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 use Weiran\System\Classes\PySystemDef;
 
 /**
- * Apidoc 读取
+ * 数据库优化 读取
  */
 class DbOptimize
 {
