@@ -8,9 +8,9 @@ use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Events\QueryExecuted;
 use Weiran\Core\Events\PermissionInitEvent;
-use Weiran\Framework\Classes\Traits\PoppyTrait;
-use Weiran\Framework\Events\PoppyOptimized;
-use Weiran\Framework\Events\PoppySchedule;
+use Weiran\Framework\Classes\Traits\WeiranTrait;
+use Weiran\Framework\Events\WeiranOptimized;
+use Weiran\Framework\Events\WeiranSchedule;
 use Weiran\Framework\Exceptions\ModuleNotFoundException;
 use Weiran\Framework\Support\WeiranServiceProvider;
 use Weiran\System\Classes\Api\Sign\DefaultApiSignProvider;
@@ -36,7 +36,7 @@ use Weiran\System\Models\Policies\PamRolePolicy;
  */
 class ServiceProvider extends WeiranServiceProvider
 {
-    use PoppyTrait;
+    use WeiranTrait;
 
     protected array $listens = [
         // laravel
@@ -46,9 +46,9 @@ class ServiceProvider extends WeiranServiceProvider
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
         ],
-        PoppyOptimized::class           => [
-            Listeners\PoppyOptimized\ClearCacheListener::class,
-            Listeners\PoppyOptimized\SystemInitListener::class,
+        WeiranOptimized::class => [
+            Listeners\WeiranOptimized\ClearCacheListener::class,
+            Listeners\WeiranOptimized\SystemInitListener::class,
         ],
         LoginTokenPassedEvent::class    => [
             Listeners\LoginTokenPassed\SsoListener::class,
@@ -116,7 +116,7 @@ class ServiceProvider extends WeiranServiceProvider
 
     private function registerSchedule(): void
     {
-        app('events')->listen(PoppySchedule::class, function (Schedule $schedule) {
+        app('events')->listen(WeiranSchedule::class, function (Schedule $schedule) {
 
             $schedule->command('weiran-system:user', ['auto_enable'])
                 ->everyFifteenMinutes()->appendOutputTo($this->consoleLog());

@@ -29,12 +29,12 @@ class Sso extends BaseMiddleware
         }
 
         // 是否开启单点登录
-        if (!\Poppy\System\Action\Sso::isEnable()) {
+        if (!\Weiran\System\Action\Sso::isEnable()) {
             return $next($request);
         }
 
         // 组无限, 对于指定的组 KEY 进行不设限标识
-        if ((new \Poppy\System\Action\Sso())->groupType(x_header('os')) === \Poppy\System\Action\Sso::GROUP_UNLIMITED) {
+        if ((new \Weiran\System\Action\Sso())->groupType(x_header('os')) === \Weiran\System\Action\Sso::GROUP_UNLIMITED) {
             return $next($request);
         }
 

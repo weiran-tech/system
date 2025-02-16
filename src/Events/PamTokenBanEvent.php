@@ -18,7 +18,7 @@ class PamTokenBanEvent
     public $type;
 
     /**
-     * @var \Poppy\System\Models\PamToken
+     * @var \Weiran\System\Models\PamToken
      */
     public $token;
 

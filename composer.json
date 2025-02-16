@@ -1,6 +1,6 @@
 {
     "name": "weiran/system",
-    "description": "An admin management module for poppy.",
+    "description": "An pam management module",
     "license": "Apache-2.0",
     "authors": [
         {

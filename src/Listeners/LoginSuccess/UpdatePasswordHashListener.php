@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Weiran\System\Listeners\LoginSuccess;
 
 use Illuminate\Support\Str;
-use Weiran\Framework\Classes\Traits\PoppyTrait;
+use Weiran\Framework\Classes\Traits\WeiranTrait;
 use Weiran\System\Events\LoginSuccessEvent;
 use Weiran\System\Http\Middlewares\AuthenticateSession;
 
@@ -14,7 +14,7 @@ use Weiran\System\Http\Middlewares\AuthenticateSession;
  */
 class UpdatePasswordHashListener
 {
-    use PoppyTrait;
+    use WeiranTrait;
 
     /**
      * @param LoginSuccessEvent $event 登录成功

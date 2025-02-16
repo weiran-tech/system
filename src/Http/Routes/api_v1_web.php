@@ -13,7 +13,7 @@ declare(strict_types = 1);
  * ---------------------------------------- */
 Route::group([
     'middleware' => ['sys-app_sign'],
-    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
+    'namespace'  => 'Weiran\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('v1/core/info', 'CoreController@info');
     $route->post('v1/core/translate', 'CoreController@translate');
@@ -23,7 +23,7 @@ Route::group([
  * ---------------------------------------- */
 Route::group([
     'middleware' => ['api-sign'],
-    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
+    'namespace'  => 'Weiran\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('v1/auth/login', 'AuthController@login')
         ->name('weiran-system:pam.auth.login');
@@ -41,7 +41,7 @@ Route::group([
 // Jwt 合法性验证
 Route::group([
     'middleware' => ['sys-jwt'],
-    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
+    'namespace'  => 'Weiran\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('v1/upload/image', 'UploadController@image')
         ->name('weiran-system:api_v1.upload.image');
@@ -52,7 +52,7 @@ Route::group([
 // 单点登录
 Route::group([
     'middleware' => ['api-sso'],
-    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
+    'namespace'  => 'Weiran\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
     $route->post('v1/auth/access', 'AuthController@access')
         ->name('weiran-system:pam.auth.access');

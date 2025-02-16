@@ -17,7 +17,7 @@ class FunctionsTest extends TestCase
         sys_tag('weiran-core')->del(PyCoreDef::ckModule('module'));
     }
 
-    public function testPoppyFriendly()
+    public function testWeiranFriendly()
     {
         config('app.locale', 'en');
         $name = weiran_friendly(PamAccount::class);
