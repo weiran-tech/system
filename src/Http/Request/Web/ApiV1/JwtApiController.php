@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\ApiV1;
+namespace Weiran\System\Http\Request\Web\ApiV1;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Weiran\Framework\Application\ApiController;

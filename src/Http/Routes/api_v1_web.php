@@ -13,51 +13,51 @@ declare(strict_types = 1);
  * ---------------------------------------- */
 Route::group([
     'middleware' => ['sys-app_sign'],
-    'namespace'  => 'Poppy\System\Http\Request\ApiV1',
+    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
-    $route->post('core/info', 'CoreController@info');
-    $route->post('core/translate', 'CoreController@translate');
+    $route->post('v1/core/info', 'CoreController@info');
+    $route->post('v1/core/translate', 'CoreController@translate');
 });
 
 /* 可以对用户设备进行封禁
  * ---------------------------------------- */
 Route::group([
     'middleware' => ['api-sign'],
-    'namespace'  => 'Poppy\System\Http\Request\ApiV1',
+    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
-    $route->post('auth/login', 'AuthController@login')
+    $route->post('v1/auth/login', 'AuthController@login')
         ->name('weiran-system:pam.auth.login');
-    $route->post('auth/exists', 'AuthController@exists');
+    $route->post('v1/auth/exists', 'AuthController@exists');
 
     // captcha
-    $route->post('captcha/verify_code', 'CaptchaController@verifyCode');
-    $route->post('captcha/send', 'CaptchaController@send');
+    $route->post('v1/captcha/verify_code', 'CaptchaController@verifyCode');
+    $route->post('v1/captcha/send', 'CaptchaController@send');
 
     // auth
-    $route->post('auth/reset_password', 'AuthController@resetPassword');
-    $route->post('auth/bind_mobile', 'AuthController@bindMobile');
+    $route->post('v1/auth/reset_password', 'AuthController@resetPassword');
+    $route->post('v1/auth/bind_mobile', 'AuthController@bindMobile');
 });
 
 // Jwt 合法性验证
 Route::group([
     'middleware' => ['sys-jwt'],
-    'namespace'  => 'Poppy\System\Http\Request\ApiV1',
+    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
-    $route->post('upload/image', 'UploadController@image')
+    $route->post('v1/upload/image', 'UploadController@image')
         ->name('weiran-system:api_v1.upload.image');
-    $route->post('upload/file', 'UploadController@file')
+    $route->post('v1/upload/file', 'UploadController@file')
         ->name('weiran-system:api_v1.upload.file');
 });
 
 // 单点登录
 Route::group([
     'middleware' => ['api-sso'],
-    'namespace'  => 'Poppy\System\Http\Request\ApiV1',
+    'namespace'  => 'Poppy\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
-    $route->post('auth/access', 'AuthController@access')
+    $route->post('v1/auth/access', 'AuthController@access')
         ->name('weiran-system:pam.auth.access');
-    $route->post('auth/renew', 'AuthController@renew')
+    $route->post('v1/auth/renew', 'AuthController@renew')
         ->name('weiran-system:pam.auth.renew');
-    $route->post('auth/logout', 'AuthController@logout')
+    $route->post('v1/auth/logout', 'AuthController@logout')
         ->name('weiran-system:pam.auth.logout');
 });

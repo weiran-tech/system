@@ -2,21 +2,57 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\ApiV1;
+namespace Weiran\System\Http\Request\Web\ApiV1;
 
+use OpenApi\Attributes as OA;
+use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Action\Verification;
 use Weiran\System\Events\CaptchaSendEvent;
 use Weiran\System\Http\Validation\CaptchaSendRequest;
 use Weiran\System\Models\PamAccount;
-use Throwable;
 
 /**
  * 验证码
  */
 class CaptchaController extends JwtApiController
 {
-
+    #[OA\Get(
+        path: '/api/web/v1/system/captcha/send',
+        summary: '发送验证码',
+        tags: ['System'],
+        parameters: [
+            new OA\Parameter(
+                name: 'passport',
+                description: '通行证',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                ),
+            ),
+            new OA\Parameter(
+                name: 'type',
+                description: '验证类型',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(
+                    type: 'string',
+                    enum: [
+                        Verification::CAPTCHA_SEND_TYPE_EXIST,
+                        Verification::CAPTCHA_SEND_TYPE_NO_EXIST,
+                    ],
+                ),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '发送成功',
+                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+            )
+        ]
+    )]
     public function send(CaptchaSendRequest $request)
     {
         $passport = $request->getPassport();
@@ -60,16 +96,43 @@ class CaptchaController extends JwtApiController
     }
 
 
-    /**
-     * @api                   {post} /api_v1/system/captcha/verify_code [Sys]获取验证串
-     * @apiDescription        用以保存 passport 验证的验证串, 隐藏字串为 passport
-     * @apiVersion            1.0.0
-     * @apiName               SysCaptchaVerifyCode
-     * @apiGroup              Poppy
-     * @apiQuery {string}     passport           通行证
-     * @apiQuery {string}     captcha            验证码
-     * @apiQuery {string}     [expire_min]       验证串有效期(默认:10 分钟, 最长不超过 60 分钟)
-     */
+    #[OA\Post(
+        path: '/api/web/v1/system/captcha/verify_code',
+        summary: '获取验证串',
+        tags: ['System'],
+        parameters: [
+            new OA\Parameter(
+                name: 'passport',
+                description: '通行证',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(
+                    type: 'string',
+                ),
+            ),
+            new OA\Parameter(
+                name: 'captcha',
+                description: '验证码',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(type: 'string',),
+            ),
+            new OA\Parameter(
+                name: 'expire_min',
+                description: '验证串有效期(默认:10 分钟, 最长不超过 60 分钟)',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'integer',),
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '生成验证串',
+                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+            )
+        ]
+    )]
     public function verifyCode()
     {
         $passport   = (string) input('passport');

@@ -2,15 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\ApiV1;
+namespace Weiran\System\Http\Request\Web\ApiV1;
 
+use OpenApi\Attributes as OA;
+use Request;
+use Throwable;
+use Validator;
 use Weiran\Framework\Classes\Resp;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\Contracts\FileContract;
 use Weiran\System\Classes\File\DefaultFileProvider;
-use Request;
-use Throwable;
-use Validator;
 
 /**
  * 图片处理控制器
@@ -18,18 +19,51 @@ use Validator;
 class UploadController extends JwtApiController
 {
 
-    /**
-     * @api                   {post} /api_v1/system/upload/image [Sys]图片上传
-     * @apiDescription        图片上传
-     * @apiVersion            1.0.0
-     * @apiName               SysUploadImage
-     * @apiGroup              Poppy
-     * @apiQuery {string}     image         图片内容(支持多张/单张上传)
-     * @apiQuery {string}     [type]        上传图片的类型 (form|表单(默认),base64,url)
-     * @apiQuery {string}     [image_type]  图片图片存储类型(default|默认), 不同的图片存储到不同的文件夹下
-     * @apiQuery {string}     [from]        上传来源,根据不同来源返回不同的格式 (wang-editor)
-     * @apiQuery {string}     [watermark]   是否开启水印(1:开启)
-     */
+    #[OA\Post(
+        path: '/api/web/v1/system/upload/image',
+        summary: '图片上传',
+        tags: ['System'],
+        parameters: [
+            new OA\Parameter(
+                name: 'image',
+                description: '图片内容',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'type',
+                description: '上传图片的类型',
+                in: 'query',
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'image_type',
+                description: '图片图片存储类型',
+                in: 'query',
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'from',
+                description: '上传来源',
+                in: 'query',
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'watermark',
+                description: '是否开启水印',
+                in: 'query',
+                schema: new OA\Schema(type: 'string')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '图片上传',
+                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+            )
+        ]
+    )]
     public function image()
     {
         $type       = input('type', 'form');
@@ -181,22 +215,51 @@ class UploadController extends JwtApiController
         return Resp::error($Image->getError());
     }
 
-    /**
-     * @api                   {post} /api_v1/system/upload/file [Sys]文件上传
-     * @apiDescription        上传文件, 这里的文件上传支持音视频, 不支持图片
-     * @apiVersion            1.0.0
-     * @apiName               SysUploadFile
-     * @apiGroup              Poppy
-     * @apiQuery {string}     file        内容
-     * @apiQuery {string}     type        上传类型(audio|音频;video|视频;images|图片;file|文件上传)
-     * @apiQuery {string}     [folder]    (4.0) 文件存储目录
-     * @apiQuery {string}     [ext]       上传限制扩展(后台进行限制), 多个使用 ',' 分隔, 默认是 后台进行限制
-     * @apiQuery {string}     [district]  图片大小限制(最短边, 默认是 1080)
-     */
+    #[OA\Post(
+        path: '/api_v1/system/upload/file',
+        summary: '上传文件, 这里的文件上传支持音视频, 不支持图片',
+        tags: ['System'],
+        parameters: [
+            new OA\Parameter(
+                name: 'file',
+                description: '内容',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'type',
+                description: '上传类型(audio|音频;video|视频;images|图片;file|文件上传)',
+                in: 'query',
+                required: true,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'folder',
+                description: '(4.0) 文件存储目录',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'district',
+                description: '图片大小限制(最短边, 默认是 1080)',
+                in: 'query',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: '上传成功',
+                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+            )
+        ]
+    )]
     public function file()
     {
         $type     = input('type', 'audio');
-        $ext      = input('ext', '');
         $district = (int) input('district', 1080);
         $folder   = input('folder', '');
 
@@ -259,7 +322,7 @@ class UploadController extends JwtApiController
         try {
             return Resp::success('上传成功', [
                 'url' => [
-                    'https://jdc.jd.com/img/400',
+                    'https://i.wulicode.com/img/400',
                 ],
             ]);
         } catch (Throwable $e) {
