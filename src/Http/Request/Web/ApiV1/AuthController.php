@@ -93,7 +93,7 @@ class AuthController extends JwtApiController
         summary: '登录',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/PamLoginRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamLoginRequest')
         ),
         tags: ['System'],
         responses: [
@@ -176,7 +176,7 @@ class AuthController extends JwtApiController
         summary: '重设密码',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/PamPasswordRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamPasswordRequest')
         ),
         tags: ['System'],
         responses: [
@@ -240,7 +240,7 @@ class AuthController extends JwtApiController
         summary: '换绑手机',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/PamBindMobileRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamBindMobileRequest')
         ),
         tags: ['System'],
         responses: [

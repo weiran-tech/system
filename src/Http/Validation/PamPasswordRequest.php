@@ -9,6 +9,7 @@ use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
+    schema: 'SystemPamPasswordRequest',
     required: ['password'],
     properties: [
         new OA\Property(
