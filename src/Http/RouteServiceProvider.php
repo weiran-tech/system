@@ -30,7 +30,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         // Api V1 版本
         Route::group([
-            'prefix' => 'api_v1/system',
+            'prefix' => 'api/web/v1/system',
         ], function () {
             require_once __DIR__ . '/Routes/api_v1_web.php';
         });

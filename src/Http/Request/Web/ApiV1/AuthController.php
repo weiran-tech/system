@@ -50,7 +50,7 @@ class AuthController extends JwtApiController
         path: '/api/web/v1/system/auth/access',
         description: '检测 Token',
         summary: '检测 Token',
-        tags: ['System'],
+        tags: ['Weiran'],
         parameters: [
             new OA\Parameter(
                 name: 'token',
@@ -65,7 +65,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '获取成功',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/SystemAuthAccessBody'
+                    ref: '#/components/schemas/AliyunOssStsTempOssBody'
                 )
             )
         ]
@@ -95,7 +95,7 @@ class AuthController extends JwtApiController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/SystemPamLoginRequest')
         ),
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -178,7 +178,7 @@ class AuthController extends JwtApiController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/SystemPamPasswordRequest')
         ),
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -242,7 +242,7 @@ class AuthController extends JwtApiController
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/SystemPamBindMobileRequest')
         ),
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -289,7 +289,7 @@ class AuthController extends JwtApiController
                 new OA\Property(property: 'device_type', description: '设备类型, 参考 header x-os', type: 'string',),
             ])
         ),
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(response: 200, description: '操作成功',
                 content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
@@ -325,7 +325,7 @@ class AuthController extends JwtApiController
     #[OA\Post(
         path: '/api/web/v1/system/auth/logout',
         summary: '退出登录',
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -350,7 +350,7 @@ class AuthController extends JwtApiController
                 new OA\Property(property: 'is_data', description: '是否以Data形式返回 [Y|N]', type: 'string',),
             ])
         ),
-        tags: ['System'],
+        tags: ['Weiran'],
         responses: [
             new OA\Response(
                 response: 200,

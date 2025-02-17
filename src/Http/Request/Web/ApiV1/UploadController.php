@@ -22,7 +22,7 @@ class UploadController extends JwtApiController
     #[OA\Post(
         path: '/api/web/v1/system/upload/image',
         summary: '图片上传',
-        tags: ['System'],
+        tags: ['Weiran'],
         parameters: [
             new OA\Parameter(
                 name: 'image',
@@ -216,9 +216,9 @@ class UploadController extends JwtApiController
     }
 
     #[OA\Post(
-        path: '/api_v1/system/upload/file',
+        path: '/api/web/v1/system/upload/file',
         summary: '上传文件, 这里的文件上传支持音视频, 不支持图片',
-        tags: ['System'],
+        tags: ['Weiran'],
         parameters: [
             new OA\Parameter(
                 name: 'file',

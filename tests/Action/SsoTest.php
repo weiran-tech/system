@@ -160,7 +160,7 @@ class SsoTest extends TestCase
     {
         $client = new Client();
         $this->outputVariables($os);
-        $client->post(url('api_v1/system/auth/access'), [
+        $client->post(url('api/web/v1/system/auth/access'), [
             'headers'     => [
                 'Authorization' => "Bearer {$jwt}",
                 'x-os'          => $os,

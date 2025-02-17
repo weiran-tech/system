@@ -58,7 +58,7 @@ class Console
     {
         $name   = (string) env('APP_NAME');
         $env    = (string) env('APP_ENV');
-        $url    = $this->host . '/api_v1/op/app/project/save-secret';
+        $url    = $this->host . '/api/web/v1/op/app/project/save-secret';
         $secret = md5(microtime(true) . Str::random());
         app('weiran.system.setting')->set('weiran-system::_.secret', $secret);
 
