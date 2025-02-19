@@ -154,9 +154,9 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
     /**
      * 根据passport返回Pam
      * @param string $passport 通行证
-     * @return Model|null|object|PamAccount
+     * @return null|PamAccount
      */
-    public static function passport(string $passport)
+    public static function passport(string $passport): PamAccount|null
     {
         $passport = self::fullFilledPassport($passport);
         $type     = self::passportType($passport);

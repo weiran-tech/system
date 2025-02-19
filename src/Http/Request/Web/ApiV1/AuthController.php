@@ -21,6 +21,7 @@ use Weiran\System\Action\Verification;
 use Weiran\System\Events\LoginSuccessEvent;
 use Weiran\System\Events\LoginTokenPassedEvent;
 use Weiran\System\Events\TokenRenewEvent;
+use Weiran\System\Http\Validation\AuthExistsRequest;
 use Weiran\System\Http\Validation\PamBindMobileRequest;
 use Weiran\System\Http\Validation\PamLoginRequest;
 use Weiran\System\Http\Validation\PamPasswordRequest;
@@ -334,7 +335,7 @@ class AuthController extends JwtApiController
             )
         ]
     )]
-    public function logout()
+    public function logout(): Response|JsonResponse|RedirectResponse
     {
         (new Pam())->setPam($this->pam())->logout();
         return Resp::success('已退出登录');
@@ -345,10 +346,7 @@ class AuthController extends JwtApiController
         summary: '检查通行证是否存在',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(properties: [
-                new OA\Property(property: 'passport', description: '通行证', type: 'string',),
-                new OA\Property(property: 'is_data', description: '是否以Data形式返回 [Y|N]', type: 'string',),
-            ])
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthExistsRequest')
         ),
         tags: ['System'],
         responses: [
@@ -359,26 +357,18 @@ class AuthController extends JwtApiController
             )
         ]
     )]
-    public function exists()
+    public function exists(AuthExistsRequest $request): JsonResponse
     {
-        $passport = input('passport');
-        $is_data  = input('is_data', 'N');
-        $exists   = PamAccount::passportExists($passport);
+        $exists = PamAccount::passportExists($request->getPassport());
 
         if ($exists) {
-            if ($is_data === 'Y') {
-                return Resp::success('通行证存在', [
-                    'is_exist' => 'Y',
-                ]);
-            }
-            return Resp::success('通行证存在');
-        }
-        if ($is_data === 'Y') {
-            return Resp::success('通行证不存在', [
-                'is_exist' => 'N',
+            return Resp::success('通行证存在', [
+                'is_exist' => 'Y',
             ]);
         }
-        return Resp::error('通行证不存在');
+        return Resp::success('通行证不存在', [
+            'is_exist' => 'N',
+        ]);
     }
 
     protected function username(): string
