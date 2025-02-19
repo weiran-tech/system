@@ -20,7 +20,7 @@ class CaptchaController extends JwtApiController
     #[OA\Get(
         path: '/api/web/v1/system/captcha/send',
         summary: '发送验证码',
-        tags: ['Weiran'],
+        tags: ['System'],
         parameters: [
             new OA\Parameter(
                 name: 'passport',
@@ -99,7 +99,7 @@ class CaptchaController extends JwtApiController
     #[OA\Post(
         path: '/api/web/v1/system/captcha/verify_code',
         summary: '获取验证串',
-        tags: ['Weiran'],
+        tags: ['System'],
         parameters: [
             new OA\Parameter(
                 name: 'passport',

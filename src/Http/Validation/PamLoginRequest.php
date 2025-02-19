@@ -21,10 +21,12 @@ use Weiran\System\Models\PamAccount;
         new OA\Property(
             property: 'password',
             description: '密码',
+            type: 'string',
         ),
         new OA\Property(
             property: 'captcha',
             description: '验证码',
+            type: 'string',
         ),
         new OA\Property(
             property: 'device_id',

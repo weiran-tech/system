@@ -19,7 +19,7 @@ class CoreController extends JwtApiController
     #[OA\Post(
         path: '/api/web/v1/system/core/translate',
         summary: '多语言包',
-        tags: ['Weiran'],
+        tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -40,7 +40,7 @@ class CoreController extends JwtApiController
     #[OA\Post(
         path: '/api/web/v1/system/core/info',
         summary: '系统信息',
-        tags: ['Weiran'],
+        tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,

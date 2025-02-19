@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Weiran\Core\Rbac\Contracts\RbacUserContract;
 use Weiran\Core\Rbac\Traits\RbacUserTrait;
 use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 use Weiran\Framework\Helper\UtilHelper;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * 用户账号
@@ -116,30 +116,6 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
     ];
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     * @return mixed
-     */
-    public function getJWTIdentifier()
-    {
-        return $this->getKey();
-    }
-
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     * @return array
-     */
-    public function getJWTCustomClaims(): array
-    {
-        return [
-            'user' => [
-                'type' => $this->type,
-                'salt' => md5(sha1((string) $this->password_key) . $this->password),
-            ],
-        ];
-    }
-
-
-    /**
      * 通行证类型(可能返回不匹配的通行证类型)
      * @param string $passport 通行证
      * @return string
@@ -160,10 +136,10 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /**
      * 补足 86 手机号
-     * @param $passport
+     * @param string $passport
      * @return string
      */
-    public static function fullFilledPassport($passport): string
+    public static function fullFilledPassport(string $passport): string
     {
         $passport = preg_replace('/\s+/', '', $passport);
         // lower
@@ -177,29 +153,27 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /**
      * 根据passport返回Pam
-     * @param string|numeric $passport 通行证
+     * @param string $passport 通行证
      * @return Model|null|object|PamAccount
      */
-    public static function passport($passport)
+    public static function passport(string $passport)
     {
         $passport = self::fullFilledPassport($passport);
         $type     = self::passportType($passport);
         return self::where($type, $passport)->first();
     }
 
-
     /**
      * 验证通行证是否存在, 自动补足 86
-     * @param $passport
+     * @param string $passport
      * @return bool
      */
-    public static function passportExists($passport): bool
+    public static function passportExists(string $passport): bool
     {
         $passport = self::fullFilledPassport($passport);
         $type     = self::passportType($passport);
         return self::where($type, $passport)->exists();
     }
-
 
     /**
      * 获取用户所有的 permission
@@ -218,7 +192,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /**
      * 获取定义的 kv 值
-     * @param null|string $key       需要获取的key, 默认返回整个定义
+     * @param null|string $key 需要获取的key, 默认返回整个定义
      * @param bool        $check_key 检测当前key 是否存在
      * @return array|string
      */
@@ -234,7 +208,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /**
      * 获取定义的 kv 值
-     * @param null|string|int $key       需要获取的key, 默认返回整个定义
+     * @param null|string|int $key 需要获取的key, 默认返回整个定义
      * @param bool            $check_key 检测当前key 是否存在
      * @return array|string
      */
@@ -251,7 +225,7 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
 
     /**
      * 注册平台
-     * @param null $key          key
+     * @param null $key key
      * @param bool $check_exists 检测当前key 是否存在
      * @return array|string
      */
@@ -295,7 +269,6 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
         return self::BACKEND_MOBILE_PREFIX . sprintf("%s%'.07d", '', $id);
     }
 
-
     /**
      * 后台手机通行证
      * @param $mobile
@@ -306,9 +279,8 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
         return self::BACKEND_MOBILE_PREFIX . $mobile;
     }
 
-
     /**
-     * @param null|string $key          Key
+     * @param null|string $key Key
      * @param bool        $check_exists 检测键值是否存在
      * @return array|string
      */
@@ -344,5 +316,28 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
             $strength[] = self::PWD_SPECIAL;
         }
         return $strength;
+    }
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     * @return array
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [
+            'user' => [
+                'type' => $this->type,
+                'salt' => md5(sha1((string) $this->password_key) . $this->password),
+            ],
+        ];
     }
 }

@@ -54,7 +54,7 @@ Route::group([
     'middleware' => ['api-sso'],
     'namespace'  => 'Weiran\System\Http\Request\Web\ApiV1',
 ], function (Illuminate\Routing\Router $route) {
-    $route->post('auth/access', 'AuthController@access')
+    $route->get('auth/access', 'AuthController@access')
         ->name('weiran-system:pam.auth.access');
     $route->post('auth/renew', 'AuthController@renew')
         ->name('weiran-system:pam.auth.renew');
