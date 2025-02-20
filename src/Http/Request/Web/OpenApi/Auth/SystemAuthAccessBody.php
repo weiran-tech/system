@@ -1,9 +1,9 @@
 <?php
 
-namespace Weiran\System\Http\Request\Web\OA\Auth;
+namespace Weiran\System\Http\Request\Web\OpenApi\Auth;
 
 use OpenApi\Attributes as OA;
-use Weiran\System\Http\Request\Web\OA\ResponseBaseBody;
+use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
 
 #[OA\Schema(
     description: '登录成功',

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Validation;
+namespace Weiran\System\Http\Request\Web\Validation;
 
 use OpenApi\Attributes as OA;
 use Weiran\Framework\Application\Request;
@@ -10,7 +10,7 @@ use Weiran\Framework\Validation\Rule;
 use Weiran\System\Models\PamAccount;
 
 #[OA\Schema(
-    schema: 'SystemPamLoginRequest',
+    schema: 'SystemAuthLoginRequest',
     required: ['passport'],
     properties: [
         new OA\Property(
@@ -46,7 +46,7 @@ use Weiran\System\Models\PamAccount;
         ),
     ]
 )]
-class PamLoginRequest extends Request
+class AuthLoginRequest extends Request
 {
 
     protected bool $isValidate = false;

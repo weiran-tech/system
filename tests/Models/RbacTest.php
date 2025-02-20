@@ -28,7 +28,7 @@ class RbacTest extends TestCase
     {
         // 创建后台用户
         $pam           = new Pam();
-        $fakerUsername = py_faker()->lexify('????????');
+        $fakerUsername = poppy_faker()->lexify('????????');
         if (!$pam->register('be_' . $fakerUsername, $fakerUsername, PamRole::BE_ROOT)) {
             $this->fail($pam->getError()->getMessage());
         }

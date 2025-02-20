@@ -131,7 +131,7 @@ class SsoTest extends TestCase
         $success = [];
         while ($num <= 6) {
             $jwt        = JWTAuth::fromUser($user);
-            $deviceType = py_faker()->randomElement(['android', 'ios']);
+            $deviceType = poppy_faker()->randomElement(['android', 'ios']);
             if ($num !== 6) {
                 $expired[] = [$jwt, $deviceType];
             }

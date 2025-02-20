@@ -22,7 +22,7 @@ abstract class MobileController extends Controller
     public function __construct()
     {
         parent::__construct();
-        py_container()->setExecutionContext('mobile');
+        weiran_container()->setExecutionContext('mobile');
         $this->middleware(function ($request, $next) {
             $webCheck = app('auth')->guard(PamAccount::GUARD_WEB)->check();
             if ($webCheck) {

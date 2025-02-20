@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Validation;
+namespace Weiran\System\Http\Request\Web\Validation;
 
 use OpenApi\Attributes as OA;
 use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
-    schema: 'SystemPamBindMobileRequest',
+    schema: 'SystemAuthBindMobileRequest',
     required: ['passport', 'captcha', 'verify_code'],
     properties: [
         new OA\Property(property: 'passport', description: '通行证', type: 'string'),
@@ -17,7 +17,7 @@ use Weiran\Framework\Validation\Rule;
         new OA\Property(property: 'captcha', description: '验证码', type: 'string'),
     ]
 )]
-class PamBindMobileRequest extends Request
+class AuthBindMobileRequest extends Request
 {
 
     protected bool $isValidate = false;

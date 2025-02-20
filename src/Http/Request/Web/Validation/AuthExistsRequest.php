@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Validation;
+namespace Weiran\System\Http\Request\Web\Validation;
 
 use OpenApi\Attributes as OA;
 use Weiran\Framework\Application\Request;

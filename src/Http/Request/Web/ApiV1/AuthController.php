@@ -21,10 +21,10 @@ use Weiran\System\Action\Verification;
 use Weiran\System\Events\LoginSuccessEvent;
 use Weiran\System\Events\LoginTokenPassedEvent;
 use Weiran\System\Events\TokenRenewEvent;
-use Weiran\System\Http\Validation\AuthExistsRequest;
-use Weiran\System\Http\Validation\PamBindMobileRequest;
-use Weiran\System\Http\Validation\PamLoginRequest;
-use Weiran\System\Http\Validation\PamPasswordRequest;
+use Weiran\System\Http\Request\Web\Validation\AuthBindMobileRequest;
+use Weiran\System\Http\Request\Web\Validation\AuthExistsRequest;
+use Weiran\System\Http\Request\Web\Validation\AuthLoginRequest;
+use Weiran\System\Http\Request\Web\Validation\AuthPasswordRequest;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\Resources\PamResource;
 
@@ -94,7 +94,7 @@ class AuthController extends JwtApiController
         summary: '登录',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamLoginRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthLoginRequest')
         ),
         tags: ['System'],
         responses: [
@@ -110,8 +110,8 @@ class AuthController extends JwtApiController
         $req->merge([
             'os' => input('device_type', '') ?: x_header('os'),
         ]);
-        /** @var PamLoginRequest $request */
-        $request     = app(PamLoginRequest::class, [$req]);
+        /** @var AuthLoginRequest $request */
+        $request     = app(AuthLoginRequest::class, [$req]);
         $reqPassport = $request->scene('passport')->validated();
 
         // 频率限制
@@ -188,7 +188,7 @@ class AuthController extends JwtApiController
             )
         ]
     )]
-    public function resetPassword(PamPasswordRequest $request)
+    public function resetPassword(AuthPasswordRequest $request)
     {
         $verify_code = input('verify_code', '');
         $password    = $request->input('password');
@@ -252,7 +252,7 @@ class AuthController extends JwtApiController
             )
         ]
     )]
-    public function bindMobile(PamBindMobileRequest $request)
+    public function bindMobile(AuthBindMobileRequest $request)
     {
         $captcha     = $request->getCaptcha();
         $passport    = $request->getPassport();

@@ -9,7 +9,7 @@ use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Action\Verification;
 use Weiran\System\Events\CaptchaSendEvent;
-use Weiran\System\Http\Validation\CaptchaSendRequest;
+use Weiran\System\Http\Request\Web\Validation\CaptchaSendRequest;
 use Weiran\System\Models\PamAccount;
 
 /**
