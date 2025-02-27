@@ -43,9 +43,9 @@ class Console
      */
     public function __construct()
     {
-        $this->appid = (string) env('CP_APPID');
-        $secret      = (string) env('CP_SECRET');
-        $this->host  = (string) env('CP_URL');
+        $this->appid  = (string) env('CP_APPID');
+        $secret       = (string) env('CP_SECRET');
+        $this->host   = (string) env('CP_URL');
         $this->client = (new AppClient())->setAppid($this->appid)->setSecret($secret);
     }
 
@@ -58,7 +58,7 @@ class Console
     {
         $name   = (string) env('APP_NAME');
         $env    = (string) env('APP_ENV');
-        $url    = $this->host . '/api/web/v1/op/app/project/save-secret';
+        $url    = $this->host . '/api/web/op/v1/app/project/save-secret';
         $secret = md5(microtime(true) . Str::random());
         app('weiran.system.setting')->set('weiran-system::_.secret', $secret);
 

@@ -20,7 +20,7 @@ class UploadController extends JwtApiController
 {
 
     #[OA\Post(
-        path: '/api/web/v1/system/upload/image',
+        path: '/api/web/system/v1/upload/image',
         summary: '图片上传',
         tags: ['System'],
         parameters: [
@@ -216,7 +216,7 @@ class UploadController extends JwtApiController
     }
 
     #[OA\Post(
-        path: '/api/web/v1/system/upload/file',
+        path: '/api/web/system/v1/upload/file',
         description: '这里的文件上传支持音视频, 不支持图片',
         summary: '上传文件',
         tags: ['System'],

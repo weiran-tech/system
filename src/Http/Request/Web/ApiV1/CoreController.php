@@ -17,7 +17,7 @@ class CoreController extends JwtApiController
     use ThrottlesLogins;
 
     #[OA\Post(
-        path: '/api/web/v1/system/core/translate',
+        path: '/api/web/system/v1/core/translate',
         summary: '多语言包',
         tags: ['System'],
         responses: [
@@ -38,7 +38,7 @@ class CoreController extends JwtApiController
 
 
     #[OA\Post(
-        path: '/api/web/v1/system/core/info',
+        path: '/api/web/system/v1/core/info',
         summary: '系统信息',
         tags: ['System'],
         responses: [

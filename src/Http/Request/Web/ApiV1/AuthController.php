@@ -48,7 +48,7 @@ class AuthController extends JwtApiController
     protected float $decayMinutes = 0.5;
 
     #[OA\Get(
-        path: '/api/web/v1/system/auth/access',
+        path: '/api/web/system/v1/auth/access',
         description: '检测 Token',
         summary: '检测 Token',
         tags: ['System'],
@@ -90,7 +90,7 @@ class AuthController extends JwtApiController
      * @throws Throwable
      */
     #[OA\Post(
-        path: '/api/web/v1/system/auth/login',
+        path: '/api/web/system/v1/auth/login',
         summary: '登录',
         requestBody: new OA\RequestBody(
             required: true,
@@ -173,11 +173,11 @@ class AuthController extends JwtApiController
      * @throws Throwable
      */
     #[OA\Post(
-        path: '/api/web/v1/system/auth/reset_password',
+        path: '/api/web/system/v1/auth/reset_password',
         summary: '重设密码',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamPasswordRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthPasswordRequest')
         ),
         tags: ['System'],
         responses: [
@@ -190,10 +190,10 @@ class AuthController extends JwtApiController
     )]
     public function resetPassword(AuthPasswordRequest $request)
     {
-        $verify_code = input('verify_code', '');
+        $verify_code = $request->input('verify_code', '');
         $password    = $request->input('password');
-        $passport    = input('passport', '');
-        $captcha     = input('captcha', '');
+        $passport    = $request->input('passport', '');
+        $captcha     = $request->input('captcha', '');
 
         $Verification = new Verification();
         if ((!$verify_code && !$passport) || ($verify_code && $passport)) {
@@ -237,11 +237,11 @@ class AuthController extends JwtApiController
     }
 
     #[OA\Post(
-        path: '/api/web/v1/system/auth/bind_mobile',
+        path: '/api/web/system/v1/auth/bind_mobile',
         summary: '换绑手机',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemPamBindMobileRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthBindMobileRequest')
         ),
         tags: ['System'],
         responses: [
@@ -281,7 +281,7 @@ class AuthController extends JwtApiController
     }
 
     #[OA\Post(
-        path: '/api/web/v1/system/auth/renew',
+        path: '/api/web/system/v1/auth/renew',
         summary: '续期',
         requestBody: new OA\RequestBody(
             required: true,
@@ -324,7 +324,7 @@ class AuthController extends JwtApiController
      * @throws Throwable
      */
     #[OA\Post(
-        path: '/api/web/v1/system/auth/logout',
+        path: '/api/web/system/v1/auth/logout',
         summary: '退出登录',
         tags: ['System'],
         responses: [
@@ -342,7 +342,7 @@ class AuthController extends JwtApiController
     }
 
     #[OA\Post(
-        path: '/api/web/v1/system/auth/exists',
+        path: '/api/web/system/v1/auth/exists',
         summary: '检查通行证是否存在',
         requestBody: new OA\RequestBody(
             required: true,

@@ -18,7 +18,7 @@ use Weiran\System\Models\PamAccount;
 class CaptchaController extends JwtApiController
 {
     #[OA\Get(
-        path: '/api/web/v1/system/captcha/send',
+        path: '/api/web/system/v1/captcha/send',
         summary: '发送验证码',
         tags: ['System'],
         parameters: [
@@ -97,7 +97,7 @@ class CaptchaController extends JwtApiController
 
 
     #[OA\Post(
-        path: '/api/web/v1/system/captcha/verify_code',
+        path: '/api/web/system/v1/captcha/verify_code',
         summary: '获取验证串',
         tags: ['System'],
         parameters: [
