@@ -91,11 +91,10 @@ class UploadTest extends TestCase
         try {
             $file       = weiran_path('weiran.system', 'tests/files/single.heic');
             $image      = new UploadedFile($file, 'single.heic', null, null, true);
-            $image_type = input('image_type', 'default');
 
             /** @var DefaultFileProvider $Image */
             $Image = app(FileContract::class);
-            $Image->setFolder($image_type);
+            $Image->setFolder('default');
             $Image->setExtension(['jpg', 'png', 'gif', 'jpeg', 'webp', 'bmp', 'heic', 'mp4', 'rm', 'rmvb', 'wmv']);
             if ($Image->saveFile($image)) {
                 $url = $Image->getUrl();
