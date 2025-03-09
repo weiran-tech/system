@@ -6,7 +6,9 @@ namespace Weiran\System\Setting\Repository;
 
 use Exception;
 use Illuminate\Support\Str;
+use JsonException;
 use PDOException;
+use Throwable;
 use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Redis\RdsDb;
 use Weiran\Framework\Classes\Traits\AppTrait;
@@ -15,7 +17,6 @@ use Weiran\System\Classes\PySystemDef;
 use Weiran\System\Exceptions\SettingKeyNotMatchException;
 use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Models\SysConfig;
-use Throwable;
 
 /**
  * system config
@@ -65,7 +66,7 @@ class SettingRepository implements SettingContract
     /**
      * @inheritDoc
      * @throws SettingKeyNotMatchException
-     * @throws SettingValueOutOfRangeException
+     * @throws SettingValueOutOfRangeException|JsonException
      */
     public function get(string $key, $default = '')
     {
@@ -74,7 +75,7 @@ class SettingRepository implements SettingContract
         }
 
         if ($val = self::$rds->hGet(PySystemDef::ckSetting(), $this->convertKey($key), false)) {
-            return unserialize($val);
+            return json_decode($val, true, 512, JSON_THROW_ON_ERROR);
         }
 
         /* 4.2 : fix skeleton migrate error
@@ -85,7 +86,7 @@ class SettingRepository implements SettingContract
 
         try {
             $record = $this->findRecord($key);
-        } catch (PDOException $e) {
+        } catch (PDOException) {
             self::$existTable = false;
             return $default;
         }
@@ -96,13 +97,14 @@ class SettingRepository implements SettingContract
 
         self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $record->value);
 
-        return unserialize($record->value);
+        return json_decode($record->value, true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @inheritDoc
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
+     * @throws JsonException
      */
     public function set($key, $value = ''): bool
     {
@@ -117,9 +119,9 @@ class SettingRepository implements SettingContract
             throw (new SettingKeyNotMatchException($key))->setContext(compact('key'));
         }
 
-        $record         = $this->findRecord($key);
-        $serializeValue = serialize($value);
-        if (strlen($serializeValue) >= 65535) {
+        $record       = $this->findRecord($key);
+        $encodedValue = json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (strlen($encodedValue) >= 65535) {
             throw (new SettingValueOutOfRangeException($key))->setContext(compact('key'));
         }
         if (!$record) {
@@ -128,15 +130,15 @@ class SettingRepository implements SettingContract
                 'namespace' => $namespace,
                 'group'     => $group,
                 'item'      => $item,
-                'value'     => $serializeValue,
+                'value'     => $encodedValue,
             ]);
         }
         else {
-            $record->value = $serializeValue;
+            $record->value = $encodedValue;
             $record->save();
         }
 
-        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $serializeValue);
+        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $encodedValue);
         return true;
     }
 
@@ -144,6 +146,7 @@ class SettingRepository implements SettingContract
      * 根据命名空间从数据库中获取数据
      * @param string $ng 命名空间和分组
      * @return array
+     * @throws JsonException
      */
     public function getNG(string $ng): array
     {
@@ -154,7 +157,7 @@ class SettingRepository implements SettingContract
         $values = SysConfig::where('namespace', $ns)->where('group', $group)->select(['item', 'value'])->get();
         $data   = collect();
         $values->each(function ($item) use ($data) {
-            $data->put($item['item'], unserialize($item['value']));
+            $data->put($item['item'], json_decode($item['value'], true, 512, JSON_THROW_ON_ERROR));
         });
 
         return $data->toArray();
@@ -185,7 +188,7 @@ class SettingRepository implements SettingContract
             try {
                 $Db->delete();
                 return true;
-            } catch (Throwable $e) {
+            } catch (Throwable) {
                 return false;
             }
         }
