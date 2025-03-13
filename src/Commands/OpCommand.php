@@ -5,7 +5,8 @@ declare(strict_types = 1);
 namespace Weiran\System\Commands;
 
 use Illuminate\Console\Command;
-use Weiran\System\Action\Console;
+use Illuminate\Support\Str;
+use JsonException;
 
 class OpCommand extends Command
 {
@@ -15,23 +16,20 @@ class OpCommand extends Command
 
     protected $description = 'Operation for system';
 
+    /**
+     * @throws JsonException
+     */
     public function handle(): int
     {
         $action = $this->argument('action');
         switch ($action) {
             case 'gen-secret':
-                $Console = new Console();
-                if ($Console->generateSecret()) {
-                    $this->writeNewEnvironmentFileWith($Console->secret());
-                    $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
-                }
-                else {
-                    $this->warn(sys_gen_mk('system.op', $Console->getError()));
-                }
+                $secret = md5(microtime(true) . Str::random());
+                $this->writeNewEnvironmentFileWith($secret);
+                $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
                 break;
             case 'secret':
-                $Console = new Console();
-                $this->info(sys_gen_mk('system.op', '当前的密钥为:' . $Console->secret()));
+                $this->info(sys_gen_mk('system.op', '当前的密钥为:' . config('weiran.system.secret')));
                 break;
             default:
                 $this->warn(sys_gen_mk('system.op', '错误的 action'));
@@ -51,7 +49,7 @@ class OpCommand extends Command
     {
         file_put_contents($this->laravel->environmentFilePath(), preg_replace(
             $this->keyReplacementPattern(),
-            'PY_SECRET=' . $key,
+            'WEIRAN_SECRET=' . $key,
             file_get_contents($this->laravel->environmentFilePath())
         ));
     }
@@ -64,6 +62,6 @@ class OpCommand extends Command
     protected function keyReplacementPattern(): string
     {
         $escaped = preg_quote('=' . $this->laravel['config']['weiran.system.secret'], '/');
-        return "/^PY_SECRET{$escaped}/m";
+        return "/^WEIRAN_SECRET{$escaped}/m";
     }
 }
