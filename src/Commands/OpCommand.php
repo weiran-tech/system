@@ -10,7 +10,7 @@ use JsonException;
 
 class OpCommand extends Command
 {
-    protected $signature = 'weiran:system:op
+    protected $signature = 'system:op
         {action : Operation Type}
     ';
 

@@ -11,7 +11,7 @@ use Weiran\System\Models\PamBan;
 
 class BanCommand extends Command
 {
-    protected $signature = 'weiran:system:ban
+    protected $signature = 'system:ban
         {type : account type}
         {value : ip/device}
         {--note= : note}
