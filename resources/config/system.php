@@ -134,7 +134,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'captcha_register'      => env('PY_SYS_CAPTCHA_REGISTER', true),
+    'captcha_register'      => env('WEIRAN_CAPTCHA_REGISTER', true),
 
 
     /*
@@ -143,7 +143,7 @@ return [
     |--------------------------------------------------------------------------
     |
     */
-    'secret'                => env('PY_SECRET', ''),
+    'secret'                => env('WEIRAN_SECRET', ''),
 
 
     /*
@@ -152,7 +152,7 @@ return [
     |--------------------------------------------------------------------------
     | 关闭不显示邮箱列
     */
-    'enable_email'          => env('PY_SYS_ENABLE_EMAIL', false),
+    'enable_email'          => env('WEIRAN_ENABLE_EMAIL', false),
 
     /*
     |--------------------------------------------------------------------------

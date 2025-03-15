@@ -36,7 +36,7 @@ class InstallCommand extends Command
             return;
         }
 
-        $this->line('Start Install Lemon Framework!');
+        $this->line('Start Install Weiran Framework!');
 
         /* Role
          -------------------------------------------- */

@@ -46,7 +46,7 @@ class ServiceProvider extends WeiranServiceProvider
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
         ],
-        WeiranOptimized::class => [
+        WeiranOptimized::class          => [
             Listeners\WeiranOptimized\ClearCacheListener::class,
             Listeners\WeiranOptimized\SystemInitListener::class,
         ],
@@ -118,14 +118,14 @@ class ServiceProvider extends WeiranServiceProvider
     {
         app('events')->listen(WeiranSchedule::class, function (Schedule $schedule) {
 
-            $schedule->command('weiran-system:user', ['auto_enable'])
+            $schedule->command('system:user', ['auto_enable'])
                 ->everyFifteenMinutes()->appendOutputTo($this->consoleLog());
-            $schedule->command('weiran-system:user', ['clear_log'])
+            $schedule->command('system:user', ['clear_log'])
                 ->dailyAt('04:00')->appendOutputTo($this->consoleLog());
             // 每天清理一次
-            $schedule->command('weiran-system:user', ['clear_expired'])
+            $schedule->command('system:user', ['clear_expired'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
-            $schedule->command('weiran-system:op', ['gen-secret'])
+            $schedule->command('system:op', ['gen-secret'])
                 ->dailyAt('06:00')->appendOutputTo($this->consoleLog());
         });
     }
