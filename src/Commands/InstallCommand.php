@@ -49,7 +49,7 @@ class InstallCommand extends Command
         /* permission
          -------------------------------------------- */
         $this->warn('Init Rbac Permission...');
-        $this->call('weiran:core:permission', [
+        $this->call('core:permission', [
             'do' => 'init',
         ]);
         $this->info('Init Rbac Permission Success');
