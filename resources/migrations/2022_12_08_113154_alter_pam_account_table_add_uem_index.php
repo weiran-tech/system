@@ -11,7 +11,7 @@ class AlterPamAccountTableAddUemIndex extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('pam_account', function (Blueprint $table) {
             $table->index('username', 'k_username');
@@ -25,10 +25,12 @@ class AlterPamAccountTableAddUemIndex extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('pam_account', function (Blueprint $table) {
-            $table->dropIndex(['k_username', 'k_email', 'k_mobile']);
+            $table->dropIndex('k_username');
+            $table->dropIndex('k_email');
+            $table->dropIndex('k_mobile');
         });
     }
 }
