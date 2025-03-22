@@ -119,11 +119,6 @@ class Role
         $permissions = $this->corePermission()->permissions();
         $type        = $role->type;
 
-        // 权限映射
-        if ($map = config('weiran.system.role_type_map')) {
-            $type = $map[$type] ?? $type;
-        }
-
         $keys              = $permissions->keys();
         $match             = PamPermission::where('type', $type)->whereIn('name', $keys)->pluck('id', 'name');
         $collectPermission = collect();
