@@ -48,7 +48,6 @@ class ServiceProvider extends WeiranServiceProvider
         ],
         WeiranOptimized::class          => [
             Listeners\WeiranOptimized\ClearCacheListener::class,
-            Listeners\WeiranOptimized\SystemInitListener::class,
         ],
         LoginTokenPassedEvent::class    => [
             Listeners\LoginTokenPassed\SsoListener::class,
@@ -186,6 +185,7 @@ class ServiceProvider extends WeiranServiceProvider
             Commands\UserCommand::class,
             Commands\InstallCommand::class,
             Commands\BanCommand::class,
+            Commands\BanInitCommand::class,
             Commands\OpCommand::class,
         ]);
     }
