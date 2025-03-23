@@ -19,7 +19,7 @@ class InitToDbListener
      * @param PermissionInitEvent $event 登录成功
      * @throws Exception
      */
-    public function handle(PermissionInitEvent $event)
+    public function handle(PermissionInitEvent $event): void
     {
         $permissions = $event->permissions;
         // 删除多余权限
@@ -45,7 +45,7 @@ class InitToDbListener
 
         /** @var PamRole $role */
         $role = PamRole::where('name', PamRole::BE_ROOT)->first();
-        $role->syncPermission($permissions);
+        $role?->syncPermission($permissions);
     }
 }
 
