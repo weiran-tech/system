@@ -13,8 +13,8 @@
         "ext-bcmath": "*",
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.16",
-        "intervention/image": "2.*",
-        "mews/captcha": "^3.3",
+        "intervention/image": "3.*",
+        "mews/captcha": "^3.4",
         "mlocati/ip-lib": "^1.16",
         "weiran/core": "1.0.x-dev",
         "tymon/jwt-auth": "^2.1.1"
