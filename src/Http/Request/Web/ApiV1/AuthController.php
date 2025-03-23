@@ -66,7 +66,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '获取成功',
                 content: new OA\JsonContent(
-                    ref: '#/components/schemas/AliyunOssStsTempOssBody'
+                    ref: '#/components/schemas/SystemAuthAccessBody'
                 )
             )
         ]
