@@ -19,45 +19,38 @@ class BanCommand extends Command
 
     protected $description = 'Ban user ip or device';
 
-    public function handle(): int
+    public function handle(): void
     {
-        $accountType = (string) $this->argument('type');
-        $value       = trim((string) $this->argument('value'));
-        $note        = (string) $this->option('note');
+        $type  = (string) $this->argument('type');
+        $value = trim((string) $this->argument('value'));
+        $note  = (string) $this->option('note');
 
-        if (!in_array($accountType, [
-            PamAccount::TYPE_USER,
-            PamAccount::TYPE_BACKEND,
-        ], true)) {
+        if (!PamAccount::kvType($type, true)) {
             $this->error('Account Type 类型错误');
-            return 1;
         }
 
         if (strlen($value) < 10) {
             $this->error('请输入正确的设备信息(IP/设备信息)');
-            return 1;
         }
 
         $Ban = new Ban();
 
-        $type = PamBan::TYPE_DEVICE;
+        $banType = PamBan::TYPE_DEVICE;
         if ($Ban->parseIpRange($value)) {
-            $type = PamBan::TYPE_IP;
+            $banType = PamBan::TYPE_IP;
         }
 
         $data = [
-            'account_type' => $accountType,
-            'type'         => $type,
+            'account_type' => $type,
+            'type'         => $banType,
             'value'        => $value,
             'note'         => $note,
         ];
 
         if (!$Ban->establish($data)) {
             $this->error($Ban->getError()->getMessage());
-            return 1;
         }
 
         $this->info('添加成功');
-        return 0;
     }
 }
