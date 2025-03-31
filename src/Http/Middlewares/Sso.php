@@ -7,7 +7,7 @@ namespace Weiran\System\Http\Middlewares;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
 /**
@@ -42,7 +42,7 @@ class Sso extends BaseMiddleware
         $md5Token = md5($token);
         $pamId    = data_get($payload, 'sub');
 
-        $devices = sys_tag('weiran-system-persist')->hGet(PySystemDef::ckPersistSsoValid(), $pamId);
+        $devices = sys_tag('weiran-system-persist')->hGet(WeiranSystemDef::ckPersistSsoValid(), $pamId);
         if (!$devices) {
             return response('Unauthorized Jwt, No valid device.', 401);
         }

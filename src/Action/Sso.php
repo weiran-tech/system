@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Helper\EnvHelper;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 use Weiran\System\Events\PamSsoEvent;
 use Weiran\System\Events\PamSsoLogoutEvent;
 use Weiran\System\Events\TokenRenewAfterEvent;
@@ -238,7 +238,7 @@ class Sso
     public function validateUser($pamId): void
     {
         $data = $this->userTokenData($pamId);
-        sys_tag('weiran-system-persist')->hSet(PySystemDef::ckPersistSsoValid(), $pamId, $data);
+        sys_tag('weiran-system-persist')->hSet(WeiranSystemDef::ckPersistSsoValid(), $pamId, $data);
     }
 
     /**
@@ -254,7 +254,7 @@ class Sso
         }
         PamToken::where('account_id', $pamId)->delete();
         // delete from key
-        sys_tag('weiran-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pamId);
+        sys_tag('weiran-system-persist')->hDel(WeiranSystemDef::ckPersistSsoValid(), $pamId);
     }
 
 
@@ -268,14 +268,14 @@ class Sso
     public function banToken(PamToken $pt, bool $delete = true): void
     {
         // delete from key
-        $tokens = sys_tag('weiran-system-persist')->hGet(PySystemDef::ckPersistSsoValid(), $pt->account_id);
+        $tokens = sys_tag('weiran-system-persist')->hGet(WeiranSystemDef::ckPersistSsoValid(), $pt->account_id);
         if (is_array($tokens) && count($tokens) && isset($tokens[$pt->token_hash])) {
             unset($tokens[$pt->token_hash]);
             if (count($tokens)) {
-                sys_tag('weiran-system-persist')->hSet(PySystemDef::ckPersistSsoValid(), $pt->account_id, $tokens);
+                sys_tag('weiran-system-persist')->hSet(WeiranSystemDef::ckPersistSsoValid(), $pt->account_id, $tokens);
             }
             else {
-                sys_tag('weiran-system-persist')->hDel(PySystemDef::ckPersistSsoValid(), $pt->account_id);
+                sys_tag('weiran-system-persist')->hDel(WeiranSystemDef::ckPersistSsoValid(), $pt->account_id);
             }
         }
 

@@ -7,17 +7,14 @@ namespace Weiran\System\Classes\File;
 use Carbon\Carbon;
 use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
-use Intervention\Image\Constraint;
-use Intervention\Image\Exception\NotReadableException;
-use Intervention\Image\Image;
-use Intervention\Image\ImageManager;
+use Intervention\Image\Laravel\Facades\Image;
+use Psr\Http\Message\StreamInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\FileHelper;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\Contracts\FileContract;
-use Psr\Http\Message\StreamInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * 图片上传类
@@ -41,40 +38,32 @@ class DefaultFileProvider implements FileContract
      * @var bool
      */
     protected bool $watermark = false;
-
-    /**
-     * @var string 文件夹
-     */
-    private string $folder;
-
-    /**
-     * @var string 返回地址
-     */
-    private string $returnUrl;
-
-    /**
-     * @var array 允许上传的扩展
-     */
-    private array $allowedExtensions = ['zip'];
-
-    /**
-     * @var int 默认图片质量
-     */
-    private int $quality = 70;
-
-    /**
-     * 短边限制
-     * @var int
-     */
-    private int $resizeDistrict = 1920;
-
-
     /**
      * 长边限制
      * @var int|null
      */
     protected ?int $resizeLongDistrict = null;
-
+    /**
+     * @var string 文件夹
+     */
+    private string $folder;
+    /**
+     * @var string 返回地址
+     */
+    private string $returnUrl;
+    /**
+     * @var array 允许上传的扩展
+     */
+    private array $allowedExtensions = ['zip'];
+    /**
+     * @var int 默认图片质量
+     */
+    private int $quality = 70;
+    /**
+     * 短边限制
+     * @var int
+     */
+    private int $resizeDistrict = 1920;
     /**
      * @var string 图片mime类型
      */
@@ -207,11 +196,7 @@ class DefaultFileProvider implements FileContract
                     $zipContent = $imgContent;
                 }
             }
-            try {
-                $zipContent = $this->resizeContent($extension, $zipContent);
-            } catch (NotReadableException $e) {
-                return $this->setError('图片源格式有误无法读取, 请转换图片格式再行上传');
-            }
+            $zipContent = $this->resizeContent($extension, $zipContent);
         }
 
         $Disk->put($fileRelativePath, $zipContent);
@@ -230,7 +215,7 @@ class DefaultFileProvider implements FileContract
             $Image = $content;
         }
         else {
-            $Image = $this->imageManager()->make($content);
+            $Image = Image::read($content);
         }
 
         if ($crop) {
@@ -253,12 +238,9 @@ class DefaultFileProvider implements FileContract
             }
         }
 
-        $Image->resize($width, $height, function (Constraint $constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        });
+        $Image->resize($width, $height);
 
-        return $Image->stream('jpg', $this->quality);
+        return $Image->toJpeg($this->quality)->toFilePointer();
     }
 
     /**
@@ -281,7 +263,7 @@ class DefaultFileProvider implements FileContract
             if (!$extension) {
                 $extension = 'png';
             }
-            $content = $this->imageManager()->make($content)->stream();
+            $content = Image::read($content)->toJpeg()->toFilePointer();
         }
 
         // 缩放图片
@@ -409,7 +391,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension  扩展
+     * @param string $extension 扩展
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
@@ -417,7 +399,7 @@ class DefaultFileProvider implements FileContract
     {
         // 缩放图片
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
-            $Image  = $this->imageManager()->make($img_stream);
+            $Image  = Image::read($img_stream);
             $width  = $Image->width();
             $height = $Image->height();
 
@@ -430,13 +412,5 @@ class DefaultFileProvider implements FileContract
             return $img_stream;
         }
         return $img_stream;
-    }
-
-    /**
-     * @return ImageManager
-     */
-    private function imageManager(): ImageManager
-    {
-        return app('image');
     }
 }

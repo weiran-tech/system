@@ -14,6 +14,7 @@
         "ext-json": "*",
         "ezyang/htmlpurifier": "^4.16",
         "intervention/image": "3.*",
+        "intervention/image-laravel": "^1.5",
         "mews/captcha": "^3.4",
         "mlocati/ip-lib": "^1.16",
         "weiran/core": "1.0.x-dev",

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Tests\Models;
 
-use Weiran\Core\Classes\PyCoreDef;
+use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Framework\Application\TestCase;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Action\Pam;
@@ -34,7 +34,7 @@ class RbacTest extends TestCase
         }
 
         $pam  = TestingPam::randBackend();
-        $key  = PyCoreDef::rbacCkUserRoles($pam->id);
+        $key  = WeiranCoreDef::rbacCkUserRoles($pam->id);
         $role = TestingRole::randBackend();
         // 获取用户的缓存角色, 缓存存在值
         $pam->cachedRoles();

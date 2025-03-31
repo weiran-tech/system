@@ -2,7 +2,7 @@
 
 namespace Weiran\System\Tests\Support;
 
-use Weiran\Core\Classes\PyCoreDef;
+use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Framework\Application\TestCase;
 use Weiran\System\Models\PamAccount;
 
@@ -13,8 +13,8 @@ class FunctionsTest extends TestCase
     {
         parent::setUp();
 
-        sys_tag('weiran-core')->del(PyCoreDef::ckModule('hook'));
-        sys_tag('weiran-core')->del(PyCoreDef::ckModule('module'));
+        sys_tag('weiran-core')->del(WeiranCoreDef::ckModule('hook'));
+        sys_tag('weiran-core')->del(WeiranCoreDef::ckModule('module'));
     }
 
     public function testWeiranFriendly()

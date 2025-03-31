@@ -12,7 +12,7 @@ use IPLib\Factory;
 use Weiran\Core\Redis\RdsDb;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Helper\UtilHelper;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 use Weiran\System\Events\PamTokenBanEvent;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamBan;
@@ -92,10 +92,10 @@ class Ban
         ]);
 
         if ($isRange) {
-            $this->saveRanges(PySystemDef::ckBanIpRange($account_type), collect([$item]));
+            $this->saveRanges(WeiranSystemDef::ckBanIpRange($account_type), collect([$item]));
         }
         else {
-            $this->saveOnes(PySystemDef::ckBanOne($account_type), collect([$item]));
+            $this->saveOnes(WeiranSystemDef::ckBanOne($account_type), collect([$item]));
         }
         return true;
     }
@@ -118,10 +118,10 @@ class Ban
             }
 
             if ($isRange) {
-                $this->removeRanges(PySystemDef::ckBanIpRange($ban->account_type), collect([$ban]));
+                $this->removeRanges(WeiranSystemDef::ckBanIpRange($ban->account_type), collect([$ban]));
             }
             else {
-                $this->removeOnes(PySystemDef::ckBanOne($ban->account_type), collect([$ban]));
+                $this->removeOnes(WeiranSystemDef::ckBanOne($ban->account_type), collect([$ban]));
             }
 
             $ban->delete();
@@ -140,8 +140,8 @@ class Ban
      */
     public function checkIn(string $account_type, string $type, string $value): bool
     {
-        $oneKey    = PySystemDef::ckBanOne($account_type);
-        $rangesKey = PySystemDef::ckBanIpRange($account_type);
+        $oneKey    = WeiranSystemDef::ckBanOne($account_type);
+        $rangesKey = WeiranSystemDef::ckBanIpRange($account_type);
         if (!self::$rds->exists($oneKey) || !self::$rds->exists($rangesKey)) {
             $this->initAccountType($account_type);
         }
@@ -285,7 +285,7 @@ class Ban
      */
     private function initOne(string $account_type, Collection $items): void
     {
-        $key = PySystemDef::ckBanOne($account_type);
+        $key = WeiranSystemDef::ckBanOne($account_type);
         self::$rds->del($key);
         // 保障KEY存在
         self::$rds->hSet($key, 'init|duoli', 'duoli' . '|init|' . Carbon::now()->toDateTimeString());
@@ -300,7 +300,7 @@ class Ban
      */
     private function initRanges(string $account_type, Collection $items): void
     {
-        $key = PySystemDef::ckBanIpRange($account_type);
+        $key = WeiranSystemDef::ckBanIpRange($account_type);
         self::$rds->del($key);
         // 保障KEY存在
         self::$rds->sAdd($key, [

@@ -6,7 +6,7 @@ namespace Weiran\System\Action;
 
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Str;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 
 /**
  * 数据库优化 读取
@@ -20,7 +20,7 @@ class DbOptimize
      */
     public function isOpen(): bool
     {
-        return sys_tag('weiran-system-persist')->get(PySystemDef::ckDbOptimize('is_open')) === 'Y';
+        return sys_tag('weiran-system-persist')->get(WeiranSystemDef::ckDbOptimize('is_open')) === 'Y';
     }
 
     /**
@@ -39,7 +39,7 @@ class DbOptimize
         }
 
         if (is_null($opened)) {
-            $opened = (array) sys_tag('weiran-system-persist')->hGetAll(PySystemDef::ckDbOptimize('on'));
+            $opened = (array) sys_tag('weiran-system-persist')->hGetAll(WeiranSystemDef::ckDbOptimize('on'));
         }
 
         if (!count($opened)) {
@@ -60,7 +60,7 @@ class DbOptimize
         }
 
         $md5Key = md5($event->sql);
-        $tbKey  = PySystemDef::ckDbOptimize($eventTable);
+        $tbKey  = WeiranSystemDef::ckDbOptimize($eventTable);
         if (sys_tag('weiran-system-persist')->hExists($tbKey, $md5Key)) {
             return false;
         }

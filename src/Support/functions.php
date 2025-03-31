@@ -9,7 +9,7 @@ use Weiran\Framework\Helper\EnvHelper;
 use Weiran\Framework\Helper\StrHelper;
 use Weiran\Framework\Helper\TimeHelper;
 use Weiran\Framework\Helper\UtilHelper;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 use Weiran\System\Models\PamAccount;
 
 if (!function_exists('sys_setting')) {
@@ -205,7 +205,7 @@ if (!function_exists('sys_parent_id')) {
         }
 
         if (!$rel) {
-            $rel = sys_cache('weiran-system')->get(PySystemDef::ckPamRelParent());
+            $rel = sys_cache('weiran-system')->get(WeiranSystemDef::ckPamRelParent());
         }
 
         $pamId = ($pam instanceof PamAccount) ? $pam->id : $pam;
@@ -217,7 +217,7 @@ if (!function_exists('sys_parent_id')) {
 
         if (!isset($rel[$pamId])) {
             $rel[$pamId] = $pam->parent_id ?: $pam->id;
-            sys_cache('weiran-system')->forever(PySystemDef::ckPamRelParent(), $rel);
+            sys_cache('weiran-system')->forever(WeiranSystemDef::ckPamRelParent(), $rel);
         }
 
         return $rel[$pamId] ?? 0;

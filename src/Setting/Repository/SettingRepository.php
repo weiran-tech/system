@@ -13,7 +13,7 @@ use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Redis\RdsDb;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Classes\Traits\KeyParserTrait;
-use Weiran\System\Classes\PySystemDef;
+use Weiran\System\Classes\WeiranSystemDef;
 use Weiran\System\Exceptions\SettingKeyNotMatchException;
 use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Models\SysConfig;
@@ -57,7 +57,7 @@ class SettingRepository implements SettingContract
         }
         $record = $this->findRecord($key);
         if ($record) {
-            self::$rds->hDel(PySystemDef::ckSetting(), $this->convertKey($key));
+            self::$rds->hDel(WeiranSystemDef::ckSetting(), $this->convertKey($key));
             $record->delete();
         }
         return true;
@@ -74,7 +74,7 @@ class SettingRepository implements SettingContract
             return $default;
         }
 
-        if ($val = self::$rds->hGet(PySystemDef::ckSetting(), $this->convertKey($key), false)) {
+        if ($val = self::$rds->hGet(WeiranSystemDef::ckSetting(), $this->convertKey($key), false)) {
             return json_decode($val, true, 512, JSON_THROW_ON_ERROR);
         }
 
@@ -95,7 +95,7 @@ class SettingRepository implements SettingContract
             return $default;
         }
 
-        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $record->value);
+        self::$rds->hSet(WeiranSystemDef::ckSetting(), $this->convertKey($key), $record->value);
 
         return json_decode($record->value, true, 512, JSON_THROW_ON_ERROR);
     }
@@ -138,7 +138,7 @@ class SettingRepository implements SettingContract
             $record->save();
         }
 
-        self::$rds->hSet(PySystemDef::ckSetting(), $this->convertKey($key), $encodedValue);
+        self::$rds->hSet(WeiranSystemDef::ckSetting(), $this->convertKey($key), $encodedValue);
         return true;
     }
 
@@ -184,7 +184,7 @@ class SettingRepository implements SettingContract
             $values->each(function ($item) use ($ns, $group, &$keys) {
                 $keys[] = $this->convertKey("{$ns}::{$group}.{$item}");
             });
-            self::$rds->hDel(PySystemDef::ckSetting(), $keys);
+            self::$rds->hDel(WeiranSystemDef::ckSetting(), $keys);
             try {
                 $Db->delete();
                 return true;
@@ -200,7 +200,7 @@ class SettingRepository implements SettingContract
      */
     public function clear(): void
     {
-        self::$rds->del(PySystemDef::ckSetting());
+        self::$rds->del(WeiranSystemDef::ckSetting());
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace Weiran\System\Tests\Services;
 
-use Weiran\Core\Classes\PyCoreDef;
+use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Framework\Application\TestCase;
 
 class ServicesTest extends TestCase
@@ -12,8 +12,8 @@ class ServicesTest extends TestCase
     {
         parent::setUp();
 
-        sys_tag('weiran-core')->del(PyCoreDef::ckModule('hook'));
-        sys_tag('weiran-core')->del(PyCoreDef::ckModule('module'));
+        sys_tag('weiran-core')->del(WeiranCoreDef::ckModule('hook'));
+        sys_tag('weiran-core')->del(WeiranCoreDef::ckModule('module'));
     }
 
     public function testUploadType()
