@@ -99,7 +99,7 @@ class AuthLoginRequest extends Request
             ],
             'os'       => [
                 Rule::required(),
-                Rule::in(PamAccount::kvPlatform()),
+                Rule::in(array_keys(PamAccount::kvPlatform())),
             ],
         ];
     }

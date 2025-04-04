@@ -35,7 +35,7 @@ abstract class DefaultBaseApiSign implements ApiSignContract
     {
         // 加密 debug, 不验证签名
         $secret = (string) config('weiran.system.secret');
-        if ($secret && (string) $request->input('_py_secret') === $secret) {
+        if ($secret && (string) $request->input('_weiran_secret') === $secret) {
             return true;
         }
 

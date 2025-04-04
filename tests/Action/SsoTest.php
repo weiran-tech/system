@@ -166,7 +166,7 @@ class SsoTest extends TestCase
                 'x-os'          => $os,
             ],
             'form_params' => [
-                '_py_secret' => env('PY_SECRET'),
+                '_weiran_secret' => env('WEIRAN_SECRET'),
             ],
         ]);
 

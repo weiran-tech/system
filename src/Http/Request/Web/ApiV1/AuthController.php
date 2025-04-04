@@ -108,7 +108,7 @@ class AuthController extends JwtApiController
     public function login(Request $req): JsonResponse
     {
         $req->merge([
-            'os' => input('device_type', '') ?: x_header('os'),
+            'os' => $req->input('device_type', '') ?: x_header('os'),
         ]);
         /** @var AuthLoginRequest $request */
         $request     = app(AuthLoginRequest::class, [$req]);
@@ -126,7 +126,8 @@ class AuthController extends JwtApiController
         }
 
         // 登录类型
-        $guard = (input('guard') ?: x_header('type')) === PamAccount::TYPE_BACKEND
+        $userType = $req->input('guard') ?: x_header('type');
+        $guard    = $userType === PamAccount::TYPE_BACKEND
             ? PamAccount::GUARD_JWT_BACKEND
             : PamAccount::GUARD_JWT_WEB;
 
@@ -155,7 +156,7 @@ class AuthController extends JwtApiController
         /* 设备单一性登陆验证(基于 Redis + Db)
          * ---------------------------------------- */
         try {
-            $deviceId = x_header('id') ?: input('device_id', '');
+            $deviceId = x_header('id') ?: $req->input('device_id', '');
             event(new LoginTokenPassedEvent($pam, $token, $deviceId, $reqPassport['os']));
         } catch (Throwable $e) {
             return Resp::error($e->getMessage());
@@ -209,7 +210,7 @@ class AuthController extends JwtApiController
             }
             $passport = $Verification->getHidden();
         }
-        else if (!$captcha || !$Verification->checkCaptcha($passport, $captcha, false)) {
+        elseif (!$captcha || !$Verification->checkCaptcha($passport, $captcha, false)) {
             return Resp::error('请输入正确验证码');
         }
 

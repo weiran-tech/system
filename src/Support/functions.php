@@ -311,8 +311,8 @@ if (!function_exists('sys_api_demo')) {
     function sys_api_demo(): bool
     {
         $all = input();
-        if (isset($all['_py_secret']) && $all['_py_secret']) {
-            return $all['_py_secret'] === config('weiran.system.secret');
+        if (isset($all['_weiran_secret']) && $all['_weiran_secret']) {
+            return $all['_weiran_secret'] === config('weiran.system.secret');
         }
         return false;
     }

@@ -5,15 +5,14 @@ declare(strict_types = 1);
 namespace Weiran\System\Classes\File;
 
 use Carbon\Carbon;
-use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use Psr\Http\Message\StreamInterface;
+use Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\FileHelper;
-use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\Contracts\FileContract;
 
 /**
@@ -58,7 +57,7 @@ class DefaultFileProvider implements FileContract
     /**
      * @var int 默认图片质量
      */
-    private int $quality = 70;
+    private int $quality = 75;
     /**
      * 短边限制
      * @var int
@@ -79,14 +78,14 @@ class DefaultFileProvider implements FileContract
 
     public function __construct()
     {
-        $this->folder    = (is_production() ? '' : 'dev/') . 'uploads';
+        $this->folder    = 'uploads';
         $this->returnUrl = config('app.url') . '/';
     }
 
 
     public function setFolder($folder = 'uploads'): self
     {
-        $this->folder = (is_production() ? '' : 'dev/') . $folder;
+        $this->folder = $folder;
         return $this;
     }
 
@@ -96,23 +95,11 @@ class DefaultFileProvider implements FileContract
      */
     public function setType(string $type): void
     {
-        $this->folder = (is_production() ? '' : 'dev/') . $type;
+        $this->folder = $type;
         $extensions   = FileManager::kvExt($type);
         if ($extensions) {
             $this->setExtension($extensions);
         }
-    }
-
-    /**
-     * 获取本地磁盘存储
-     */
-    public function storage(): FilesystemAdapter
-    {
-        static $disk;
-        if (!$disk) {
-            $disk = app('filesystem')->disk($this->disk);
-        }
-        return $disk;
     }
 
     /**
@@ -173,7 +160,7 @@ class DefaultFileProvider implements FileContract
         }
 
         // 磁盘对象
-        $Disk      = $this->storage();
+        $Disk      = Storage::disk($this->disk);
         $extension = $file->getClientOriginalExtension();
 
 
@@ -255,16 +242,8 @@ class DefaultFileProvider implements FileContract
         }
 
         // 磁盘对象
-        $Disk             = $this->storage();
+        $storage          = Storage::disk($this->disk);
         $fileRelativePath = $this->genRelativePath($extension);
-
-        if (is_string($content) && UtilHelper::isUrl($content)) {
-            $extension = FileHelper::ext($content);
-            if (!$extension) {
-                $extension = 'png';
-            }
-            $content = Image::read($content)->toJpeg()->toFilePointer();
-        }
 
         // 缩放图片
         if ($extension !== 'gif') {
@@ -274,7 +253,7 @@ class DefaultFileProvider implements FileContract
             $zipContent = $content;
         }
 
-        $Disk->put($fileRelativePath, $zipContent);
+        $storage->put($fileRelativePath, $zipContent);
         $this->destination = $fileRelativePath;
 
         return true;
@@ -344,10 +323,11 @@ class DefaultFileProvider implements FileContract
     public function copyTo(string $dist): bool
     {
         // 强制删除
-        if ($this->storage()->exists($dist)) {
-            $this->storage()->delete($dist);
+        $disk = Storage::disk($this->disk);
+        if ($disk->exists($dist)) {
+            $disk->delete($dist);
         }
-        return $this->storage()->copy($this->destination, $dist);
+        return $disk->copy($this->destination, $dist);
     }
 
     /**
@@ -355,8 +335,9 @@ class DefaultFileProvider implements FileContract
      */
     public function delete(): bool
     {
-        if ($this->storage()->exists($this->destination)) {
-            $this->storage()->delete($this->destination);
+        $disk = Storage::disk($this->disk);
+        if ($disk->exists($this->destination)) {
+            $disk->delete($this->destination);
         }
         return true;
     }
@@ -395,7 +376,7 @@ class DefaultFileProvider implements FileContract
      * @param mixed  $img_stream 压缩内容
      * @return bool|StreamInterface
      */
-    private function resizeContent(string $extension, $img_stream)
+    private function resizeContent(string $extension, mixed $img_stream): StreamInterface|bool
     {
         // 缩放图片
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {

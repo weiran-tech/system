@@ -72,11 +72,8 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      -------------------------------------------- */
     public const REG_PLATFORM_IOS     = 'ios';
     public const REG_PLATFORM_ANDROID = 'android';
-    public const REG_PLATFORM_WEB     = 'web';
     public const REG_PLATFORM_PC      = 'pc';
     public const REG_PLATFORM_H5      = 'h5';
-    public const REG_PLATFORM_WEAPP   = 'weapp';
-    public const REG_PLATFORM_WEBAPP  = 'webapp';
     public const REG_PLATFORM_MGR     = 'mgr';
 
 
@@ -231,16 +228,12 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      */
     public static function kvPlatform($key = null, bool $check_exists = false)
     {
-        $platform = (array) config('module.system.platform', []);
+        $platform = (array) config('weiran.system.platform', []);
         $desc     = array_merge([
             self::REG_PLATFORM_ANDROID => 'android',
             self::REG_PLATFORM_IOS     => 'ios',
             self::REG_PLATFORM_PC      => 'pc',
-            self::REG_PLATFORM_WEB     => 'web',
             self::REG_PLATFORM_H5      => 'h5',
-            self::REG_PLATFORM_WEAPP   => 'weapp',
-            self::REG_PLATFORM_WEBAPP  => 'webapp',
-            self::REG_PLATFORM_MGR     => 'mgr',
         ], $platform);
         return kv($desc, $key, $check_exists);
     }

@@ -12,6 +12,9 @@ use Illuminate\Auth\SessionGuard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Throwable;
+use Tymon\JWTAuth\JWTGuard;
+use Validator;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\EnvHelper;
@@ -33,9 +36,6 @@ use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamLog;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\SysConfig;
-use Throwable;
-use Tymon\JWTAuth\JWTGuard;
-use Validator;
 
 /**
  * 账号操作
@@ -241,7 +241,7 @@ class Pam
         }
 
         // 自动设置前缀
-        $prefix = strtoupper(strtolower((string) sys_setting('weiran-system::pam.prefix', 'PF')));
+        $prefix = strtoupper(strtolower((string) sys_setting('weiran-system::pam.prefix'))) ?: 'weiran';
         if ($type !== PamAccount::REG_TYPE_USERNAME) {
             $hasAccountName = false;
             // 检查是否设置了前缀
