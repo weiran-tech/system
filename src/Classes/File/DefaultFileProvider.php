@@ -374,9 +374,9 @@ class DefaultFileProvider implements FileContract
      * 重设内容
      * @param string $extension 扩展
      * @param mixed  $img_stream 压缩内容
-     * @return bool|StreamInterface
+     * @return mixed
      */
-    private function resizeContent(string $extension, mixed $img_stream): StreamInterface|bool
+    private function resizeContent(string $extension, mixed $img_stream): mixed
     {
         // 缩放图片
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
