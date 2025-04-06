@@ -7,6 +7,7 @@ namespace Weiran\System;
 use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Events\QueryExecuted;
+use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Events\PermissionInitEvent;
 use Weiran\Framework\Classes\Traits\WeiranTrait;
 use Weiran\Framework\Events\WeiranOptimized;
@@ -30,6 +31,7 @@ use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\Policies\PamAccountPolicy;
 use Weiran\System\Models\Policies\PamRolePolicy;
+use Weiran\System\Setting\Repository\SettingRepository;
 
 /**
  * @property $listens;
@@ -102,7 +104,6 @@ class ServiceProvider extends WeiranServiceProvider
 
         $this->app->register(Http\MiddlewareServiceProvider::class);
         $this->app->register(Http\RouteServiceProvider::class);
-        $this->app->register(Setting\SettingServiceProvider::class);
 
         $this->registerConsole();
 
@@ -111,6 +112,14 @@ class ServiceProvider extends WeiranServiceProvider
         $this->registerSchedule();
 
         $this->registerContracts();
+    }
+
+    public function provides(): array
+    {
+        return [
+            'weiran.system.setting', SettingContract::class,
+            'weiran.system.uploader', FileContract::class
+        ];
     }
 
     private function registerSchedule(): void
@@ -163,19 +172,14 @@ class ServiceProvider extends WeiranServiceProvider
         });
         $this->app->alias('weiran.system.uploader', FileContract::class);
 
-        /* 文件提供者
+
+        /* 设置配置
          * ---------------------------------------- */
-        $this->app->bind('weiran.system.file', function () {
-            $uploadType = sys_setting('weiran-system::picture.save_type');
-            $hooks      = sys_hook('weiran.system.upload_type');
-            if (!$uploadType) {
-                $uploadType = 'default';
-            }
-            $uploader      = $hooks[$uploadType];
-            $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            return new $uploaderClass();
+        $this->app->bind('weiran.system.setting', function () {
+            return new SettingRepository();
         });
-        $this->app->alias('weiran.system.file', FileContract::class);
+        $this->app->alias('weiran.system.setting', SettingRepository::class);
+        $this->app->alias('weiran.system.setting', SettingContract::class);
 
     }
 
