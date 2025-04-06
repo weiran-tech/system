@@ -5,11 +5,14 @@ declare(strict_types = 1);
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Weiran\Framework\Helper\EnvHelper;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Weiran\Framework\Helper\StrHelper;
 use Weiran\Framework\Helper\TimeHelper;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\WeiranSystemDef;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Models\PamAccount;
 
 if (!function_exists('sys_setting')) {
@@ -18,8 +21,13 @@ if (!function_exists('sys_setting')) {
      * @param string $key
      * @param null   $default
      * @return mixed
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
-    function sys_setting(string $key, $default = null)
+    function sys_setting(string $key, $default = null): mixed
     {
         return app('weiran.system.setting')->get($key, $default);
     }
@@ -227,9 +235,9 @@ if (!function_exists('sys_parent_id')) {
 if (!function_exists('sys_url')) {
     /**
      * URL生成
-     * @param string|array $key   url 参数
+     * @param string|array $key url 参数
      * @param null|string  $value 值
-     * @param bool         $root  是否生成根地址
+     * @param bool         $root 是否生成根地址
      * @return string
      */
     function sys_url($key, $value = null, $root = false)
@@ -280,7 +288,7 @@ if (!function_exists('sys_is_mobile')) {
      */
     function sys_is_mobile(): bool
     {
-        $useragent = EnvHelper::agent();
+        $useragent = Request::userAgent();
 
         return preg_match(
                 '/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|miui/i',
@@ -306,22 +314,18 @@ if (!function_exists('sys_key_trim')) {
 
 if (!function_exists('sys_api_demo')) {
     /**
-     * 是否是测试模式
+     * 使用万能密钥则是测试模式
      */
     function sys_api_demo(): bool
     {
-        $all = input();
-        if (isset($all['_weiran_secret']) && $all['_weiran_secret']) {
-            return $all['_weiran_secret'] === config('weiran.system.secret');
-        }
-        return false;
+        return ((string) Request::input('_weiran_secret')) === config('weiran.system.secret');
     }
 }
 
 if (!function_exists('sys_content_trim')) {
     /**
      * 清空word 代码
-     * @param string $content        内容
+     * @param string $content 内容
      * @param string $allowable_tags 允许保留的标签
      * @return string
      */
@@ -355,7 +359,7 @@ if (!function_exists('sys_content_trim')) {
         //on some of the ?newer MS Word exports, where you get conditionals of the form 'if gte mso 9', etc., it appears
         //that whatever is in one of the html comments prevents strip_tags from eradicating the html comment that contains
         //some MS Style Definitions - this last bit gets rid of any leftover comments */
-        $num_matches = preg_match_all("/<!--/u", $content);
+        $num_matches = preg_match_all('/<!--/u', $content);
         if ($num_matches) {
             $content = preg_replace('/<!--(.)*-->/su', '', $content);
         }

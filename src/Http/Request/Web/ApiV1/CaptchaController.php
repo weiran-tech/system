@@ -4,12 +4,21 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Http\Request\Web\ApiV1;
 
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
+use JsonException;
 use OpenApi\Attributes as OA;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Action\Verification;
 use Weiran\System\Events\CaptchaSendEvent;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Http\Request\Web\Validation\CaptchaSendRequest;
+use Weiran\System\Http\Request\Web\Validation\CaptchaVerifyRequest;
 use Weiran\System\Models\PamAccount;
 
 /**
@@ -17,6 +26,13 @@ use Weiran\System\Models\PamAccount;
  */
 class CaptchaController extends JwtApiController
 {
+    /**
+     * @throws NotFoundExceptionInterface
+     * @throws ContainerExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws JsonException
+     * @throws SettingValueOutOfRangeException
+     */
     #[OA\Get(
         path: '/api/web/system/v1/captcha/send',
         summary: '发送验证码',
@@ -53,7 +69,7 @@ class CaptchaController extends JwtApiController
             )
         ]
     )]
-    public function send(CaptchaSendRequest $request)
+    public function send(CaptchaSendRequest $request): Response|JsonResponse|RedirectResponse
     {
         $passport = $request->getPassport();
         $type     = $request->getType();
@@ -75,8 +91,8 @@ class CaptchaController extends JwtApiController
         }
 
         $Verification = new Verification();
-        $expired      = (int) sys_setting('wr-system::pam.captcha_expired') ?: 5;
-        $length       = ((int) sys_setting('wr-system::pam.captcha_length')) ?: 6;
+        $expired      = (int) sys_setting('weiran-system::pam.captcha_expired') ?: 5;
+        $length       = ((int) sys_setting('weiran-system::pam.captcha_length')) ?: 6;
 
         if (!$Verification->isPassThrottle('send-' . $passport)) {
             return Resp::error($Verification->getError());
@@ -106,9 +122,7 @@ class CaptchaController extends JwtApiController
                 description: '通行证',
                 in: 'query',
                 required: true,
-                schema: new OA\Schema(
-                    type: 'string',
-                ),
+                schema: new OA\Schema(type: 'string',),
             ),
             new OA\Parameter(
                 name: 'captcha',
@@ -133,17 +147,11 @@ class CaptchaController extends JwtApiController
             )
         ]
     )]
-    public function verifyCode()
+    public function verifyCode(CaptchaVerifyRequest $request): Response|JsonResponse|RedirectResponse
     {
-        $passport   = (string) input('passport');
-        $captcha    = (string) input('captcha');
-        $expire_min = (int) input('expire_min', 10);
-        if ($expire_min > 60) {
-            $expire_min = 60;
-        }
-        if ($expire_min < 1) {
-            $expire_min = 1;
-        }
+        $passport   = $request->getPassport();
+        $captcha    = $request->getCaptcha();
+        $expire_min = $request->getExpireMin();
 
         $Verification = new Verification();
         if (!$Verification->checkCaptcha($passport, $captcha)) {

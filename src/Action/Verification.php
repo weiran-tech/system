@@ -108,8 +108,7 @@ class Verification
          * ---------------------------------------- */
         $strAccount = trim(sys_setting('weiran-system::pam.test_account') ?? '');
         if ($strAccount) {
-            $explode     = EnvHelper::isWindows() ? "\n" : PHP_EOL;
-            $testAccount = explode($explode, sys_setting('weiran-system::pam.test_account'));
+            $testAccount = explode(PHP_EOL, sys_setting('weiran-system::pam.test_account'));
             if (count($testAccount)) {
                 $testAccount = collect(array_map(function ($item) {
                     $account = explode(':', $item);
