@@ -77,7 +77,7 @@ class UploadImageRequest extends Request
     public function attributes(): array
     {
         return [
-            'type'      => '类型',
+            'type'      => '上传类型',
             'image'     => '图片',
             'from'      => '图片来源',
             'folder'    => '存储文件夹',
@@ -97,7 +97,6 @@ class UploadImageRequest extends Request
                 Rule::required(),
             ],
             'type'      => [
-                Rule::required(),
                 Rule::in(['form', 'base64'])
             ],
             'folder'    => [
