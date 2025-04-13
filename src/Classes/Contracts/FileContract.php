@@ -75,9 +75,8 @@ interface FileContract
      * @param int   $width   宽度
      * @param int   $height  高度
      * @param bool  $crop    是否进行裁剪
-     * @return StreamInterface
      */
-    public function resize($content, int $width = 1920, int $height = 1440, bool $crop = false): StreamInterface;
+    public function resize($content, int $width = 1920, int $height = 1440, bool $crop = false);
 
     /**
      * 保存内容或者流方式上传

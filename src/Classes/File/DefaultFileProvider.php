@@ -196,7 +196,7 @@ class DefaultFileProvider implements FileContract
     /**
      * @inheritDoc
      */
-    public function resize($content, $width = 1920, $height = 1440, $crop = false): StreamInterface
+    public function resize($content, $width = 1920, $height = 1440, $crop = false)
     {
         if ($content instanceof Image) {
             $Image = $content;
@@ -225,7 +225,7 @@ class DefaultFileProvider implements FileContract
             }
         }
 
-        $Image->resize($width, $height);
+        $Image->scale($width, $height);
 
         return $Image->toJpeg($this->quality)->toFilePointer();
     }
