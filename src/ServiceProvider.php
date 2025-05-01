@@ -7,6 +7,9 @@ namespace Weiran\System;
 use Illuminate\Auth\Events\Login as AuthLoginEvent;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Database\Events\QueryExecuted;
+use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Events\PermissionInitEvent;
 use Weiran\Framework\Classes\Traits\WeiranTrait;
@@ -27,6 +30,8 @@ use Weiran\System\Events\LoginTokenPassedEvent;
 use Weiran\System\Events\PamLogoutEvent;
 use Weiran\System\Events\PamPasswordModifiedEvent;
 use Weiran\System\Events\TokenRenewEvent;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\Policies\PamAccountPolicy;
@@ -207,6 +212,13 @@ class ServiceProvider extends WeiranServiceProvider
         });
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws JsonException
+     * @throws SettingValueOutOfRangeException
+     * @throws NotFoundExceptionInterface
+     */
     private function bootConfigs(): void
     {
         config([
@@ -220,10 +232,10 @@ class ServiceProvider extends WeiranServiceProvider
             'mail.password'     => sys_setting('weiran-system::mail.password') ?: config('mail.password'),
         ]);
 
+        // 注入标题用于 SEO
         config([
             'weiran.framework.title'       => sys_setting('weiran-system::site.name'),
             'weiran.framework.description' => sys_setting('weiran-system::site.description'),
         ]);
-
     }
 }
