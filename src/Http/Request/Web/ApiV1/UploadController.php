@@ -81,6 +81,9 @@ class UploadController extends JwtApiController
                 if (is_null($_img)) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
                 }
+                if (!$_img->isValid()) {
+                    return Resp::error('文件未正确上传, 请重试');
+                }
                 if ($file->saveFile($_img)) {
                     $urls[] = $file->getUrl();
                 }
