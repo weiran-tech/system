@@ -6,8 +6,8 @@ namespace Weiran\System\Classes\File;
 
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use Intervention\Image\Exceptions\DecoderException;
 use Intervention\Image\Laravel\Facades\Image;
-use Psr\Http\Message\StreamInterface;
 use Storage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Weiran\Framework\Classes\Traits\AppTrait;
@@ -375,12 +375,18 @@ class DefaultFileProvider implements FileContract
      * @param string $extension 扩展
      * @param mixed  $img_stream 压缩内容
      * @return mixed
+     * @throws ApplicationException
      */
     private function resizeContent(string $extension, mixed $img_stream): mixed
     {
         // 缩放图片
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
-            $Image  = Image::read($img_stream);
+            try {
+                $Image = Image::read($img_stream);
+            } catch (DecoderException) {
+                throw new ApplicationException('上传图片读取异常, 请确认图片信息完整');
+            }
+
             $width  = $Image->width();
             $height = $Image->height();
 
