@@ -5,13 +5,13 @@ declare(strict_types = 1);
 namespace Weiran\System\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Str;
 use JsonException;
 
 class OpCommand extends Command
 {
     protected $signature = 'system:op
         {action : Operation Type}
+        {--secret=}
     ';
 
     protected $description = 'Operation for system';
@@ -23,12 +23,16 @@ class OpCommand extends Command
     {
         $action = $this->argument('action');
         switch ($action) {
-            case 'gen-secret':
-                $secret = md5(microtime(true) . Str::random());
+            case 'set-secret':
+                $secret = (string) $this->option('secret');
+                if (strlen($secret) !== 32) {
+                    $this->warn(sys_gen_mk('system.op', '密钥 [--secret] 长度必须是 32 位长度'));
+                    return 0;
+                }
                 $this->writeNewEnvironmentFileWith($secret);
-                $this->info(sys_gen_mk('system.op', '生成替换并汇报成功'));
+                $this->info(sys_gen_mk('system.op', '替换成功'));
                 break;
-            case 'secret':
+            case 'show-secret':
                 $this->info(sys_gen_mk('system.op', '当前的密钥为:' . config('weiran.system.secret')));
                 break;
             default:

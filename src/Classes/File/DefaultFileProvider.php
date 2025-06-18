@@ -400,4 +400,9 @@ class DefaultFileProvider implements FileContract
         }
         return $img_stream;
     }
+
+    public static function fillConfig(): void
+    {
+
+    }
 }

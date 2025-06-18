@@ -19,6 +19,11 @@ interface FileContract
     public function __construct();
 
     /**
+     * 填充配置
+     */
+    public static function fillConfig(): void;
+
+    /**
      * 设置返回地址
      * @param string $url 地址
      */

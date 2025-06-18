@@ -7,24 +7,24 @@ namespace Weiran\System\Http\Middlewares;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use JWTAuth;
 use Weiran\System\Classes\WeiranSystemDef;
-use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
 /**
  * 单点登录
  */
-class Sso extends BaseMiddleware
+class Sso
 {
     public function handle(Request $request, Closure $next)
     {
         $token = jwt_token();
 
         try {
-            if (!$token || !$payload = $this->auth->setToken($token)->check(true)) {
+            if (!$token || !$payload = JWTAuth::setToken($token)->check(true)) {
                 return response('Unauthorized Jwt.', 401);
             }
             // 这里会抛出异常, IDE 提示不正确
-        } catch (Exception $e) {
+        } catch (Exception) {
             return response('Unauthorized Jwt. Sso check token invalid', 401);
         }
 

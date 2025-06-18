@@ -4,6 +4,12 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Classes;
 
+use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
+
 class WeiranSystemDef
 {
 
@@ -99,5 +105,29 @@ class WeiranSystemDef
     public static function ckBanIpRange(string $type): string
     {
         return 'ban-ip-range-' . $type;
+    }
+
+
+    /**
+     * 填充邮箱配置
+     * @return void
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     */
+    public static function fillMailConfig(): void
+    {
+        config([
+            'mail.driver'       => sys_setting('weiran-system::mail.driver') ?: config('mail.driver'),
+            'mail.encryption'   => sys_setting('weiran-system::mail.encryption') ?: config('mail.encryption'),
+            'mail.port'         => sys_setting('weiran-system::mail.port') ?: config('mail.port'),
+            'mail.host'         => sys_setting('weiran-system::mail.host') ?: config('mail.host'),
+            'mail.from.address' => sys_setting('weiran-system::mail.from') ?: config('mail.from.address'),
+            'mail.from.name'    => sys_setting('weiran-system::mail.from') ?: config('mail.from.name'),
+            'mail.username'     => sys_setting('weiran-system::mail.username') ?: config('mail.username'),
+            'mail.password'     => sys_setting('weiran-system::mail.password') ?: config('mail.password'),
+        ]);
     }
 }
