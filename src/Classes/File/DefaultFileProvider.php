@@ -76,7 +76,7 @@ class DefaultFileProvider implements FileContract
     private bool $isForceSetDestination = false;
 
 
-    public function __construct()
+    public function __construct(array $config = [])
     {
         $this->folder    = 'uploads';
         $this->returnUrl = config('app.url') . '/';
@@ -399,10 +399,5 @@ class DefaultFileProvider implements FileContract
             return $img_stream;
         }
         return $img_stream;
-    }
-
-    public static function fillConfig(): void
-    {
-
     }
 }

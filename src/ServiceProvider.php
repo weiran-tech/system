@@ -158,7 +158,7 @@ class ServiceProvider extends WeiranServiceProvider
 
         /* 文件上传提供者
          * ---------------------------------------- */
-        $this->app->bind('weiran.system.uploader', function () {
+        $this->app->bind('weiran.system.uploader', function ($app, $config) {
             $uploadType = sys_setting('weiran-system::picture.save_type');
             $hooks      = sys_hook('weiran.system.upload_type');
             if (!$uploadType) {
@@ -166,7 +166,7 @@ class ServiceProvider extends WeiranServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
-            return new $uploaderClass();
+            return new $uploaderClass($config);
         });
         $this->app->alias('weiran.system.uploader', FileContract::class);
 

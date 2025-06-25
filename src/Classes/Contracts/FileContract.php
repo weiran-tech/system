@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Classes\Contracts;
 
-use Psr\Http\Message\StreamInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -16,12 +15,7 @@ interface FileContract
     /**
      * 上传文件夹地址
      */
-    public function __construct();
-
-    /**
-     * 填充配置
-     */
-    public static function fillConfig(): void;
+    public function __construct(array $config = []);
 
     /**
      * 设置返回地址
@@ -77,9 +71,9 @@ interface FileContract
     /**
      * 裁剪和压缩
      * @param mixed $content 需要压缩的内容
-     * @param int   $width   宽度
-     * @param int   $height  高度
-     * @param bool  $crop    是否进行裁剪
+     * @param int   $width 宽度
+     * @param int   $height 高度
+     * @param bool  $crop 是否进行裁剪
      */
     public function resize($content, int $width = 1920, int $height = 1440, bool $crop = false);
 
