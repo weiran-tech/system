@@ -24,7 +24,8 @@ return new class extends Migration {
 
             $table->index(['account_id', 'device_type'], 'k_user_device');
 
-            $table->timestamps();
+            $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+            $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('修改时间');
         });
     }
 

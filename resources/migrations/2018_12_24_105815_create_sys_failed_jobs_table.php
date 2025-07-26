@@ -14,11 +14,12 @@ return new class extends Migration {
     {
         Schema::create('sys_failed_jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('uuid')->nullable()->unique();
             $table->text('connection');
             $table->text('queue');
             $table->longText('payload');
             $table->longText('exception');
-            $table->timestamp('failed_at')->useCurrent();
+            $table->dateTime('failed_at')->useCurrent();
         });
     }
 

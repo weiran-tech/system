@@ -30,9 +30,9 @@ return new class extends Migration {
             $table->string('reg_ip', 20)->default('')->comment('注册IP');
             $table->string('reg_platform', 15)->default('')->comment('注册平台');
             $table->string('remember_token', 250)->default('')->comment('token');
-            $table->dateTime('created_at')->nullable()->comment('创建时间');
             $table->dateTime('logined_at')->nullable()->comment('上次登录时间');
-            $table->dateTime('updated_at')->nullable()->comment('修改时间');
+            $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+            $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('修改时间');
         });
     }
 

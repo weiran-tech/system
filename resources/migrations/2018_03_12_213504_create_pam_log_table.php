@@ -21,8 +21,8 @@ return new class extends Migration {
             $table->string('area_text', 50)->default('')->comment('地区方式');
             $table->string('area_name', 50)->default('')->comment('地区');
             $table->string('note', 255)->default('')->comment('内容');
-            $table->dateTime('created_at')->nullable()->comment('创建时间');
-            $table->dateTime('updated_at')->nullable()->comment('修改时间');
+            $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+            $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('修改时间');
         });
     }
 

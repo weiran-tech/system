@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->string('module', 50)->default('');
             $table->string('type', 50)->default('');
 
-            $table->unique('name', 'permission_name_unique');
+            $table->unique('name', 'u_permission_name');
 
 
         });

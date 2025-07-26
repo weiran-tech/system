@@ -4,14 +4,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class  extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up():void
+    public function up(): void
     {
         Schema::create('pam_ban', function (Blueprint $table) {
             $table->bigIncrements('id');
@@ -20,7 +19,8 @@ return new class  extends Migration
 
             $table->index('value', 'k_val');
 
-            $table->timestamps();
+            $table->dateTime('created_at')->useCurrent()->comment('创建时间');
+            $table->dateTime('updated_at')->useCurrent()->useCurrentOnUpdate()->comment('修改时间');
         });
     }
 
