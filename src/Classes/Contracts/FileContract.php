@@ -15,7 +15,7 @@ interface FileContract
     /**
      * 上传文件夹地址
      */
-    public function __construct(array $config = []);
+    public function __construct();
 
     /**
      * 设置返回地址
