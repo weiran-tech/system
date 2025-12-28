@@ -83,7 +83,7 @@ class ServiceProvider extends WeiranServiceProvider
 
     /**
      * Bootstrap the module services.
-     * @return void
+     *
      * @throws ModuleNotFoundException
      */
     public function boot(): void
@@ -93,7 +93,6 @@ class ServiceProvider extends WeiranServiceProvider
 
     /**
      * Register the module services.
-     * @return void
      */
     public function register(): void
     {
@@ -116,7 +115,7 @@ class ServiceProvider extends WeiranServiceProvider
     {
         return [
             'weiran.system.setting', SettingContract::class,
-            'weiran.system.uploader', FileContract::class
+            'weiran.system.uploader', FileContract::class,
         ];
     }
 
@@ -144,17 +143,17 @@ class ServiceProvider extends WeiranServiceProvider
         $this->app->bind('weiran.system.api_sign', function () {
             /** @var ApiSignContract $signProvider */
             $signProvider = config('weiran.system.api_sign_provider') ?: DefaultApiSignProvider::class;
+
             return new $signProvider();
         });
         $this->app->alias('weiran.system.api_sign', ApiSignContract::class);
 
-
         $this->app->bind('weiran.system.password', function () {
             $pwdClass = config('weiran.system.password_provider') ?: DefaultPasswordProvider::class;
+
             return new $pwdClass();
         });
         $this->app->alias('weiran.system.password', PasswordContract::class);
-
 
         /* 文件上传提供者
          * ---------------------------------------- */
@@ -166,10 +165,10 @@ class ServiceProvider extends WeiranServiceProvider
             }
             $uploader      = $hooks[$uploadType];
             $uploaderClass = $uploader['provider'] ?? DefaultFileProvider::class;
+
             return new $uploaderClass($config);
         });
         $this->app->alias('weiran.system.uploader', FileContract::class);
-
 
         /* 设置配置
          * ---------------------------------------- */

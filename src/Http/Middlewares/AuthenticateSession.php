@@ -20,14 +20,46 @@ use Tymon\JWTAuth\JWTGuard;
  */
 class AuthenticateSession extends BaseAuthenticateSession
 {
-
     /**
      * @var Factory|SessionGuard
      */
     protected $auth;
 
     /**
-     * @inheritDoc
+     * Password hash key
+     *
+     * @param string $login_key login key
+     */
+    public static function hashKey(string $login_key): string
+    {
+        $guard = self::guardName($login_key);
+
+        return 'password_hash' . ($guard ? '_' . $guard : '');
+    }
+
+    /**
+     * Guard 名称
+     *
+     * @param string $guard GuardName
+     */
+    public static function hashGuard(string $guard): string
+    {
+        return "password_hash_{$guard}";
+    }
+
+    private static function guardName(string $login_key): string
+    {
+        $guard = '';
+        if (preg_match('/login_(?<guard>.*?)_/', $login_key, $match)) {
+            $guard = $match['guard'];
+        }
+
+        return $guard;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @throws AuthenticationException
      */
     public function handle($request, Closure $next)
@@ -45,7 +77,7 @@ class AuthenticateSession extends BaseAuthenticateSession
         if ($this->auth->viaRemember()) {
             // 这里清理用户/如果登录不一致[不同的guard]
             $passwordHash = explode('|', $request->cookies->get($this->auth->getRecallerName()))[2];
-            if ($passwordHash != $request->user()->getAuthPassword()) {
+            if ($passwordHash !== $request->user()->getAuthPassword()) {
                 $this->logout($request);
             }
         }
@@ -69,28 +101,7 @@ class AuthenticateSession extends BaseAuthenticateSession
     }
 
     /**
-     * Password hash key
-     * @param string $login_key login key
-     * @return string
-     */
-    public static function hashKey(string $login_key): string
-    {
-        $guard = self::guardName($login_key);
-        return 'password_hash' . ($guard ? '_' . $guard : '');
-    }
-
-    /**
-     * Guard 名称
-     * @param string $guard GuardName
-     * @return string
-     */
-    public static function hashGuard(string $guard): string
-    {
-        return "password_hash_{$guard}";
-    }
-
-    /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function storePasswordHashInSession($request)
     {
@@ -106,7 +117,7 @@ class AuthenticateSession extends BaseAuthenticateSession
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function logout($request)
     {
@@ -117,14 +128,5 @@ class AuthenticateSession extends BaseAuthenticateSession
         $loginSessionKey = $this->auth->guard()->getName();
         $guards          = [self::guardName($loginSessionKey)];
         throw new AuthenticationException('无权访问', $guards, Authenticate::detectLocation($guards));
-    }
-
-    private static function guardName(string $login_key): string
-    {
-        $guard = '';
-        if (preg_match('/login_(?<guard>.*?)_/', $login_key, $match)) {
-            $guard = $match['guard'];
-        }
-        return $guard;
     }
 }

@@ -11,9 +11,8 @@ use Weiran\System\Models\PamAccount;
  */
 class WebProvider extends PamProvider
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveById($identifier)
     {
@@ -22,15 +21,17 @@ class WebProvider extends PamProvider
         if ($user && $user->type !== PamAccount::TYPE_USER) {
             return null;
         }
+
         return $user;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveByCredentials(array $credentials)
     {
         $credentials['type'] = PamAccount::TYPE_USER;
+
         return parent::retrieveByCredentials($credentials);
     }
 }

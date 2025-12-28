@@ -19,8 +19,10 @@ class AppSign
 
     /**
      * Handle an incoming request.
+     *
      * @param Request $request 请求
      * @param Closure $next    后续处理
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -29,8 +31,10 @@ class AppSign
 
         if (!$Sign->check($request)) {
             $error = $Sign->getError();
+
             return Resp::web($error->getCode(), $error->getMessage());
         }
+
         return $next($request);
     }
 }

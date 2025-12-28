@@ -42,12 +42,10 @@ class PermissionTest extends TestCase
         /** @var PamRole $role */
         $role = PamRole::where('name', 'user')->first();
 
-
         $key = 'backend:weiran-system.global.manage';
 
         /** @var Permission $permission */
         $permission = $this->corePermission()->permissions()->offsetGet($key);
-
 
         if ($permission) {
             $dbPerm = PamPermission::where('name', $key)->first();

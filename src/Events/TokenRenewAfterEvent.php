@@ -11,16 +11,9 @@ use Weiran\System\Models\PamToken;
  */
 class TokenRenewAfterEvent
 {
-    /**
-     * @var PamToken
-     */
     public PamToken $pamToken;
 
-    /**
-     * @var string
-     */
     public string $oldTokenHash;
-
 
     public function __construct(PamToken $pamToken, string $old_token_hash)
     {

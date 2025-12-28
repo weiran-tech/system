@@ -12,18 +12,21 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * 登录日志
- * @property int             $id           ID
- * @property int             $account_id   账户ID
- * @property int             $parent_id    父账号ID
- * @property string          $account_type 账户类型
- * @property string          $type         登录日志类型, success, error, warning
- * @property string          $ip           IP
- * @property string          $area_text    地区方式
- * @property string          $area_name    地区名字
- * @property string          $note         备注
- * @property Carbon          $created_at   创建时间
- * @property Carbon          $updated_at   修改时间
+ *
+ * @property int    $id           ID
+ * @property int    $account_id   账户ID
+ * @property int    $parent_id    父账号ID
+ * @property string $account_type 账户类型
+ * @property string $type         登录日志类型, success, error, warning
+ * @property string $ip           IP
+ * @property string $area_text    地区方式
+ * @property string $area_name    地区名字
+ * @property string $note         备注
+ * @property Carbon $created_at   创建时间
+ * @property Carbon $updated_at   修改时间
+ *
  * @property-read PamAccount $pam
+ *
  * @mixin Eloquent
  */
 class PamLog extends Model
@@ -45,6 +48,7 @@ class PamLog extends Model
 
     /**
      * 链接用户表
+     *
      * @return BelongsTo
      */
     public function pam()

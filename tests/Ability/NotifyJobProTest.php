@@ -12,6 +12,7 @@ class NotifyJobProTest extends TestCase
 {
     /**
      * 测试 oss 上传
+     *
      * @throws ApplicationException
      */
     public function testCallback(): void

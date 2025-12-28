@@ -26,12 +26,10 @@ class PamEnableEvent
      */
     public $reason;
 
-
     /**
      * PamDisableEvent constructor.
-     * @param PamAccount      $pam
-     * @param PamAccount|null $editor
-     * @param string          $reason
+     *
+     * @param string $reason
      */
     public function __construct(PamAccount $pam, ?PamAccount $editor, $reason = '')
     {

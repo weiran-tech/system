@@ -13,7 +13,6 @@ use Weiran\System\Models\PamRole;
  */
 class PamRolePolicy
 {
-
     use PolicyTrait;
 
     /**
@@ -26,11 +25,10 @@ class PamRolePolicy
         'permission' => 'backend:weiran-system.role.permissions',
     ];
 
-
     /**
      * 编辑
+     *
      * @param PamAccount $pam 账号
-     * @return bool
      */
     public function create(PamAccount $pam): bool
     {
@@ -39,9 +37,9 @@ class PamRolePolicy
 
     /**
      * 编辑
+     *
      * @param PamAccount $pam  账号
      * @param PamRole    $role 角色
-     * @return bool
      */
     public function edit(PamAccount $pam, PamRole $role): bool
     {
@@ -50,9 +48,9 @@ class PamRolePolicy
 
     /**
      * 保存权限
+     *
      * @param PamAccount $pam  账号
      * @param PamRole    $role 角色
-     * @return bool
      */
     public function permission(PamAccount $pam, PamRole $role): bool
     {
@@ -61,9 +59,9 @@ class PamRolePolicy
 
     /**
      * 删除
+     *
      * @param PamAccount $pam  账号
      * @param PamRole    $role 角色
-     * @return bool
      */
     public function delete(PamAccount $pam, PamRole $role): bool
     {

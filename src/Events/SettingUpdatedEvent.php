@@ -9,6 +9,4 @@ use Weiran\Framework\Application\Event;
 /**
  * 设置更新
  */
-class SettingUpdatedEvent extends Event
-{
-}
+class SettingUpdatedEvent extends Event {}

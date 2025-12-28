@@ -42,12 +42,11 @@ use Weiran\Framework\Validation\Rule;
             type: 'string',
             default: '',
 
-        )
+        ),
     ],
 )]
 class UploadImageRequest extends Request
 {
-
     public function getType(): string
     {
         return (string) $this->input('type', 'form');
@@ -86,8 +85,6 @@ class UploadImageRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
@@ -96,18 +93,18 @@ class UploadImageRequest extends Request
                 Rule::required(),
             ],
             'type'      => [
-                Rule::in(['form', 'base64'])
+                Rule::in(['form', 'base64']),
             ],
             'folder'    => [
                 Rule::string(),
-                Rule::regex('/^([a-z-]+)$/i')
+                Rule::regex('/^([a-z-]+)$/i'),
             ],
             'watermark' => [
                 Rule::string(),
             ],
             'from'      => [
                 Rule::string(),
-                Rule::regex('/^([a-z-]+)$/i')
+                Rule::regex('/^([a-z-]+)$/i'),
             ],
         ];
     }

@@ -21,7 +21,7 @@ use Weiran\Framework\Exceptions\ApplicationException;
 trait FixTrait
 {
     /**
-     * @var array $fix fix
+     * @var array fix
      */
     protected $fix = [
         'max'      => 0,
@@ -37,9 +37,8 @@ trait FixTrait
     ];
 
     /**
-     * @param $method
-     * @param $params
      * @return int|bool
+     *
      * @throws ApplicationException
      */
     public function __call($method, $params)
@@ -68,27 +67,25 @@ trait FixTrait
 
     /**
      * 更改每次执行的数据量
-     * @param $num
-     * @return int
      */
     protected function section($num = 0): int
     {
         if ($num) {
             $this->fix['section'] = $num;
         }
+
         return $this->fix['section'];
     }
 
     /**
      * 更改每次执行的时间间隔
-     * @param $num
-     * @return int
      */
     protected function interval($num = 0): int
     {
         if ($num) {
             $this->fix['interval'] = $num;
         }
+
         return $this->fix['interval'];
     }
 
@@ -113,6 +110,7 @@ trait FixTrait
 
     /**
      * 返回修复的页面
+     *
      * @return Factory|View
      */
     protected function fixView()

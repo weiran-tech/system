@@ -15,11 +15,12 @@ use Weiran\Framework\Http\Middlewares\EnableCrossRequest;
  */
 class CrossRequest extends EnableCrossRequest
 {
-
     /**
      * Middleware handler.
+     *
      * @param Request $request request
      * @param Closure $next    next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

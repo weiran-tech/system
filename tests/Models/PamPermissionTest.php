@@ -2,9 +2,7 @@
 
 namespace Weiran\System\Tests\Models;
 
-use Exception;
 use Weiran\Framework\Application\TestCase;
-use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Action\Role;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamPermission;
@@ -12,11 +10,6 @@ use Weiran\System\Models\PamPermissionRole;
 
 class PamPermissionTest extends TestCase
 {
-
-    /**
-     * @throws ApplicationException
-     * @throws Exception
-     */
     public function testSync(): void
     {
         // 创建权限

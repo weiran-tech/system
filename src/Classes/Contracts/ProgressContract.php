@@ -9,8 +9,8 @@ namespace Weiran\System\Classes\Contracts;
  */
 interface ProgressContract
 {
-	/**
-	 * 业务逻辑执行
-	 */
-	public function handle():array;
+    /**
+     * 业务逻辑执行
+     */
+    public function handle(): array;
 }

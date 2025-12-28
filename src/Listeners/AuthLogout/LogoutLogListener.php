@@ -15,7 +15,9 @@ class LogoutLogListener
 {
     /**
      * Handle the event.
+     *
      * @param PamAccount $user 用户账号
+     *
      * @return void
      */
     public function handle($user)

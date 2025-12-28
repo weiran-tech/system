@@ -18,7 +18,6 @@ use Weiran\Framework\Validation\Rule;
 )]
 class AuthBindMobileRequest extends Request
 {
-
     protected bool $isValidate = false;
 
     public function getPassport(): string
@@ -47,8 +46,6 @@ class AuthBindMobileRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

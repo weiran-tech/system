@@ -9,7 +9,6 @@ use Weiran\System\Classes\File\DefaultFileProvider;
 
 class UploadTypeDefault implements ServiceArray
 {
-
     public function key(): string
     {
         return 'default';

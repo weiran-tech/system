@@ -13,10 +13,6 @@ use Weiran\System\Models\PamAccount;
  */
 abstract class JwtApiController extends ApiController
 {
-
-    /**
-     * @var null|PamAccount
-     */
     protected ?PamAccount $pam = null;
 
     public function __construct()
@@ -24,13 +20,16 @@ abstract class JwtApiController extends ApiController
         parent::__construct();
         $this->middleware(function ($request, $next) {
             $this->pam = $request->user();
+
             return $next($request);
         });
     }
 
     /**
      * 返回 Jwt 用户
+     *
      * @return Authenticatable|PamAccount
+     *
      * @see        $pam
      */
     protected function pam()

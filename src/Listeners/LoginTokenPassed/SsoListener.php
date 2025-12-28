@@ -22,8 +22,9 @@ class SsoListener
 {
     /**
      * Handle the event.
+     *
      * @param LoginTokenPassedEvent $event 用户账号
-     * @return void
+     *
      * @throws ApplicationException |Exception
      */
     public function handle(LoginTokenPassedEvent $event): void

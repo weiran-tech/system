@@ -13,7 +13,6 @@ use ReflectionClass;
  */
 class LogViewer
 {
-
     const MAX_FILE_SIZE = 20428800;
 
     /**
@@ -86,13 +85,17 @@ class LogViewer
             self::$file = $log_file[0];
         }
 
-        if (File::size(self::$file) > self::MAX_FILE_SIZE) return null;
+        if (File::size(self::$file) > self::MAX_FILE_SIZE) {
+            return null;
+        }
 
         $file = File::get(self::$file);
 
         preg_match_all($pattern, $file, $headings);
 
-        if (!is_array($headings)) return $log;
+        if (!is_array($headings)) {
+            return $log;
+        }
 
         $log_data = preg_split($pattern, $file);
 
@@ -106,7 +109,9 @@ class LogViewer
                     if (strpos(strtolower($h[$i]), '.' . $level_value)) {
                         preg_match('/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\].*?\.' . $level_key . ': (.*?)( in .*?:[0-9]+)?$/', $h[$i], $current);
 
-                        if (!isset($current[2])) continue;
+                        if (!isset($current[2])) {
+                            continue;
+                        }
                         $log[] = [
                             'level'       => $level_value,
                             'level_class' => self::$levelsClasses[$level_value],
@@ -126,6 +131,7 @@ class LogViewer
 
     /**
      * @param bool $basename 基础文件名
+     *
      * @return array
      */
     public static function getFiles($basename = false)

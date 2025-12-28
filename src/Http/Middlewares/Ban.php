@@ -18,16 +18,14 @@ use Weiran\System\Models\SysConfig;
  */
 class Ban
 {
-
     /**
-     * @param         $request
-     * @param Closure $next
-     * @param string  $type 账号类型, 用于封禁
+     * @param string $type 账号类型, 用于封禁
+     *
      * @return mixed
      */
     public function handle($request, Closure $next, string $type = 'user')
     {
-        //获取ip
+        // 获取ip
         $ip = EnvHelper::ip();
 
         if ($appType = x_header('type')) {
@@ -59,7 +57,6 @@ class Ban
             return Resp::error("当前ip '{$ip}' 不允许访问，请联系客服处理");
         }
 
-
         $deviceId = x_header('id') ?: input('device_id');
         if ($deviceId && PamBan::banDeviceIsOpen($type) === 'Y') {
             $deviceIn = $Ban->checkIn($type, PamBan::TYPE_DEVICE, $deviceId);
@@ -76,6 +73,7 @@ class Ban
                     'user'    => '用户',
                     'backend' => '后台',
                 ];
+
                 return Resp::error('当前设备不在' . ($maps[$type] ?? '') . '白名单中, 不允许访问');
             }
         }

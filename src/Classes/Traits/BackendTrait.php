@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Weiran\System\Classes\Traits;
 
 use Auth;
-use Weiran\System\Models\PamAccount;
 use View;
+use Weiran\System\Models\PamAccount;
 
 /**
  * Class Helpers.

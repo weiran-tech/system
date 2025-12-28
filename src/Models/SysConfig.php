@@ -14,19 +14,21 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * 系统设置
+ *
  * @property int    $id          配置id
  * @property string $namespace   命名空间
  * @property string $group       配置分组
  * @property string $item        配置名称
  * @property string $value       配置值
  * @property string $description 配置介绍
+ *
  * @method static Builder|SysConfig applyKey($key)
+ *
  * @mixin Eloquent
  */
 class SysConfig extends Model
 {
     use KeyParserTrait, LegacySerializeData;
-
     public const STR_YES = 'Y';
     public const STR_NO  = 'N';
 
@@ -62,8 +64,10 @@ class SysConfig extends Model
 
     /**
      * Scope to find a setting record for the specified module (or plugin) name and setting name.
+     *
      * @param Builder $query query
      * @param string  $key   Specifies the setting key value, for example 'system:updates.check'
+     *
      * @return Builder
      */
     public function scopeApplyKey($query, $key)
@@ -79,6 +83,7 @@ class SysConfig extends Model
 
     /**
      * @param null $key key
+     *
      * @return array|string
      */
     public static function kvYn($key = null)
@@ -93,7 +98,9 @@ class SysConfig extends Model
 
     /**
      * 字符来标识 YN
+     *
      * @param null $key
+     *
      * @return array|bool|string
      */
     public static function kvStrYn($key = null)
@@ -108,7 +115,9 @@ class SysConfig extends Model
 
     /**
      * 禁用/启用
+     *
      * @param null $key key
+     *
      * @return array|string
      */
     public static function kvEnable($key = null)
@@ -123,7 +132,9 @@ class SysConfig extends Model
 
     /**
      * 检测表是否存在
+     *
      * @param string $table 检测的表的名称
+     *
      * @return mixed
      */
     public static function tableExists(string $table)
@@ -142,6 +153,7 @@ class SysConfig extends Model
             $tbStatus[$table] = $hasTable;
             app('weiran.system.setting')->set($statusKey, $tbStatus);
         }
+
         return $tbStatus[$table];
     }
 }

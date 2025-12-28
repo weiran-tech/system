@@ -14,7 +14,7 @@ use Weiran\System\Models\PamAccount;
 class DefaultPasswordProvider implements PasswordContract
 {
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function check(PamAccount $pam, string $password, $type = 'plain'): bool
     {
@@ -24,11 +24,12 @@ class DefaultPasswordProvider implements PasswordContract
         else {
             $datetime = $pam->created_at;
         }
+
         return $this->genPassword($password, $datetime, $pam->password_key) === $pam->password;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function genPassword(string $password, string $reg_datetime, string $password_key): string
     {

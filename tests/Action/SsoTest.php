@@ -18,8 +18,7 @@ use Weiran\System\Tests\Testing\TestingPam;
  */
 class SsoTest extends TestCase
 {
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         config('weiran.system.sso_group', [
@@ -30,7 +29,7 @@ class SsoTest extends TestCase
 
     /**
      * 测试同时登录限制
-     * @return void
+     *
      * @throws Exception
      */
     public function testDeviceNum(): void
@@ -75,10 +74,9 @@ class SsoTest extends TestCase
         $Sso->banUser($user->id);
     }
 
-
     /**
      * 测试设备登录限制
-     * @return void
+     *
      * @throws Exception
      */
     public function testGroupUnlimited(): void
@@ -113,7 +111,7 @@ class SsoTest extends TestCase
 
     /**
      * 测试单设备登录
-     * @return void
+     *
      * @throws Exception
      */
     public function testGroupKicked(): void
@@ -179,27 +177,29 @@ class SsoTest extends TestCase
             try {
                 $this->runAuth($item[0], $item[1]);
                 $this->fail('这里应该返回 401 错误, 不应该正确返回数据');
-            } catch (Exception $e) {
+            }
+            catch (Exception $e) {
                 $this->assertEquals(401, $e->getCode());
-            } catch (GuzzleException $e) {
+            }
+            catch (GuzzleException $e) {
                 $this->fail($e->getMessage());
             }
         }
 
     }
 
-    /**
-     */
     private function runSuccess($success): void
     {
 
         foreach ($success as $item) {
             try {
                 $this->runAuth($item[0], $item[1]);
-            } catch (ClientException $e) {
+            }
+            catch (ClientException $e) {
                 $this->outputVariables($item);
                 $this->fail('client:' . $e->getMessage());
-            } catch (GuzzleException $e) {
+            }
+            catch (GuzzleException $e) {
                 $this->fail('guzzle:' . $e->getMessage());
             }
             $this->assertTrue(true, '这里应该正常请求');

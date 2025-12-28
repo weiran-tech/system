@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Throwable;
 use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Helper\EnvHelper;
 use Weiran\System\Classes\WeiranSystemDef;
@@ -17,7 +18,6 @@ use Weiran\System\Events\TokenRenewAfterEvent;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamToken;
 use Weiran\System\Models\SysConfig;
-use Throwable;
 
 /**
  * 单点登录
@@ -25,11 +25,9 @@ use Throwable;
 class Sso
 {
     use AppTrait;
-
-    public const SSO_NONE       = 'none';
-    public const SSO_GROUP      = 'group';
-    public const SSO_DEVICE_NUM = 'device_num';
-
+    public const SSO_NONE        = 'none';
+    public const SSO_GROUP       = 'group';
+    public const SSO_DEVICE_NUM  = 'device_num';
     public const GROUP_UNLIMITED = 'unlimited';
     public const GROUP_KICKED    = 'kicked';
 
@@ -40,7 +38,6 @@ class Sso
 
     /**
      * SSO 类型
-     * @var string
      */
     private string $ssoType;
 
@@ -59,11 +56,10 @@ class Sso
     }
 
     /**
-     * @param PamAccount $pam
-     * @param string     $device_id   设备 ID
-     * @param string     $device_type 设备类型
-     * @param string     $token       token
-     * @return bool
+     * @param string $device_id   设备 ID
+     * @param string $device_type 设备类型
+     * @param string $token       token
+     *
      * @throws Exception
      */
     public function handle(PamAccount $pam, string $device_id, string $device_type, string $token): bool
@@ -96,7 +92,6 @@ class Sso
         if ($groupType === self::GROUP_UNLIMITED) {
             return true;
         }
-
 
         $tokenMd5  = md5($token);
         $pamId     = $pam->id;
@@ -157,16 +152,17 @@ class Sso
         ]);
 
         $this->validateUser($pamId);
+
         return true;
     }
 
     /**
      * 凭证续期
-     * @param PamAccount $pam
-     * @param string     $device_id   设备 ID
-     * @param string     $device_type 设备类型
-     * @param string     $token       token
-     * @return bool
+     *
+     * @param string $device_id   设备 ID
+     * @param string $device_type 设备类型
+     * @param string $token       token
+     *
      * @throws Exception
      */
     public function renew(PamAccount $pam, string $device_id, string $device_type, string $token): bool
@@ -227,13 +223,12 @@ class Sso
         event(new TokenRenewAfterEvent($pamToken, $oldTokenHash));
 
         $this->validateUser($pam->id);
+
         return true;
     }
 
     /**
      * 使用户可用
-     * @param $pamId
-     * @return void
      */
     public function validateUser($pamId): void
     {
@@ -243,8 +238,7 @@ class Sso
 
     /**
      * 禁用用户和 token
-     * @param int $pamId
-     * @return void
+     *
      * @throws Exception
      */
     public function banUser(int $pamId): void
@@ -257,12 +251,9 @@ class Sso
         sys_tag('weiran-system-persist')->hDel(WeiranSystemDef::ckPersistSsoValid(), $pamId);
     }
 
-
     /**
      * 根据 Token 禁用并移除 Token
-     * @param PamToken $pt
-     * @param bool     $delete
-     * @return void
+     *
      * @throws Exception
      */
     public function banToken(PamToken $pt, bool $delete = true): void
@@ -284,9 +275,7 @@ class Sso
         }
     }
 
-
     /**
-     * @return int
      * @throws Exception
      */
     public function clearExpired(): int
@@ -305,8 +294,10 @@ class Sso
 
     /**
      * SSO 退出登录
+     *
      * @param int    $id    用户 ID
      * @param string $token JWT Token
+     *
      * @throws Throwable
      */
     public function logout(int $id, string $token): void
@@ -327,31 +318,34 @@ class Sso
 
     /**
      * 是否启用 sso 登录
-     * @return bool
      */
     public static function isEnable(): bool
     {
         $ssoType = (string) sys_setting('weiran-system::pam.sso_type');
+
         return !($ssoType === '' || $ssoType === self::SSO_NONE);
     }
 
     /**
      * @param string|null $key          Key
      * @param bool        $check_exists 检测键值是否存在
+     *
      * @return array|string
      */
-    public static function kvType(string $key = null, bool $check_exists = false)
+    public static function kvType(?string $key = null, bool $check_exists = false)
     {
         $desc = [
             self::SSO_NONE       => '不启用',
             self::SSO_DEVICE_NUM => '数量限制模式',
             self::SSO_GROUP      => '分组模式',
         ];
+
         return kv($desc, $key, $check_exists);
     }
 
     /**
      * 返回组说明
+     *
      * @return array|string
      */
     public function groupDesc($str = false)
@@ -362,15 +356,15 @@ class Sso
                 $deviceTypes = implode(',', $group);
                 $groups[]    = "{$gk}({$deviceTypes})";
             }
+
             return implode(', ', $groups);
         }
+
         return $this->groups;
     }
 
     /**
      * 是否 OS 不设限
-     * @param string $os
-     * @return string
      */
     public function groupType(string $os): string
     {
@@ -386,11 +380,11 @@ class Sso
         if (Str::contains($name, self::GROUP_KICKED)) {
             return self::GROUP_KICKED;
         }
+
         return '';
     }
 
     /**
-     * @param $account_id
      * @return array{data: array, expired:array}
      */
     private function userTokenData($account_id): array
@@ -400,6 +394,7 @@ class Sso
         $tokens->each(function (PamToken $pt) use (&$data) {
             $data[$pt->token_hash] = "{$pt->device_type}|{$pt->expired_at}|{$pt->id}";
         });
+
         return $data;
     }
 }

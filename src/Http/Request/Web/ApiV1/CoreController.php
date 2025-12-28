@@ -9,7 +9,6 @@ use Weiran\Framework\Auth\ThrottlesLogins;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
 
-
 /**
  * 系统信息控制
  */
@@ -26,7 +25,7 @@ class CoreController extends JwtApiController
                 response: 200,
                 description: '翻译信息',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function translate()
@@ -37,7 +36,6 @@ class CoreController extends JwtApiController
         ]);
     }
 
-
     #[OA\Post(
         path: '/api/web/system/v1/core/info',
         summary: '系统信息',
@@ -47,13 +45,14 @@ class CoreController extends JwtApiController
                 response: 200,
                 description: '系统信息',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function info()
     {
         $hook   = sys_hook('weiran.system.api_info');
         $system = array_merge([], $hook);
+
         return Resp::success('获取系统配置信息', $system);
     }
 }

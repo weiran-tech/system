@@ -16,22 +16,17 @@ use Psr\Log\LoggerInterface;
 
 class LoggerFactory
 {
-
     /**
      * @var Application
      */
     protected $app;
 
-    /**
-     * @param Application $app
-     */
     public function __construct(Application $app)
     {
         $this->app = $app;
     }
 
     /**
-     * @param string $name
      * @return mixed|LoggerInterface
      */
     public function get(string $name = '')
@@ -50,18 +45,11 @@ class LoggerFactory
         ]);
     }
 
-    /**
-     * @return string
-     */
     protected function name(): string
     {
         return (string) config('app.env', 'production');
     }
 
-    /**
-     * @param array $config
-     * @return array
-     */
     protected function handlers(array $config): array
     {
         $handlerConfigs         = $config['handlers'] ?? [[]];
@@ -84,10 +72,6 @@ class LoggerFactory
         return $handlers;
     }
 
-    /**
-     * @param array $config
-     * @return array
-     */
     protected function processors(array $config): array
     {
         $result = [];
@@ -106,12 +90,6 @@ class LoggerFactory
         return $result;
     }
 
-    /**
-     * @param $class
-     * @param $constructor
-     * @param $formatterConfig
-     * @return HandlerInterface
-     */
     protected function handler($class, $constructor, $formatterConfig): HandlerInterface
     {
         /** @var HandlerInterface $handler */
@@ -130,10 +108,6 @@ class LoggerFactory
         return $handler;
     }
 
-    /**
-     * @param $config
-     * @return array
-     */
     protected function getDefaultHandlerConfig($config): array
     {
         $handlerClass       = Arr::get($config, 'handler.class', StreamHandler::class);
@@ -148,10 +122,6 @@ class LoggerFactory
         ];
     }
 
-    /**
-     * @param $config
-     * @return array
-     */
     protected function getDefaultFormatterConfig($config): array
     {
         $formatterClass       = Arr::get($config, 'formatter.class', LineFormatter::class);
@@ -162,5 +132,4 @@ class LoggerFactory
             'constructor' => $formatterConstructor,
         ];
     }
-
 }

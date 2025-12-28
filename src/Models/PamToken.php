@@ -12,18 +12,21 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * 账号 token
+ *
  * @property int         $id
- * @property int         $account_id   用户id
- * @property string      $device_id    设备id
- * @property string      $device_type  设备类型
- * @property string      $login_ip     token 登录IP
- * @property string      $token_hash   token 的md5值
- * @property string      $expired_at   过期时间
+ * @property int         $account_id  用户id
+ * @property string      $device_id   设备id
+ * @property string      $device_type 设备类型
+ * @property string      $login_ip    token 登录IP
+ * @property string      $token_hash  token 的md5值
+ * @property string      $expired_at  过期时间
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|PamToken newModelQuery()
  * @method static Builder|PamToken newQuery()
  * @method static Builder|PamToken query()
+ *
  * @mixin Eloquent
  */
 class PamToken extends Model

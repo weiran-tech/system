@@ -34,12 +34,10 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 是否启用水印
-     * @var bool
      */
     protected bool $watermark = false;
     /**
      * 长边限制
-     * @var int|null
      */
     protected ?int $resizeLongDistrict = null;
     /**
@@ -60,7 +58,6 @@ class DefaultFileProvider implements FileContract
     private int $quality = 75;
     /**
      * 短边限制
-     * @var int
      */
     private int $resizeDistrict = 1920;
     /**
@@ -71,10 +68,8 @@ class DefaultFileProvider implements FileContract
     /**
      * 是否强制设置目录-这样目录是不变的
      * 不能适用于连续上传图片场景，只适用于明确地址的图片
-     * @var bool
      */
     private bool $isForceSetDestination = false;
-
 
     public function __construct()
     {
@@ -82,16 +77,15 @@ class DefaultFileProvider implements FileContract
         $this->returnUrl = config('app.url') . '/';
     }
 
-
     public function setFolder($folder = 'uploads'): self
     {
         $this->folder = $folder;
+
         return $this;
     }
 
     /**
      * 设置类型
-     * @param string $type
      */
     public function setType(string $type): void
     {
@@ -104,48 +98,51 @@ class DefaultFileProvider implements FileContract
 
     /**
      * Set Extension
+     *
      * @param array $extension 支持的扩展
      */
     public function setExtension(array $extension = []): self
     {
         $this->allowedExtensions = $extension;
+
         return $this;
     }
 
     /**
      * District Size.
+     *
      * @param int $resize 设置resize 的区域
      */
     public function setResizeDistrict(int $resize): self
     {
         $this->resizeDistrict = $resize;
+
         return $this;
     }
 
     /**
      * 设置图片压缩质量
-     * @param int $quality
-     * @return self
      */
     public function setQuality(int $quality): self
     {
         $this->quality = $quality;
+
         return $this;
     }
 
     /**
      * 设置图片mime类型
-     * @param $mime_type
-     * @return DefaultFileProvider
      */
     public function setMimeType($mime_type): self
     {
         $this->mimeType = $mime_type;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function saveFile(UploadedFile $file): bool
@@ -162,7 +159,6 @@ class DefaultFileProvider implements FileContract
         // 磁盘对象
         $Disk      = Storage::disk($this->disk);
         $extension = $file->getClientOriginalExtension();
-
 
         $fileRelativePath = $this->genRelativePath($extension);
         $zipContent       = file_get_contents($file->getPathname());
@@ -194,7 +190,7 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function resize($content, $width = 1920, $height = 1440, $crop = false)
     {
@@ -231,7 +227,8 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws ApplicationException
      */
     public function saveInput($content): bool
@@ -261,7 +258,6 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 获取目标路径
-     * @return string
      */
     public function getDestination(): string
     {
@@ -274,11 +270,12 @@ class DefaultFileProvider implements FileContract
     public function setDestination(string $destination): self
     {
         $this->destination = $destination;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getUrl(): string
     {
@@ -287,7 +284,7 @@ class DefaultFileProvider implements FileContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getReturnUrl(): string
     {
@@ -296,6 +293,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 设置返回地址
+     *
      * @param string $url 地址
      */
     public function setReturnUrl(string $url): self
@@ -304,21 +302,22 @@ class DefaultFileProvider implements FileContract
             $url .= '/';
         }
         $this->returnUrl = $url;
+
         return $this;
     }
 
     /**
-     * @param bool $isForceSetDestination
      * @return $this
      */
     public function setIsForceSetDestination(bool $isForceSetDestination): DefaultFileProvider
     {
         $this->isForceSetDestination = $isForceSetDestination;
+
         return $this;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function copyTo(string $dist): bool
     {
@@ -327,11 +326,12 @@ class DefaultFileProvider implements FileContract
         if ($disk->exists($dist)) {
             $disk->delete($dist);
         }
+
         return $disk->copy($this->destination, $dist);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function delete(): bool
     {
@@ -339,6 +339,7 @@ class DefaultFileProvider implements FileContract
         if ($disk->exists($this->destination)) {
             $disk->delete($this->destination);
         }
+
         return true;
     }
 
@@ -352,7 +353,7 @@ class DefaultFileProvider implements FileContract
 
     /**
      * @param string $extension 扩展名
-     * @return string
+     *
      * @throws ApplicationException
      */
     private function genRelativePath(string $extension = 'png'): string
@@ -362,6 +363,7 @@ class DefaultFileProvider implements FileContract
             if ($ext !== $extension) {
                 throw new ApplicationException('指定文件的扩展类型不符, 可能导致图片无法展示');
             }
+
             return $this->destination;
         }
         $now      = Carbon::now();
@@ -372,9 +374,10 @@ class DefaultFileProvider implements FileContract
 
     /**
      * 重设内容
-     * @param string $extension 扩展
+     *
+     * @param string $extension  扩展
      * @param mixed  $img_stream 压缩内容
-     * @return mixed
+     *
      * @throws ApplicationException
      */
     private function resizeContent(string $extension, mixed $img_stream): mixed
@@ -383,7 +386,8 @@ class DefaultFileProvider implements FileContract
         if ($extension !== 'gif' && in_array($extension, FileManager::kvExt(FileManager::TYPE_IMAGES), true)) {
             try {
                 $Image = Image::read($img_stream);
-            } catch (DecoderException) {
+            }
+            catch (DecoderException) {
                 throw new ApplicationException('上传图片读取异常, 请确认图片信息完整');
             }
 
@@ -398,6 +402,7 @@ class DefaultFileProvider implements FileContract
         else {
             return $img_stream;
         }
+
         return $img_stream;
     }
 }

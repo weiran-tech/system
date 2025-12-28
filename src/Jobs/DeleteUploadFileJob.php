@@ -24,6 +24,7 @@ class DeleteUploadFileJob extends Job implements ShouldQueue
 
     /**
      * 删除Url
+     *
      * @param string $url 请求的URL 地址
      */
     public function __construct(string $url)
@@ -33,6 +34,7 @@ class DeleteUploadFileJob extends Job implements ShouldQueue
 
     /**
      * 执行
+     *
      * @throws ApplicationException
      */
     public function handle()

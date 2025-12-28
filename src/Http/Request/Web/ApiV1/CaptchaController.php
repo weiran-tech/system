@@ -67,7 +67,7 @@ class CaptchaController extends JwtApiController
                 response: 200,
                 description: '发送成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function send(CaptchaSendRequest $request): Response|JsonResponse|RedirectResponse
@@ -102,8 +102,10 @@ class CaptchaController extends JwtApiController
             $captcha = $Verification->getCaptcha();
             try {
                 event(new CaptchaSendEvent($passport, $captcha));
+
                 return Resp::success('验证码发送成功' . (!is_production() ? ', 验证码:' . $captcha : ''));
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 return Resp::error($e);
             }
         }
@@ -111,7 +113,6 @@ class CaptchaController extends JwtApiController
             return Resp::error($Verification->getError());
         }
     }
-
 
     #[OA\Post(
         path: '/api/web/system/v1/captcha/verify_code',
@@ -123,21 +124,21 @@ class CaptchaController extends JwtApiController
                 description: '通行证',
                 in: 'query',
                 required: true,
-                schema: new OA\Schema(type: 'string',),
+                schema: new OA\Schema(type: 'string'),
             ),
             new OA\Parameter(
                 name: 'captcha',
                 description: '验证码',
                 in: 'query',
                 required: true,
-                schema: new OA\Schema(type: 'string',),
+                schema: new OA\Schema(type: 'string'),
             ),
             new OA\Parameter(
                 name: 'expire_min',
                 description: '验证串有效期(默认:10 分钟, 最长不超过 60 分钟)',
                 in: 'query',
                 required: false,
-                schema: new OA\Schema(type: 'integer',),
+                schema: new OA\Schema(type: 'integer'),
             ),
         ],
         responses: [
@@ -145,7 +146,7 @@ class CaptchaController extends JwtApiController
                 response: 200,
                 description: '生成验证串',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function verifyCode(CaptchaVerifyRequest $request): Response|JsonResponse|RedirectResponse
@@ -159,6 +160,7 @@ class CaptchaController extends JwtApiController
             return Resp::error($Verification->getError());
         }
         $onceCode = $Verification->genOnceVerifyCode($expire_min, $passport);
+
         return Resp::success('生成验证串', [
             'verify_code' => $onceCode,
         ]);

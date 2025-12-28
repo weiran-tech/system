@@ -12,15 +12,18 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * User\Models\PamBin
+ *
  * @property int         $id
- * @property string      $type          类型
- * @property string      $account_type  账号类型
- * @property string      $value         值
+ * @property string      $type         类型
+ * @property string      $account_type 账号类型
+ * @property string      $value        值
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ *
  * @method static Builder|PamBan newModelQuery()
  * @method static Builder|PamBan newQuery()
  * @method static Builder|PamBan query()
+ *
  * @mixin Eloquent
  */
 class PamBan extends Model
@@ -49,6 +52,7 @@ class PamBan extends Model
     /**
      * @param null|string $key
      * @param bool        $check_key
+     *
      * @return array|string
      */
     public static function kvType($key = null, $check_key = false)
@@ -63,8 +67,8 @@ class PamBan extends Model
 
     /**
      * ip是否允许登录
+     *
      * @param string $ip ip
-     * @return bool
      */
     public static function ipIsAllow($ip): bool
     {
@@ -81,8 +85,8 @@ class PamBan extends Model
 
     /**
      * 是否允许该设备登录
+     *
      * @param string $device device
-     * @return bool
      */
     public static function deviceIsAllow($device): bool
     {
@@ -95,9 +99,9 @@ class PamBan extends Model
 
     /**
      * 登录是否允许
+     *
      * @param string|null $ip     ip
      * @param string|null $device 设备
-     * @return bool
      */
     public static function loginIsAllow($ip = null, $device = null): bool
     {
@@ -108,18 +112,18 @@ class PamBan extends Model
         if ($device) {
             $allow_device = self::deviceIsAllow($device);
         }
+
         return $allow_ip && $allow_device;
     }
 
     /**
      * 设备 KEY
-     * @param string $type
-     * @return string
      */
     public static function banDeviceIsOpen(string $type): string
     {
         $key = 'weiran-system::ban.type-' . $type;
         $bw  = sys_setting($key, PamBan::WB_TYPE_BLACK);
+
         return sys_setting('weiran-system::ban.device_' . $bw . '_' . $type . '_is_open', 'Y');
     }
 }

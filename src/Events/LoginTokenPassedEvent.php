@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Events;
 
-use Weiran\System\Action\Sso;
 use Weiran\System\Models\PamAccount;
 
 /**
@@ -17,20 +16,15 @@ class LoginTokenPassedEvent
      */
     public PamAccount $pam;
 
-    /**
-     * @var string
-     */
     public string $token;
 
     /**
      * 设备ID
-     * @var string
      */
     public string $deviceId;
 
     /**
      * 设备类型
-     * @var string
      */
     public string $deviceType;
 

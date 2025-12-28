@@ -8,7 +8,6 @@ use Weiran\Core\Services\Contracts\ServiceArray;
 
 class ApiInfo implements ServiceArray
 {
-
     public function key(): string
     {
         return 'weiran-system';

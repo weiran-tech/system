@@ -31,6 +31,7 @@ class HtmlPurifier
             $input = $Purifier->purify($input);
         });
         $request->merge($input);
+
         return $next($request);
     }
 }

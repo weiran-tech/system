@@ -5,12 +5,12 @@ declare(strict_types = 1);
 namespace Weiran\System\Tests\Models;
 
 use Illuminate\Auth\AuthenticationException;
+use Tymon\JWTAuth\JWTGuard;
 use Weiran\Framework\Application\TestCase;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Classes\Traits\DbTrait;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Tests\Testing\TestingPam;
-use Tymon\JWTAuth\JWTGuard;
 
 class PamAccountTest extends TestCase
 {
@@ -31,7 +31,8 @@ class PamAccountTest extends TestCase
             else {
                 $this->fail('use `jwt:secret` generate token');
             }
-        } catch (AuthenticationException $e) {
+        }
+        catch (AuthenticationException $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -51,7 +52,6 @@ class PamAccountTest extends TestCase
         $exclude = TestingPam::exclude();
         $this->assertNotNull($exclude);
     }
-
 
     public function testPwdStrength(): void
     {

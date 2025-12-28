@@ -5,10 +5,9 @@ declare(strict_types = 1);
 namespace Weiran\System\Tests\Action;
 
 use Exception;
-use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Core\Classes\Traits\CoreTrait;
+use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Framework\Application\TestCase;
-use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Action\Role;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamPermission;
@@ -16,12 +15,11 @@ use Weiran\System\Tests\Testing\TestingPam;
 
 class RoleTest extends TestCase
 {
-
     use CoreTrait;
 
     /**
      * 角色添加和权限处理
-     * @throws ApplicationException
+     *
      * @throws Exception
      */
     public function testEstablish(): void

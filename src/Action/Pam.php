@@ -42,21 +42,15 @@ use Weiran\System\Models\SysConfig;
  */
 class Pam
 {
-    use UserSettingTrait, AppTrait, PamTrait;
+    use AppTrait, PamTrait, UserSettingTrait;
 
     /**
      * @var int 父级ID
      */
     private int $parentId = 0;
 
-    /**
-     * @var bool
-     */
     private bool $isRegister = false;
 
-    /**
-     * @return bool
-     */
     public function getIsRegister(): bool
     {
         return $this->isRegister;
@@ -64,10 +58,11 @@ class Pam
 
     /**
      * 验证验登录
+     *
      * @param string $passport 通行证
-     * @param string $captcha 验证码
-     * @param string $guard 认证 Guard
-     * @return bool
+     * @param string $captcha  验证码
+     * @param string $guard    认证 Guard
+     *
      * @throws Throwable
      */
     public function captchaLogin(string $passport, string $captcha, string $guard): bool
@@ -107,20 +102,21 @@ class Pam
 
         try {
             event(new LoginBannedEvent($this->pam, $guard));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e);
         }
 
         event(new LoginSuccessEvent($this->pam, $guard));
+
         return true;
     }
 
-
     /**
      * 后台验证码登录
-     * @param string $mobile 通行证
+     *
+     * @param string $mobile  通行证
      * @param string $captcha 验证码
-     * @return bool
      */
     public function beCaptchaLogin(string $mobile, string $captcha): bool
     {
@@ -142,16 +138,19 @@ class Pam
 
         try {
             event(new LoginBannedEvent($this->pam, PamAccount::GUARD_BACKEND));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return $this->setError($e);
         }
 
         event(new LoginSuccessEvent($this->pam, PamAccount::GUARD_BACKEND));
+
         return true;
     }
 
     /**
      * 设置父级ID
+     *
      * @param int $parent_id 父级id
      */
     public function setParentId(int $parent_id): void
@@ -161,10 +160,11 @@ class Pam
 
     /**
      * 用户注册
-     * @param string           $passport passport
-     * @param string           $password 密码
+     *
+     * @param string           $passport  passport
+     * @param string           $password  密码
      * @param string|array|int $role_name 用户角色名称
-     * @return bool
+     *
      * @throws Throwable
      */
     public function register(string $passport, string $password = '', $role_name = PamRole::FE_USER): bool
@@ -305,15 +305,17 @@ class Pam
             $this->pam = $pam;
 
         });
+
         return true;
     }
 
     /**
      * 密码登录
-     * @param string $passport passport
-     * @param string $password 密码
+     *
+     * @param string $passport   passport
+     * @param string $password   密码
      * @param string $guard_name 类型
-     * @return bool
+     *
      * @throws ApplicationException
      */
     public function loginCheck(string $passport, string $password, string $guard_name = PamAccount::GUARD_WEB): bool
@@ -350,17 +352,21 @@ class Pam
 
             if (!$this->checkIsEnable($this->pam)) {
                 $guard->logout();
+
                 return false;
             }
 
             try {
                 event(new LoginBannedEvent($this->pam, $guard_name));
-            } catch (Throwable $e) {
+            }
+            catch (Throwable $e) {
                 $guard->logout();
+
                 return $this->setError($e);
             }
 
             event(new LoginSuccessEvent($pam, $guard_name));
+
             return true;
         }
 
@@ -377,9 +383,9 @@ class Pam
 
     /**
      * 设置登录密码
-     * @param PamAccount $pam 用户
+     *
+     * @param PamAccount $pam      用户
      * @param string     $password 密码
-     * @return bool
      */
     public function setPassword(PamAccount $pam, string $password): bool
     {
@@ -415,8 +421,6 @@ class Pam
 
     /**
      * 清空后台登录用户的手机通行证
-     * @param int $id
-     * @return bool
      */
     public function clearMobile(int $id): bool
     {
@@ -428,14 +432,15 @@ class Pam
         $mobile      = PamAccount::dftMobile($pam->id);
         $pam->mobile = $mobile;
         $pam->save();
+
         return true;
     }
 
     /**
      * 设置后台登录用户的手机通行证
-     * @param PamAccount $pam 用户
+     *
+     * @param PamAccount $pam    用户
      * @param string     $mobile 密码
-     * @return bool
      */
     public function setMobile(PamAccount $pam, string $mobile): bool
     {
@@ -470,12 +475,8 @@ class Pam
         return true;
     }
 
-
     /**
      * 设置备注
-     * @param PamAccount $pam
-     * @param string     $note
-     * @return void
      */
     public function setNote(PamAccount $pam, string $note): void
     {
@@ -485,9 +486,9 @@ class Pam
 
     /**
      * 设置角色
-     * @param PamAccount|mixed $pam 账号数据
+     *
+     * @param PamAccount|mixed $pam   账号数据
      * @param array            $roles 角色名
-     * @return bool
      */
     public function setRoles($pam, array $roles): bool
     {
@@ -501,8 +502,8 @@ class Pam
 
     /**
      * 生成支持 passport 格式的数组
+     *
      * @param array|Request $credentials 待转化的数据
-     * @return array
      */
     public function passportData($credentials): array
     {
@@ -521,12 +522,10 @@ class Pam
         ];
     }
 
-
     /**
      * 更换账号主体, 支持除非ID外的更换方式
+     *
      * @param string|numeric|PamAccount $old_passport
-     * @param string                    $new_passport
-     * @return bool
      */
     public function rebind($old_passport, string $new_passport): bool
     {
@@ -538,7 +537,7 @@ class Pam
             $old_passport = PamAccount::fullFilledPassport($old_passport);
             $pam          = PamAccount::passport($old_passport);
         }
-        else if ($old_passport instanceof PamAccount) {
+        elseif ($old_passport instanceof PamAccount) {
             $pam = $old_passport;
         }
         if (!$pam) {
@@ -552,15 +551,16 @@ class Pam
         $pam->save();
 
         event(new PamRebindEvent($pam));
+
         return true;
     }
 
     /**
      * 后台用户禁用
-     * @param int    $id 用户id
-     * @param string $to 解禁时间
+     *
+     * @param int    $id     用户id
+     * @param string $to     解禁时间
      * @param string $reason 禁用原因
-     * @return bool
      */
     public function disable(int $id, string $to, string $reason): bool
     {
@@ -586,7 +586,7 @@ class Pam
 
         /** @var PamAccount $pam */
         $pam = PamAccount::find($id);
-        //当前用户已禁用
+        // 当前用户已禁用
         if (!$pam->is_enable) {
             return $this->setError(trans('weiran-system::action.pam.account_disabled'));
         }
@@ -609,9 +609,9 @@ class Pam
 
     /**
      * 后台用户启用
-     * @param int    $id 用户Id
+     *
+     * @param int    $id     用户Id
      * @param string $reason 原因
-     * @return bool
      */
     public function enable(int $id, string $reason = ''): bool
     {
@@ -663,7 +663,7 @@ class Pam
 
     /**
      * 清除登录日志
-     * @return bool
+     *
      * @throws Exception
      */
     public function clearLog(): bool
@@ -676,14 +676,15 @@ class Pam
         $days = ((int) $days) ?: 180;
         // 删除 xx 天以外的登录日志, 默认 180 天
         PamLog::where('created_at', '<', Carbon::now()->subDays($days))->delete();
+
         return true;
     }
 
     /**
      * 修改密码
+     *
      * @param string $old_password 老密码
-     * @param string $password 新密码
-     * @return bool
+     * @param string $password     新密码
      */
     public function changePassword(string $old_password, string $password): bool
     {
@@ -719,13 +720,14 @@ class Pam
         $desc = collect($diffStrength)->map(function ($type) {
             return PamAccount::kvPwdStrength($type);
         })->implode(', ');
+
         return $this->setError('密码强度不足, 必须包含 ' . $desc);
     }
 
     /**
      * 验证用户权限
+     *
      * @param PamAccount $pam 用户
-     * @return bool
      */
     public function checkIsEnable(PamAccount $pam): bool
     {
@@ -734,10 +736,13 @@ class Pam
             // 当前时间大于禁用时间(已解禁)
             if ($now->gt($pam->disable_end_at)) {
                 $this->enable($pam->id, '用户登录, 超过封禁时间, 自动解禁');
+
                 return true;
             }
+
             return $this->setError("该账号因 $pam->disable_reason 被封禁至 $pam->disable_end_at");
         }
+
         return true;
     }
 }

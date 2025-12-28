@@ -20,7 +20,6 @@ use Psr\Log\LoggerInterface;
 class Logging
 {
     /**
-     * @param string $name
      * @return mixed|LoggerInterface
      */
     public static function logger(string $name = '')

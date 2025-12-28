@@ -14,23 +14,27 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * 用户权限
- * @property int                       $id
- * @property string                    $name
- * @property string                    $title
- * @property string                    $description
- * @property string                    $group
- * @property string                    $root
- * @property string                    $module
- * @property string                    $type
+ *
+ * @property int    $id
+ * @property string $name
+ * @property string $title
+ * @property string $description
+ * @property string $group
+ * @property string $root
+ * @property string $module
+ * @property string $type
+ *
  * @property-read Collection|PamRole[] $roles
+ *
  * @method static Builder|PamPermission newModelQuery()
  * @method static Builder|PamPermission newQuery()
  * @method static Builder|PamPermission query()
+ *
  * @mixin Eloquent
  */
 class PamPermission extends Model implements RbacPermissionContract
 {
-    use RbacPermissionTrait, LegacySerializeData;
+    use LegacySerializeData, RbacPermissionTrait;
 
     public $timestamps = false;
 

@@ -79,7 +79,6 @@ trait RequestTrait
 
     /**
      * 获取所有请求数据返回数据
-     * @return array
      */
     public function getReqResp(): array
     {
@@ -93,6 +92,7 @@ trait RequestTrait
 
     /**
      * 获取请求日志
+     *
      * @return array
      */
     public function getReqLog()

@@ -12,9 +12,7 @@ use Weiran\System\Classes\Traits\FixTrait;
  */
 abstract class BaseProgress implements ProgressContract
 {
-
     use FixTrait;
-
 
     public function __construct()
     {

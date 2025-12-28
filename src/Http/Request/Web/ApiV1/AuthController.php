@@ -40,13 +40,11 @@ class AuthController extends JwtApiController
 
     /**
      * 最大请求次数 10 次
-     * @var float
      */
     protected float $maxAttempts = 10;
 
     /**
      * 30 秒内, 最多 10 次请求
-     * @var float
      */
     protected float $decayMinutes = 0.5;
 
@@ -69,7 +67,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '获取成功',
                 content: new OA\JsonContent(ref: SystemAuthAccessBody::class)
-            )
+            ),
         ]
     )]
     public function access(): JsonResponse
@@ -77,6 +75,7 @@ class AuthController extends JwtApiController
         $pam    = (new PamResource($this->pam()))->toArray(app('request'));
         $append = (array) sys_hook('weiran.system.auth_access');
         $all    = array_merge($pam, $append);
+
         return Resp::success(
             '有效登录',
             $all
@@ -84,8 +83,6 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @param Request $req
-     * @return JsonResponse
      * @throws AuthorizationException
      * @throws ValidationException
      * @throws Throwable
@@ -103,7 +100,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '登录成功',
                 content: new OA\JsonContent(ref: SystemAuthLoginBody::class)
-            )
+            ),
         ]
     )]
     public function login(Request $req): JsonResponse
@@ -132,7 +129,6 @@ class AuthController extends JwtApiController
             ? PamAccount::GUARD_JWT_BACKEND
             : PamAccount::GUARD_JWT_WEB;
 
-
         $Pam = new Pam();
         if ($request->input('captcha')) {
             $reqCaptcha = $request->scene('captcha')->validated();
@@ -159,7 +155,8 @@ class AuthController extends JwtApiController
         try {
             $deviceId = x_header('id') ?: $req->input('device_id', '');
             event(new LoginTokenPassedEvent($pam, $token, $deviceId, $reqPassport['os']));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
 
@@ -169,7 +166,6 @@ class AuthController extends JwtApiController
             'is_register' => $Pam->getIsRegister() ? 'Y' : 'N',
         ]);
     }
-
 
     /**
      * @throws Throwable
@@ -187,7 +183,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '操作成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function resetPassword(AuthPasswordRequest $request)
@@ -251,7 +247,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '操作成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function bindMobile(AuthBindMobileRequest $request)
@@ -279,6 +275,7 @@ class AuthController extends JwtApiController
         if (!$Pam->rebind($hidden, $passport)) {
             return Resp::error($Pam->getError());
         }
+
         return Resp::success('成功绑定手机');
     }
 
@@ -288,15 +285,15 @@ class AuthController extends JwtApiController
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(properties: [
-                new OA\Property(property: 'device_id', description: '设备 ID, 参考 header x-id', type: 'string',),
-                new OA\Property(property: 'device_type', description: '设备类型, 参考 header x-os', type: 'string',),
+                new OA\Property(property: 'device_id', description: '设备 ID, 参考 header x-id', type: 'string'),
+                new OA\Property(property: 'device_type', description: '设备类型, 参考 header x-os', type: 'string'),
             ])
         ),
         tags: ['System'],
         responses: [
             new OA\Response(response: 200, description: '操作成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function renew()
@@ -309,7 +306,8 @@ class AuthController extends JwtApiController
             $deviceType = x_header('os') ?: input('device_type', '');
 
             event(new TokenRenewEvent($pam, $token, $deviceId, $deviceType));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return Resp::error($e->getMessage());
         }
 
@@ -322,7 +320,6 @@ class AuthController extends JwtApiController
     }
 
     /**
-     * @return JsonResponse|RedirectResponse|Response
      * @throws Throwable
      */
     #[OA\Post(
@@ -334,12 +331,13 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '操作成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function logout(): Response|JsonResponse|RedirectResponse
     {
         (new Pam())->setPam($this->pam())->logout();
+
         return Resp::success('已退出登录');
     }
 
@@ -356,7 +354,7 @@ class AuthController extends JwtApiController
                 response: 200,
                 description: '操作成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function exists(AuthExistsRequest $request): JsonResponse
@@ -368,6 +366,7 @@ class AuthController extends JwtApiController
                 'is_exist' => 'Y',
             ]);
         }
+
         return Resp::success('通行证不存在', [
             'is_exist' => 'N',
         ]);

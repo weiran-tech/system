@@ -9,21 +9,23 @@ namespace Weiran\System\Classes\Payment\Contracts;
  */
 interface Payment
 {
-	/**
-	 * @param string $order_no 订单号
-	 * @param string $flow_no  订单号
-	 * @return mixed
-	 */
-	public function payOk($order_no, $flow_no);
+    /**
+     * @param string $order_no 订单号
+     * @param string $flow_no  订单号
+     *
+     * @return mixed
+     */
+    public function payOk($order_no, $flow_no);
 
-	/**
-	 * @param string $order_no 订单号
-	 * @return mixed
-	 */
-	public function fetch($order_no);
+    /**
+     * @param string $order_no 订单号
+     *
+     * @return mixed
+     */
+    public function fetch($order_no);
 
-	/**
-	 * @return mixed
-	 */
-	public function getError();
+    /**
+     * @return mixed
+     */
+    public function getError();
 }

@@ -32,10 +32,6 @@ class MaintainMail extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @param string $title
-     * @param string $content
-     * @param string $file
      */
     public function __construct(string $title = '', string $content = '', string $file = '')
     {

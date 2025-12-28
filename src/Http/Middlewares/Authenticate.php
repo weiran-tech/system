@@ -16,13 +16,10 @@ use Weiran\System\Models\SysConfig;
  */
 class Authenticate extends IlluminateAuthenticate
 {
-
     private bool $isJwt = false;
 
     /**
      * 检测跳转地址
-     * @param $guards
-     * @return string
      */
     public static function detectLocation($guards): string
     {
@@ -33,17 +30,19 @@ class Authenticate extends IlluminateAuthenticate
         if (in_array(PamAccount::GUARD_WEB, $guards, true) && $userLogin = config('weiran.system.user_location')) {
             $location = $userLogin;
         }
+
         return $location;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function handle($request, Closure $next, ...$guards)
     {
         try {
             $this->authenticate($request, $guards);
-        } catch (AuthenticationException $e) {
+        }
+        catch (AuthenticationException $e) {
             if ($this->isJwt || $request->expectsJson()) {
                 return response()->json([
                     'status'  => 401,
@@ -60,11 +59,12 @@ class Authenticate extends IlluminateAuthenticate
 
             return response('Unauthorized.', 401);
         }
+
         return $next($request);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function authenticate($request, array $guards)
     {
@@ -88,6 +88,7 @@ class Authenticate extends IlluminateAuthenticate
                     throw new AuthenticationException($reason, $guards);
                 }
                 app('auth')->shouldUse($guard);
+
                 return true;
             }
         }

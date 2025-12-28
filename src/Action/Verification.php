@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use Weiran\Core\Redis\RdsDb;
 use Weiran\Core\Redis\RdsStore;
 use Weiran\Framework\Classes\Traits\AppTrait;
-use Weiran\Framework\Helper\EnvHelper;
 use Weiran\Framework\Helper\StrHelper;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\WeiranSystemDef;
@@ -21,30 +20,20 @@ use Weiran\System\Models\PamAccount;
 class Verification
 {
     use AppTrait;
-
-    const TYPE_MAIL   = 'mail';
-    const TYPE_MOBILE = 'mobile';
-
+    const TYPE_MAIL                         = 'mail';
+    const TYPE_MOBILE                       = 'mobile';
     public const CAPTCHA_SEND_TYPE_EXIST    = 'exist';
     public const CAPTCHA_SEND_TYPE_NO_EXIST = 'no-exist';
 
-    /**
-     * @var RdsDb
-     */
     private static RdsDb $db;
 
-    /**
-     * @var string
-     */
     private string $captcha;
 
-    /**
-     * @var string
-     */
     private string $passportKey;
 
     /**
      * 隐藏的数据
+     *
      * @var mixed
      */
     private $hidden;
@@ -58,7 +47,6 @@ class Verification
      * @param string $passport    需要发送的通行证
      * @param int    $expired_min 过期时间
      * @param int    $length      验证码长度
-     * @return bool
      */
     public function genCaptcha(string $passport, int $expired_min = 5, int $length = 6): bool
     {
@@ -83,15 +71,15 @@ class Verification
         self::$db->set(WeiranSystemDef::ckPersistVerificationCaptcha($key), $data, 'ex', $expired_min * 60);
 
         $this->captcha = $captcha;
+
         return true;
     }
 
     /**
      * 验证验证码, 验证码验证成功仅有一次机会
+     *
      * @param string $passport 通行证
      * @param string $captcha  验证码
-     * @param bool   $forget
-     * @return bool
      */
     public function checkCaptcha(string $passport, string $captcha, bool $forget = true): bool
     {
@@ -134,15 +122,17 @@ class Verification
             if ($forget) {
                 self::$db->del(WeiranSystemDef::ckPersistVerificationCaptcha($key));
             }
+
             return true;
         }
+
         return $this->setError('验证码填写错误');
     }
 
     /**
      * 移除验证码
+     *
      * @param string $passport 通行证
-     * @return bool
      */
     public function removeCaptcha(string $passport): bool
     {
@@ -152,14 +142,15 @@ class Verification
         }
         $key = $this->passportKey;
         self::$db->del(WeiranSystemDef::ckPersistVerificationCaptcha($key));
+
         return false;
     }
 
     /**
      * 限流以及提示, 开发状态下不进行限流
+     *
      * @param string $key     限流标识
      * @param int    $seconds 秒数
-     * @return bool
      */
     public function isPassThrottle(string $key, int $seconds = 30): bool
     {
@@ -170,14 +161,14 @@ class Verification
         if (RdsStore::inLock('verification:' . $key, $seconds)) {
             return $this->setError('请勿频繁请求');
         }
+
         return true;
     }
 
-
     /**
      * 获取通行证验证码
+     *
      * @param string $passport 通行证
-     * @return bool
      */
     public function fetchCaptcha(string $passport): bool
     {
@@ -189,16 +180,18 @@ class Verification
 
         if ($data = self::$db->get(WeiranSystemDef::ckPersistVerificationCaptcha($key))) {
             $this->captcha = $data['captcha'];
+
             return true;
         }
+
         return $this->setError('验证码失效, 无法获取');
     }
 
     /**
      * 生成一次验证码
+     *
      * @param int          $expired_min 过期时间
      * @param string|array $hidden_str  隐藏的验证字串
-     * @return string
      */
     public function genOnceVerifyCode(int $expired_min = 10, $hidden_str = ''): string
     {
@@ -212,14 +205,15 @@ class Verification
         ];
         $code = md5(json_encode($str) . microtime());
         self::$db->set(WeiranSystemDef::ckPersistVerificationOnce() . ':' . $code, $str, 'ex', $expired_min * 60);
+
         return $code;
     }
 
     /**
      * 需要验证的验证码
+     *
      * @param string $code   一次验证码
      * @param bool   $forget 是否删除验证码
-     * @return bool
      */
     public function verifyOnceCode(string $code, bool $forget = true): bool
     {
@@ -228,19 +222,21 @@ class Verification
             if ($forget) {
                 self::$db->del(WeiranSystemDef::ckPersistVerificationOnce() . ':' . $code);
             }
+
             return true;
         }
+
         return $this->setError(trans('weiran-system::action.verification.verify_code_error'));
     }
 
     public function removeOnceCode($code): bool
     {
         self::$db->del(WeiranSystemDef::ckPersistVerificationOnce() . ':' . $code);
+
         return true;
     }
 
     /**
-     * @param string       $key
      * @param int          $expired_min 过期时间
      * @param string|array $word
      */
@@ -254,9 +250,9 @@ class Verification
 
     /**
      * 验证校验值, 不进行删除
+     *
      * @param string       $key  验证KEy
      * @param string|array $word 验证值
-     * @return bool
      */
     public function verifyWord(string $key, $word = ''): bool
     {
@@ -275,27 +271,23 @@ class Verification
                 return true;
             }
         }
+
         return $this->setError('校验值填写错误');
     }
 
     /**
      * 删除验证数据
-     * @param string $key
      */
     public function removeWord(string $key): void
     {
         self::$db->del(WeiranSystemDef::ckPersistVerificationWord() . ':' . $key);
     }
 
-
     public function getHidden()
     {
         return $this->hidden;
     }
 
-    /**
-     * @return string
-     */
     public function getCaptcha(): string
     {
         return $this->captcha;
@@ -314,6 +306,7 @@ class Verification
             return $this->setError(trans('weiran-system::action.verification.passport_not_support'));
         }
         $this->passportKey = $passportType . '-' . $passport;
+
         return true;
     }
 }

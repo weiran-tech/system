@@ -14,9 +14,8 @@ class SettingFacade extends IlluminateFacade
 {
     /**
      * 获取组件的注册名称
-     * @return string
      */
-    protected static function getFacadeAccessor():string
+    protected static function getFacadeAccessor(): string
     {
         return SettingContract::class;
     }

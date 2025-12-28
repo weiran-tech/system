@@ -16,20 +16,15 @@ class TokenRenewEvent
      */
     public PamAccount $pam;
 
-    /**
-     * @var string
-     */
     public string $token;
 
     /**
      * 设备ID
-     * @var string
      */
     public string $deviceId;
 
     /**
      * 设备类型
-     * @var string
      */
     public string $deviceType;
 

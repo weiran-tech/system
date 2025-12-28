@@ -14,7 +14,6 @@ use Weiran\System\Models\PamAccount;
  */
 abstract class WebController extends Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -23,6 +22,7 @@ abstract class WebController extends Controller
 
     /**
      * 当前用户
+     *
      * @return Authenticatable|PamAccount
      */
     public function pam()
@@ -32,6 +32,7 @@ abstract class WebController extends Controller
 
     /**
      * 当前用户
+     *
      * @return Authenticatable|PamAccount
      */
     public function jwtPam()

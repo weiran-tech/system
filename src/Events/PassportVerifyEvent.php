@@ -11,12 +11,14 @@ class PassportVerifyEvent
 {
     /**
      * 通行证
+     *
      * @var string
      */
     public $passport;
 
     /**
      * 类型
+     *
      * @var string
      */
     public $type;

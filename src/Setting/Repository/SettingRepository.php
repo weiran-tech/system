@@ -24,17 +24,12 @@ use Weiran\System\Models\SysConfig;
  */
 class SettingRepository implements SettingContract
 {
-    use KeyParserTrait, AppTrait;
+    use AppTrait, KeyParserTrait;
 
-    /**
-     * @var RdsDb|null
-     */
     private static ?RdsDb $rds = null;
-
 
     /**
      * 是否存在数据表
-     * @var bool
      */
     private static bool $existTable = true;
 
@@ -46,7 +41,8 @@ class SettingRepository implements SettingContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws Exception
      */
@@ -60,11 +56,13 @@ class SettingRepository implements SettingContract
             self::$rds->hDel(WeiranSystemDef::ckSetting(), $this->convertKey($key));
             $record->delete();
         }
+
         return true;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException|JsonException
      */
@@ -86,12 +84,15 @@ class SettingRepository implements SettingContract
 
         try {
             $record = $this->findRecord($key);
-        } catch (PDOException) {
+        }
+        catch (PDOException) {
             self::$existTable = false;
+
             return $default;
         }
         if (!$record) {
             $this->set($key, $default);
+
             return $default;
         }
 
@@ -101,7 +102,8 @@ class SettingRepository implements SettingContract
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
      * @throws SettingKeyNotMatchException
      * @throws SettingValueOutOfRangeException
      * @throws JsonException
@@ -112,6 +114,7 @@ class SettingRepository implements SettingContract
             foreach ($key as $_key => $_value) {
                 $this->set($_key, $_value);
             }
+
             return true;
         }
 
@@ -139,13 +142,15 @@ class SettingRepository implements SettingContract
         }
 
         self::$rds->hSet(WeiranSystemDef::ckSetting(), $this->convertKey($key), $encodedValue);
+
         return true;
     }
 
     /**
      * 根据命名空间从数据库中获取数据
+     *
      * @param string $ng 命名空间和分组
-     * @return array
+     *
      * @throws JsonException
      */
     public function getNG(string $ng): array
@@ -165,8 +170,6 @@ class SettingRepository implements SettingContract
 
     /**
      * 删除命名空间以及分组
-     * @param string $ng
-     * @return bool
      */
     public function removeNG(string $ng): bool
     {
@@ -187,16 +190,19 @@ class SettingRepository implements SettingContract
             self::$rds->hDel(WeiranSystemDef::ckSetting(), $keys);
             try {
                 $Db->delete();
+
                 return true;
-            } catch (Throwable) {
+            }
+            catch (Throwable) {
                 return false;
             }
         }
+
         return false;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function clear(): void
     {
@@ -205,8 +211,6 @@ class SettingRepository implements SettingContract
 
     /**
      * 转换 KEY
-     * @param $key
-     * @return string
      */
     private function convertKey($key): string
     {
@@ -215,8 +219,8 @@ class SettingRepository implements SettingContract
 
     /**
      * Returns a record (cached)
+     *
      * @param string $key 获取的key
-     * @return SysConfig|null
      */
     private function findRecord(string $key): ?SysConfig
     {

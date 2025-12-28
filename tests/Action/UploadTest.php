@@ -2,18 +2,17 @@
 
 namespace Weiran\System\Tests\Action;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Throwable;
 use Weiran\Framework\Application\TestCase;
 use Weiran\System\Classes\Contracts\FileContract;
 use Weiran\System\Classes\File\DefaultFileProvider;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Throwable;
 
 /**
  * 上传测试[本地上传测试]
  */
 class UploadTest extends TestCase
 {
-
     /**
      * 进行上传
      */
@@ -42,7 +41,8 @@ class UploadTest extends TestCase
             else {
                 $this->fail("Url {$url} 不可访问!");
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
@@ -77,20 +77,20 @@ class UploadTest extends TestCase
             else {
                 $this->fail("Url {$url} 不可访问!");
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }
 
     /**
      * heic转jpg上传
-     * @return void
      */
     public function testHeic2Jpg(): void
     {
         try {
-            $file       = weiran_path('weiran.system', 'tests/files/single.heic');
-            $image      = new UploadedFile($file, 'single.heic', null, null, true);
+            $file  = weiran_path('weiran.system', 'tests/files/single.heic');
+            $image = new UploadedFile($file, 'single.heic', null, null, true);
 
             /** @var DefaultFileProvider $Image */
             $Image = app(FileContract::class);
@@ -109,7 +109,8 @@ class UploadTest extends TestCase
             else {
                 $this->fail($Image->getError());
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             $this->fail($e->getMessage());
         }
     }

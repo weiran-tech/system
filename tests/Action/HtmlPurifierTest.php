@@ -7,14 +7,13 @@ namespace Weiran\System\Tests\Action;
 use File;
 use HTMLPurifier;
 use HTMLPurifier_Config;
-use Weiran\Framework\Application\TestCase;
 use Storage;
+use Weiran\Framework\Application\TestCase;
 
 class HtmlPurifierTest extends TestCase
 {
     /**
      * html净化
-     * @return void
      */
     public function testPurifier(): void
     {
@@ -37,9 +36,9 @@ class HtmlPurifierTest extends TestCase
         $Purifier = new HTMLPurifier($config);
         $new      = $Purifier->purify($old);
 
-        $this->assertFalse(strpos($new, "<script"));
-        $this->assertFalse(strpos($new, "<sCRiPt"));
-        $this->assertFalse(strpos($new, "<style"));
-        $this->assertFalse(strpos($new, "<iframe"));
+        $this->assertFalse(strpos($new, '<script'));
+        $this->assertFalse(strpos($new, '<sCRiPt'));
+        $this->assertFalse(strpos($new, '<style'));
+        $this->assertFalse(strpos($new, '<iframe'));
     }
 }

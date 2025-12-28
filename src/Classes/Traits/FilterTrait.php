@@ -8,20 +8,20 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\JsonResponse;
+use Response;
 use Weiran\Framework\Classes\Resp;
 use Weiran\Framework\Http\Pagination\PageInfo;
-use Response;
 
 /**
  * 对 filter 的封装, 进行页面返回
  */
 trait FilterTrait
 {
-
     /**
-     * @param Model           $Db 数据对象
+     * @param Model           $Db       数据对象
      * @param string|\Closure $resource 资源
-     * @param array           $append 增加
+     * @param array           $append   增加
+     *
      * @return JsonResponse
      */
     public static function paginationInfo($Db, $resource, $append = [])
@@ -82,8 +82,9 @@ trait FilterTrait
     }
 
     /**
-     * @param Builder  $query 查询条件
+     * @param Builder  $query    查询条件
      * @param PageInfo $pageInfo 分页
+     *
      * @return mixed
      */
     public function scopePageFilter($query, PageInfo $pageInfo)

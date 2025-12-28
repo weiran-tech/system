@@ -21,6 +21,7 @@ class DefaultApiSignProvider extends DefaultBaseApiSign
         ksort($params);
         $kvStr    = ArrayHelper::toKvStr($params);
         $signLong = md5(md5($kvStr) . $token);
+
         return $signLong[1] . $signLong[3] . $signLong[15] . $signLong[31];
     }
 }

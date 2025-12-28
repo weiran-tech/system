@@ -9,12 +9,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Psr\Http\Message\ResponseInterface;
 use Weiran\Framework\Application\Job;
 use Weiran\Framework\Exceptions\ApplicationException;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * 增强型的 Guzzle 调用
+ *
  * @since 4.1 , 传参遵循 guzzle options 加强自定义
  */
 class NotifyProJob extends Job implements ShouldQueue
@@ -38,19 +39,17 @@ class NotifyProJob extends Job implements ShouldQueue
 
     /**
      * 延迟总次数
-     * @var int
      */
     private int $delayTimes;
 
     /**
      * 默认的当前执行点位
-     * @var int
      */
     private int $execAt = 0;
 
-
     /**
      * 重发的延迟时间
+     *
      * @var array|int[]
      */
     private array $delayMap = [
@@ -59,16 +58,17 @@ class NotifyProJob extends Job implements ShouldQueue
 
     /**
      * 下一次执行点位
-     * @var int
      */
     private int $nextExecAt;
 
     /**
      * 统计用户计算数量
+     *
      * @param string $url         请求的URL 地址
      * @param string $method      请求的方法
      * @param array  $options     请求的参数
      * @param int    $delay_times 请求次数
+     *
      * @throws ApplicationException
      */
     public function __construct(string $url, string $method, array $options = [], int $delay_times = 0)
@@ -89,6 +89,7 @@ class NotifyProJob extends Job implements ShouldQueue
 
     /**
      * 执行
+     *
      * @throws ApplicationException
      */
     public function handle()
@@ -103,7 +104,8 @@ class NotifyProJob extends Job implements ShouldQueue
         try {
             $resp = $curl->request($this->method, $this->url, array_merge($options, $this->options));
             $this->log($resp);
-        } catch (GuzzleException $e) {
+        }
+        catch (GuzzleException $e) {
             if ($this->canDelay()) {
                 dispatch(
                     (new self($this->url, $this->method, $this->options, $this->delayTimes))
@@ -117,17 +119,17 @@ class NotifyProJob extends Job implements ShouldQueue
 
     /**
      * 设置执行次数
-     * @param $time
-     * @return self
      */
     public function setExecAt($time): self
     {
         $this->execAt = $time;
+
         return $this;
     }
 
     /**
      * 是否可以延迟执行
+     *
      * @return void
      */
     private function canDelay(): bool
@@ -138,14 +140,14 @@ class NotifyProJob extends Job implements ShouldQueue
         }
 
         $this->nextExecAt = $this->execAt + 1;
+
         return true;
     }
 
     /**
      * 生成记录日志
+     *
      * @param GuzzleException|ResponseInterface $result
-     * @param bool                              $is_success
-     * @return void
      */
     private function log($result, bool $is_success = true): void
     {

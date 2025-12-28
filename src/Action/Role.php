@@ -19,20 +19,17 @@ use Weiran\System\Models\PamRoleAccount;
  */
 class Role
 {
-    use AppTrait, PamTrait, CoreTrait;
+    use AppTrait, CoreTrait, PamTrait;
 
-    /**
-     * @var PamRole
-     */
     protected PamRole $role;
 
     /**
      * 创建需求
+     *
      * @param array    $data 创建数据
      * @param null|int $id   角色id
-     * @return bool
      */
-    public function establish(array $data, int $id = null): bool
+    public function establish(array $data, ?int $id = null): bool
     {
         $initDb = [
             'title'       => (string) Arr::get($data, 'title', ''),
@@ -57,9 +54,9 @@ class Role
 
     /**
      * 保存权限
+     *
      * @param array $permission_ids 所有的权限列表
      * @param int   $role_id        角色ID
-     * @return bool
      */
     public function savePermission(int $role_id, array $permission_ids): bool
     {
@@ -106,8 +103,10 @@ class Role
 
     /**
      * 获取所有权限以及默认值
+     *
      * @param int  $id      角色id
      * @param bool $has_key 是否有值
+     *
      * @return array|bool
      */
     public function permissions(int $id, bool $has_key = true)
@@ -187,8 +186,9 @@ class Role
 
     /**
      * 删除数据
+     *
      * @param int $id 角色id
-     * @return bool
+     *
      * @throws Exception
      */
     public function delete(int $id): bool
@@ -211,6 +211,7 @@ class Role
         $this->role->syncPermission([]);
         // 删除角色
         $this->role->delete();
+
         return true;
     }
 }

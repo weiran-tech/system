@@ -23,7 +23,6 @@ use Weiran\System\Http\Request\Web\Validation\UploadImageRequest;
  */
 class UploadController extends JwtApiController
 {
-
     #[OA\Post(
         path: '/api/web/system/v1/upload/image',
         summary: '图片上传',
@@ -40,7 +39,7 @@ class UploadController extends JwtApiController
                 response: 200,
                 description: '图片上传',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function image(UploadImageRequest $request): Response|JsonResponse|RedirectResponse
@@ -119,7 +118,8 @@ class UploadController extends JwtApiController
                     if ($file->saveInput($content)) {
                         $urls[] = $file->getUrl();
                     }
-                } catch (Throwable) {
+                }
+                catch (Throwable) {
                     continue;
                 }
             }
@@ -135,11 +135,13 @@ class UploadController extends JwtApiController
                         'href' => '',
                     ];
                 });
+
                 return response()->json([
                     'errno' => 0,
                     'data'  => $data->toArray(),
                 ]);
             }
+
             return Resp::success('上传成功', [
                 'url' => $urls,
             ]);
@@ -150,6 +152,7 @@ class UploadController extends JwtApiController
                 'message' => $file->getError(),
             ]);
         }
+
         return Resp::error($file->getError());
     }
 
@@ -172,7 +175,7 @@ class UploadController extends JwtApiController
                 response: 200,
                 description: '上传成功',
                 content: new OA\JsonContent(ref: ResponseBaseBody::class)
-            )
+            ),
         ]
     )]
     public function file(UploadFileRequest $request): Response|JsonResponse|RedirectResponse
@@ -211,7 +214,6 @@ class UploadController extends JwtApiController
 
         return Resp::error($Uploader->getError());
     }
-
 
     private function demo(): Response|JsonResponse|RedirectResponse
     {

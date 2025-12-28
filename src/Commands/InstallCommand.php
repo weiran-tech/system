@@ -14,12 +14,14 @@ class InstallCommand extends Command
 {
     /**
      * 前端部署.
+     *
      * @var string
      */
     protected $signature = 'system:install';
 
     /**
      * 描述
+     *
      * @var string
      */
     protected $description = 'Install system module.';

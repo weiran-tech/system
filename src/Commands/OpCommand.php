@@ -27,6 +27,7 @@ class OpCommand extends Command
                 $secret = (string) $this->option('secret');
                 if (strlen($secret) !== 32) {
                     $this->warn(sys_gen_mk('system.op', '密钥 [--secret] 长度必须是 32 位长度'));
+
                     return 0;
                 }
                 $this->writeNewEnvironmentFileWith($secret);
@@ -39,15 +40,12 @@ class OpCommand extends Command
                 $this->warn(sys_gen_mk('system.op', '错误的 action'));
                 break;
         }
+
         return 0;
     }
 
-
     /**
      * Write a new environment file with the given key.
-     *
-     * @param string $key
-     * @return void
      */
     protected function writeNewEnvironmentFileWith(string $key): void
     {
@@ -60,12 +58,11 @@ class OpCommand extends Command
 
     /**
      * Get a regex pattern that will match env APP_KEY with any random key.
-     *
-     * @return string
      */
     protected function keyReplacementPattern(): string
     {
         $escaped = preg_quote('=' . $this->laravel['config']['weiran.system.secret'], '/');
+
         return "/^WEIRAN_SECRET{$escaped}/m";
     }
 }

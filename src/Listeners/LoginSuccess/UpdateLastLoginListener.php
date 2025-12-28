@@ -25,4 +25,3 @@ class UpdateLastLoginListener
         $pam->save();
     }
 }
-

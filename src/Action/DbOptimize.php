@@ -13,10 +13,8 @@ use Weiran\System\Classes\WeiranSystemDef;
  */
 class DbOptimize
 {
-
     /**
      * 是否开启
-     * @return bool
      */
     public function isOpen(): bool
     {
@@ -69,8 +67,7 @@ class DbOptimize
             'bindings' => $event->bindings,
             'time'     => $event->time,
         ]);
+
         return true;
     }
-
-
 }

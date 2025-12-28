@@ -52,7 +52,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-auth_session',
         ]);
 
-
         /*
         |--------------------------------------------------------------------------
         | Api Middleware
@@ -72,7 +71,6 @@ class MiddlewareServiceProvider extends ServiceProvider
             'sys-sso',          // 单点登录
             'sys-auth:jwt_web', // 用户登录
         ]);
-
 
         // cors for api
         /** @var \Illuminate\Foundation\Http\Kernel $kernelContract */

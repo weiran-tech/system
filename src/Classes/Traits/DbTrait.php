@@ -13,13 +13,14 @@ use Weiran\Framework\Classes\ConsoleTable;
  */
 trait DbTrait
 {
-
     /**
      * 对数据进行批量设置
+     *
      * @param string                       $table  表名
      * @param array<int|string,int|string> $values 排序信息
      * @param string                       $field  需要批量更新的字段
      * @param string                       $key    key
+     *
      * @return void
      */
     public function fieldVals(string $table, array $values, string $field, string $key = 'id')
@@ -34,11 +35,14 @@ trait DbTrait
 
     /**
      * 更新数据库字段值
+     *
      * @param string $table 数据表名称
      * @param int    $id    ID
      * @param string $field 更新字段
      * @param string $val   更新值
+     *
      * @see        fieldVals
+     *
      * @deprecated 4.1
      */
     public function fieldVal(string $table, int $id, string $field, string $val)
@@ -50,7 +54,6 @@ trait DbTrait
 
     /**
      * 检查当前是否是在事务中
-     * @return bool
      */
     protected function inTransaction(): bool
     {
@@ -71,6 +74,7 @@ trait DbTrait
 
     /**
      * 禁用查询日志
+     *
      * @since 4.1
      */
     protected function disableQueryLog(): void
@@ -80,6 +84,7 @@ trait DbTrait
 
     /**
      * 重新启用查询日志
+     *
      * @since 4.1
      */
     protected function reEnableQueryLog(): void
@@ -91,7 +96,6 @@ trait DbTrait
 
     /**
      * 获取SqlLog
-     * @return array
      */
     protected function fetchQueryLog(): array
     {
@@ -113,13 +117,16 @@ trait DbTrait
                     $query, $time,
                 ];
             }
+
             return $formats;
         }
+
         return $logs;
     }
 
     /**
      * SQL Log 提示
+     *
      * @since 4.1
      */
     protected function printQueryLog(): void

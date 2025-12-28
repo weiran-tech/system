@@ -10,7 +10,6 @@ use Weiran\System\Action\Verification;
 
 class CaptchaSendRequest extends Request
 {
-
     public function getPassport()
     {
         return $this->input('passport', '');
@@ -31,8 +30,6 @@ class CaptchaSendRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

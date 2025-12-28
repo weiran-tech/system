@@ -13,7 +13,6 @@ use Weiran\System\Models\PamAccount;
  */
 abstract class MobileController extends Controller
 {
-
     /**
      * @var PamAccount 用户账户
      */
@@ -36,6 +35,7 @@ abstract class MobileController extends Controller
                 app('auth')->shouldUse(PamAccount::GUARD_WEB);
             }
             $this->pam = Auth::user();
+
             return $next($request);
         });
     }

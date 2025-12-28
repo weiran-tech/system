@@ -35,7 +35,6 @@ use Weiran\Framework\Validation\Rule;
 )]
 class AuthPasswordRequest extends Request
 {
-
     public function attributes(): array
     {
         return [
@@ -45,8 +44,6 @@ class AuthPasswordRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

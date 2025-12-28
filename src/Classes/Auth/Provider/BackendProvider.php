@@ -11,9 +11,8 @@ use Weiran\System\Models\PamAccount;
  */
 class BackendProvider extends PamProvider
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveById($identifier)
     {
@@ -22,11 +21,12 @@ class BackendProvider extends PamProvider
         if ($user && $user->type !== PamAccount::TYPE_BACKEND) {
             return null;
         }
+
         return $user;
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function retrieveByCredentials(array $credentials)
     {

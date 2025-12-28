@@ -17,9 +17,6 @@ class LoginBannedEvent
      */
     public PamAccount $pam;
 
-    /**
-     * @var string
-     */
     public string $guard;
 
     public function __construct(PamAccount $pam, string $guard)

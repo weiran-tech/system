@@ -15,9 +15,6 @@ use Weiran\System\Models\PamBan;
  */
 class BanTest extends TestCase
 {
-
-    /**
-     */
     public function testIpv4Command(): void
     {
         $ips = $this->genIps();
@@ -31,14 +28,12 @@ class BanTest extends TestCase
         }
         $this->removeIps($ips);
 
-
         // 错误 IP
         $code = Artisan::call('weiran:system:ban', [
             'type'  => 'backend',
             'value' => 'error-ip',
         ]);
         $this->assertEquals(1, $code);
-
 
         // 错误的用户类型
         $code = Artisan::call('weiran:system:ban', [
@@ -48,18 +43,17 @@ class BanTest extends TestCase
         $this->assertEquals(1, $code);
     }
 
-
     /**
      * Ip 测试
      */
     public function testIpv4Matched(): void
     {
         $ips = [
-            "136.60.196.79",
-            "10.205.182.1-10.205.182.254",
-            "172.31.204.*",
-            "172.20.76.100",
-            "192.168.81.1/24",
+            '136.60.196.79',
+            '10.205.182.1-10.205.182.254',
+            '172.31.204.*',
+            '172.20.76.100',
+            '192.168.81.1/24',
         ];
 
         $this->clearIps($ips);
@@ -95,7 +89,6 @@ class BanTest extends TestCase
 
     /**
      * 添加随机IP 范围
-     * @return void
      */
     public function testCreate(): void
     {
@@ -127,11 +120,11 @@ class BanTest extends TestCase
     private function genIps(): array
     {
         return [
-            "30.92.252.134",
-            "192.168.20.1-192.168.20.254",
-            "10.66.191.*",
-            "192.168.45.147",
-            "10.243.162.1/24",
+            '30.92.252.134',
+            '192.168.20.1-192.168.20.254',
+            '10.66.191.*',
+            '192.168.45.147',
+            '10.243.162.1/24',
         ];
     }
 
@@ -139,15 +132,14 @@ class BanTest extends TestCase
     {
         try {
             PamBan::where('account_type', 'user')->whereIn('value', $ips)->delete();
-        } catch (Exception $e) {
+        }
+        catch (Exception $e) {
             $this->fail($e->getMessage());
         }
     }
 
     /**
      * 移除 IP
-     * @param $ips
-     * @return void
      */
     private function removeIps($ips): void
     {

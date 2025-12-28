@@ -12,9 +12,6 @@ class DefaultConfig
 {
     protected static array $config = [];
 
-    /**
-     * @return array
-     */
     public static function get(): array
     {
         return self::$config ?: self::default();

@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Classes\Traits;
 
+use Throwable;
 use Weiran\Framework\Classes\Number;
 use Weiran\Framework\Exceptions\ArithmeticException;
-use Throwable;
 
 /**
  * Numbers Helpers
@@ -15,10 +15,9 @@ trait NumberTrait
 {
     /**
      * 数值相加
+     *
      * @param mixed $a 需要叠加的数据
      * @param mixed $b 需要叠加的数据
-     * @param int   $scale
-     * @return string
      */
     public function numberAdd($a, $b, int $scale = 2): string
     {
@@ -27,10 +26,9 @@ trait NumberTrait
 
     /**
      * 减法
+     *
      * @param mixed $a 需要叠加的数据
      * @param mixed $b 需要叠加的数据
-     * @param int   $scale
-     * @return string
      */
     public function numberSubtract($a, $b, int $scale = 2): string
     {
@@ -39,10 +37,9 @@ trait NumberTrait
 
     /**
      * 乘法计算
+     *
      * @param mixed $a 需要叠加的数据
      * @param mixed $b 需要叠加的数据
-     * @param int   $scale
-     * @return string
      */
     public function numberMultiply($a, $b, int $scale = 2): string
     {
@@ -51,32 +48,33 @@ trait NumberTrait
 
     /**
      * 除法
+     *
      * @param mixed $a     除数
      * @param mixed $b     被除数
      * @param int   $scale 精度
-     * @return string
      */
     public function numberDivide($a, $b, int $scale = 2): string
     {
         try {
             return (new Number($a, $scale))->divide($b)->getValue();
-        } catch (ArithmeticException $e) {
+        }
+        catch (ArithmeticException $e) {
             return '0.00';
         }
     }
 
     /**
      * 计算费率
+     *
      * @param mixed $amount   金额
      * @param mixed $fee_rate 费率
-     * @param int   $scale
-     * @return string
      */
     public function numberFee($amount, $fee_rate = 0.0, int $scale = 2): string
     {
         try {
             return (new Number($amount, $scale))->multiply($fee_rate)->divide(100)->getValue();
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             return '0.00';
         }
     }
@@ -88,8 +86,6 @@ trait NumberTrait
      *
      * @param mixed $a 数值a
      * @param mixed $b 数值b
-     * @param int   $scale
-     * @return int
      */
     public function numberCompare($a, $b, int $scale = 2): int
     {
@@ -101,8 +97,7 @@ trait NumberTrait
      * Returns the current raw value of this BigNumber
      *
      * @param mixed $a 数值a
-     * @param int   $precision
-     * @param int   $scale
+     *
      * @return string String representation of the number in base 10
      */
     public function numberRound($a, int $precision = 0, int $scale = 2): string

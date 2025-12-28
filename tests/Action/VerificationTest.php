@@ -5,15 +5,10 @@ declare(strict_types = 1);
 namespace Weiran\System\Tests\Action;
 
 use Weiran\Framework\Application\TestCase;
-use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Action\Verification;
 
 class VerificationTest extends TestCase
 {
-
-    /**
-     * @throws ApplicationException
-     */
     public function testCaptcha(): void
     {
         $Verification = new Verification();
@@ -30,7 +25,6 @@ class VerificationTest extends TestCase
         $Verification->genCaptcha($mobile, 5, 4);
         $captcha = $Verification->getCaptcha();
         $this->assertEquals(4, strlen($captcha));
-
 
         $mobile = $this->faker()->phoneNumber;
         $Verification->genCaptcha($mobile, 5, 4);

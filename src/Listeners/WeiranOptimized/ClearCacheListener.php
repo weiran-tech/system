@@ -11,7 +11,6 @@ use Weiran\Framework\Events\WeiranOptimized;
  */
 class ClearCacheListener
 {
-
     /**
      * @param WeiranOptimized $event 框架优化
      */
@@ -21,4 +20,3 @@ class ClearCacheListener
         sys_tag('weiran-system')->clear();
     }
 }
-

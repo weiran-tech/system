@@ -7,7 +7,6 @@ use OpenApi\Attributes as OA;
 #[OA\Schema()]
 abstract class ResponseBaseBody
 {
-
     #[OA\Property(
         description: '状态码',
         type: 'integer',

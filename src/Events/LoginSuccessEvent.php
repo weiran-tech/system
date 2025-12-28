@@ -16,14 +16,10 @@ class LoginSuccessEvent
      */
     public PamAccount $pam;
 
-    /**
-     * @var string
-     */
     public string $guard;
 
     /**
      * 来源
-     * @var string
      */
     public string $type;
 

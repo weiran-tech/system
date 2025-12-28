@@ -12,10 +12,8 @@ use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 
 class WeiranSystemDef
 {
-
     /**
      * [user-setting-key]:账号
-     * @return string
      */
     public static function uskAccount(): string
     {
@@ -24,8 +22,6 @@ class WeiranSystemDef
 
     /**
      * 数据库优化的存储 KEY
-     * @param $table
-     * @return string
      */
     public static function ckDbOptimize($table): string
     {
@@ -34,7 +30,6 @@ class WeiranSystemDef
 
     /**
      * 设置
-     * @return string
      */
     public static function ckSetting(): string
     {
@@ -43,7 +38,6 @@ class WeiranSystemDef
 
     /**
      * 设置
-     * @return string
      */
     public static function ckPamRelParent(): string
     {
@@ -52,7 +46,6 @@ class WeiranSystemDef
 
     /**
      * 一次验证码(永久保存)
-     * @return string
      */
     public static function ckPersistVerificationOnce(): string
     {
@@ -61,7 +54,6 @@ class WeiranSystemDef
 
     /**
      * 自定义验证(永久保存)
-     * @return string
      */
     public static function ckPersistVerificationWord(): string
     {
@@ -70,8 +62,6 @@ class WeiranSystemDef
 
     /**
      * 验证码 KEY(持久保存)
-     * @param string $key
-     * @return string
      */
     public static function ckPersistVerificationCaptcha(string $key): string
     {
@@ -80,7 +70,6 @@ class WeiranSystemDef
 
     /**
      * 允许访问的单点登录的 Hash(永久保存)
-     * @return string
      */
     public static function ckPersistSsoValid(): string
     {
@@ -89,8 +78,8 @@ class WeiranSystemDef
 
     /**
      * 用户单一设备禁用
+     *
      * @param string $type 账号类型
-     * @return string
      */
     public static function ckBanOne(string $type): string
     {
@@ -99,18 +88,15 @@ class WeiranSystemDef
 
     /**
      * Ip 范围
-     * @param string $type
-     * @return string
      */
     public static function ckBanIpRange(string $type): string
     {
         return 'ban-ip-range-' . $type;
     }
 
-
     /**
      * 填充邮箱配置
-     * @return void
+     *
      * @throws JsonException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface

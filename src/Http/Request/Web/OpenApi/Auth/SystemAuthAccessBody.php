@@ -21,7 +21,7 @@ class SystemAuthAccessBody extends ResponseBaseBody
             new OA\Property(property: 'is_enable', description: '是否启用(Y|N)', type: 'string'),
             new OA\Property(property: 'disable_reason', description: '禁用原因', type: 'string'),
             new OA\Property(property: 'created_at', description: '创建时间', type: 'string'),
-            new OA\Property(property: 'updated_at', description: '更新时间', type: 'string')
+            new OA\Property(property: 'updated_at', description: '更新时间', type: 'string'),
         ],
         type: 'object'
     )]

@@ -9,7 +9,6 @@ use Weiran\System\Classes\File\FileManager;
 
 class FileManagerTest extends TestCase
 {
-
     public function testResizedSize(): void
     {
 
@@ -20,14 +19,12 @@ class FileManagerTest extends TestCase
         $result    = FileManager::resizedSize($width, $height, $minResize, null);
         $this->assertSame([980, null, true], [$result['width'], $result['height'], $result['resize']]);
 
-
         // 短边是高度
         $width     = 2100;
         $height    = 1800;
         $minResize = 1080;
         $result    = FileManager::resizedSize($width, $height, $minResize, null);
         $this->assertSame([null, 1080, true], [$result['width'], $result['height'], $result['resize']]);
-
 
         // 正方形, 先以高度作为限定
         $width     = 2200;

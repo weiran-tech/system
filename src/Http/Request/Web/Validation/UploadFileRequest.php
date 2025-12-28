@@ -35,7 +35,6 @@ use Weiran\Framework\Validation\Rule;
 )]
 class UploadFileRequest extends Request
 {
-
     public function getType(): string
     {
         return (string) $this->input('type', 'audio');
@@ -45,7 +44,6 @@ class UploadFileRequest extends Request
     {
         return (string) $this->input('folder', 'default');
     }
-
 
     public function getFile(): array|UploadedFile|null
     {
@@ -63,23 +61,21 @@ class UploadFileRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {
         return [
             'file'   => [
                 Rule::required(),
-                Rule::file()
+                Rule::file(),
             ],
             'type'   => [
                 Rule::required(),
-                Rule::in(['audio', 'video', 'file'])
+                Rule::in(['audio', 'video', 'file']),
             ],
             'folder' => [
                 Rule::string(),
-                Rule::regex('/^([a-z-]+)$/i')
+                Rule::regex('/^([a-z-]+)$/i'),
             ],
         ];
     }

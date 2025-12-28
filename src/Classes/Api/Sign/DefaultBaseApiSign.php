@@ -24,7 +24,6 @@ abstract class DefaultBaseApiSign implements ApiSignContract
 
     /**
      * 默认时间戳
-     * @return int
      */
     public static function timestamp(): int
     {
@@ -65,8 +64,10 @@ abstract class DefaultBaseApiSign implements ApiSignContract
                     'token' => jwt_token(),
                 ],
             ]);
+
             return $this->setError(new Resp(Resp::SIGN_ERROR, '签名错误'));
         }
+
         return true;
     }
 
@@ -78,6 +79,7 @@ abstract class DefaultBaseApiSign implements ApiSignContract
                 $excepts[$key] = $param;
             }
         }
+
         return Arr::except($excepts, [
             'sign', 'image', 'file', 'token',
         ]);

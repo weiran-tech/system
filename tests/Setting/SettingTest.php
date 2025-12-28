@@ -5,6 +5,9 @@ declare(strict_types = 1);
 namespace Weiran\System\Tests\Setting;
 
 use Exception;
+use JsonException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Weiran\Framework\Application\TestCase;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Exceptions\SettingKeyNotMatchException;
@@ -13,10 +16,10 @@ use Weiran\System\Setting\Repository\SettingRepository;
 
 class SettingTest extends TestCase
 {
-
     /**
+     * @throws JsonException
      * @throws SettingKeyNotMatchException
-     * @throws SettingValueOutOfRangeException|ApplicationException
+     * @throws SettingValueOutOfRangeException
      */
     public function testItem(): void
     {
@@ -30,6 +33,11 @@ class SettingTest extends TestCase
 
     /**
      * @throws ApplicationException
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     * @throws JsonException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function testGet(): void
     {
@@ -90,17 +98,15 @@ class SettingTest extends TestCase
     /**
      * @throws Exception
      */
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         app('weiran.system.setting')->removeNG('testing::set');
     }
 
-    /**
-     * @throws ApplicationException
-     */
-    private function randKey($group = ''): string
+    private function randKey(string $group = ''): string
     {
         $faker = $this->faker();
+
         return 'testing::' . ($group ?: $faker->regexify('[a-z]{3,5}')) . '.' . $faker->regexify('/[a-z]{5,8}/');
     }
 }

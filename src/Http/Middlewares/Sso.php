@@ -24,7 +24,8 @@ class Sso
                 return response('Unauthorized Jwt.', 401);
             }
             // 这里会抛出异常, IDE 提示不正确
-        } catch (Exception) {
+        }
+        catch (Exception) {
             return response('Unauthorized Jwt. Sso check token invalid', 401);
         }
 
@@ -49,6 +50,7 @@ class Sso
         if (array_key_exists($md5Token, $devices)) {
             return $next($request);
         }
+
         return response('Unauthorized Jwt, Token unValid.', 401);
     }
 }

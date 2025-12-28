@@ -9,20 +9,21 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use Weiran\Framework\Classes\Resp;
 use Request;
+use Weiran\Framework\Classes\Resp;
 
 /**
  * Class Helpers.
+ *
  * @see        \Weiran\Framework\Classes\Traits\PjaxTrait
+ *
  * @deprecated 5.0
  */
 trait PjaxTrait
 {
-
     /**
      * Pjax 请求错误
-     * @param string $message
+     *
      * @return Application|ResponseFactory|JsonResponse|RedirectResponse|Response
      */
     public function pjaxError(string $message)

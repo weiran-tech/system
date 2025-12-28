@@ -17,6 +17,7 @@ class InitToDbListener
 {
     /**
      * @param PermissionInitEvent $event 登录成功
+     *
      * @throws Exception
      */
     public function handle(PermissionInitEvent $event): void
@@ -48,4 +49,3 @@ class InitToDbListener
         $role?->syncPermission($permissions);
     }
 }
-

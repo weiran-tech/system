@@ -12,22 +12,20 @@ class ConfigTest extends TestCase
 {
     /**
      * 测试存在 Public Storage
-     * @return void
      */
     public function testHasPublicStorage(): void
     {
         try {
             app('filesystem')->disk('public');
             $this->assertTrue(true);
-        } catch (InvalidArgumentException $e) {
+        }
+        catch (InvalidArgumentException $e) {
             $this->fail('disk `public` not exist, you need define `public` directory for local upload');
         }
     }
 
-
     /**
      * 测试验证码注册的开关
-     * @return void
      */
     public function testSystemCaptchaRegister(): void
     {

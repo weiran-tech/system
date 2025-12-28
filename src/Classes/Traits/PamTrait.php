@@ -13,15 +13,11 @@ use Weiran\System\Models\PamAccount;
  */
 trait PamTrait
 {
-
     /**
      * @var PamAccount;
      */
     protected $pam;
 
-    /**
-     * @return PamAccount
-     */
     public function getPam(): PamAccount
     {
         return $this->pam;
@@ -29,8 +25,11 @@ trait PamTrait
 
     /**
      * Set Pam Account.
+     *
      * @param PamAccount|Authenticatable|int $pam 用户
+     *
      * @return $this|PamTrait
+     *
      * @noinspection PhpMissingReturnTypeInspection
      */
     public function setPam($pam)
@@ -47,7 +46,6 @@ trait PamTrait
 
     /**
      * 检查 pam 用户
-     * @return bool
      */
     public function checkPam(): bool
     {
@@ -60,8 +58,8 @@ trait PamTrait
 
     /**
      * 检测当前用户是否存在权限
+     *
      * @param string $permission_key 权限KEY
-     * @return bool
      */
     public function checkPermission(string $permission_key): bool
     {

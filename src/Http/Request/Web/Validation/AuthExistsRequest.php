@@ -20,7 +20,6 @@ use Weiran\Framework\Validation\Rule;
 )]
 class AuthExistsRequest extends Request
 {
-
     public function getPassport(): string
     {
         return (string) $this->get('passport');

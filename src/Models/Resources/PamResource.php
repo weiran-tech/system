@@ -13,9 +13,8 @@ use Weiran\System\Models\SysConfig;
  */
 class PamResource extends JsonResource
 {
-
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function toArray($request): array
     {

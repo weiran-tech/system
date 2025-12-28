@@ -9,7 +9,6 @@ use Weiran\Framework\Validation\Rule;
 
 class AuthConfirmedPasswordRequest extends Request
 {
-
     public function attributes(): array
     {
         return [
@@ -19,8 +18,6 @@ class AuthConfirmedPasswordRequest extends Request
 
     /**
      * Get the validation rules that apply to the request.
-     *
-     * @return array
      */
     public function rules(): array
     {

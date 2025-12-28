@@ -12,24 +12,23 @@ use Weiran\System\Models\PamRole;
  */
 class TestingRole
 {
-
     /**
      * 获取随机角色
-     * @return PamRole
      */
     public static function randUser(): PamRole
     {
         $Db = PamRole::where('type', PamAccount::TYPE_USER)->inRandomOrder();
+
         return $Db->first();
     }
 
     /**
      * 获取随机后台账号
-     * @return PamRole
      */
     public static function randBackend(): PamRole
     {
         $Db = PamRole::where('type', PamAccount::TYPE_BACKEND)->inRandomOrder();
+
         return $Db->first();
     }
 }

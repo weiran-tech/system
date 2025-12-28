@@ -7,8 +7,7 @@ use Weiran\Framework\Application\TestCase;
 
 class ServicesTest extends TestCase
 {
-
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

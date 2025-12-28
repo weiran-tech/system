@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Tests\Models;
 
+use Throwable;
 use Weiran\Core\Classes\WeiranCoreDef;
 use Weiran\Framework\Application\TestCase;
 use Weiran\Framework\Exceptions\ApplicationException;
@@ -13,14 +14,12 @@ use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Tests\Testing\TestingPam;
 use Weiran\System\Tests\Testing\TestingRole;
-use Throwable;
 
 class RbacTest extends TestCase
 {
     use DbTrait;
 
     /**
-     * @return void
      * @throws ApplicationException
      * @throws Throwable
      */
@@ -57,7 +56,6 @@ class RbacTest extends TestCase
         // 缓存存在
         $this->assertTrue(sys_tag('weiran-core-rbac')->exists($key));
     }
-
 
     public function testPermissions()
     {

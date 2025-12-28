@@ -8,11 +8,9 @@ use Weiran\System\Classes\File\FileManager;
 
 /**
  * 图片上传类
+ *
  * @see        FileManager
+ *
  * @deprecated 4.0-dev
  */
-class Uploader extends FileManager
-{
-
-
-}
+class Uploader extends FileManager {}

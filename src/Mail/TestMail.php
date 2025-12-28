@@ -17,14 +17,11 @@ class TestMail extends Mailable
 
     /**
      * 发送内容
-     * @var string
      */
     public string $content;
 
     /**
      * Create a new message instance.
-     *
-     * @param string $content
      */
     public function __construct(string $content = '')
     {

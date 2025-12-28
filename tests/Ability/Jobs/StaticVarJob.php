@@ -19,12 +19,12 @@ class StaticVarJob extends Job implements ShouldQueue
 
     /**
      * 脚本目录
-     * @var int $shellPath
      */
     private int $var;
 
     /**
      * Create a new job instance.
+     *
      * @param int $appendVar 追加的变量
      */
     public function __construct(int $appendVar)
@@ -34,7 +34,6 @@ class StaticVarJob extends Job implements ShouldQueue
 
     /**
      * Execute the job.
-     * @return void
      */
     public function handle(): void
     {

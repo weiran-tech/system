@@ -16,9 +16,6 @@ class PamRebindEvent
      */
     public $pam;
 
-    /**
-     * @param PamAccount $pam
-     */
     public function __construct(PamAccount $pam)
     {
         $this->pam = $pam;

@@ -7,7 +7,6 @@ return [
     'web_layout_index'  => '页面布局',
     'web_res_translate' => '翻译信息',
 
-
     /* 其他操作
      * ---------------------------------------- */
     'util_captcha_send' => '发送验证码',

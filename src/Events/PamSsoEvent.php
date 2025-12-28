@@ -13,9 +13,6 @@ use Weiran\System\Models\PamToken;
  */
 class PamSsoEvent
 {
-    /**
-     * @var PamAccount
-     */
     public PamAccount $pam;
 
     /**
@@ -25,7 +22,7 @@ class PamSsoEvent
 
     /**
      * PamDisableEvent constructor.
-     * @param PamAccount            $pam
+     *
      * @param Collection|PamToken[] $tokens
      */
     public function __construct(PamAccount $pam, $tokens)
@@ -33,5 +30,4 @@ class PamSsoEvent
         $this->pam    = $pam;
         $this->tokens = $tokens;
     }
-
 }

@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Weiran\System\Http\Middlewares;
 
 use Closure;
-use Weiran\System\Models\PamAccount;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
+use Weiran\System\Models\PamAccount;
 
 /**
  * Jwt 校验
@@ -35,6 +35,7 @@ class JwtAuthenticate extends BaseMiddleware
                 return response('Unauthorized Jwt.', 401);
             }
         }
+
         return $next($request);
     }
 }

@@ -13,21 +13,23 @@ use Weiran\Framework\Database\Eloquent\LegacySerializeData;
 
 /**
  * 用户角色
- * @property int                             $id          ID
- * @property string                          $name        标识
- * @property string                          $title       角色名称
- * @property string                          $description 描述
- * @property string                          $type        角色组
- * @property bool                            $is_system   是否系统
- * @property int                             $is_enable   是否可用
+ *
+ * @property int    $id          ID
+ * @property string $name        标识
+ * @property string $title       角色名称
+ * @property string $description 描述
+ * @property string $type        角色组
+ * @property bool   $is_system   是否系统
+ * @property int    $is_enable   是否可用
+ *
  * @property-read Collection|PamPermission[] $perms
  * @property-read Collection|PamAccount[]    $users
+ *
  * @mixin Eloquent
  */
 class PamRole extends Model implements RbacRoleContract
 {
-    use RbacRoleTrait, LegacySerializeData;
-
+    use LegacySerializeData, RbacRoleTrait;
     public const BE_ROOT = 'root';      // admin user
     public const FE_USER = 'user';      // web user
 
@@ -45,7 +47,9 @@ class PamRole extends Model implements RbacRoleContract
 
     /**
      * 通过角色来获取账户类型, 由于角色在单条处理中不会存在变化, 故而可以进行静态缓存
+     *
      * @param int $role_id 角色id
+     *
      * @return mixed
      */
     public static function getAccountTypeByRoleId($role_id)
@@ -60,9 +64,9 @@ class PamRole extends Model implements RbacRoleContract
 
     /**
      * 返回一维的角色对应
+     *
      * @param null|string $type 类型
      * @param string      $key  key
-     * @return Collection
      */
     public static function getLinear($type = null, $key = 'id'): Collection
     {
@@ -71,8 +75,10 @@ class PamRole extends Model implements RbacRoleContract
 
     /**
      * 根据账户类型获取角色
+     *
      * @param string|null $accountType 账户类型
      * @param bool        $cache       是否缓存
+     *
      * @return array
      */
     public static function getAll($accountType = null, $cache = true)
@@ -93,9 +99,11 @@ class PamRole extends Model implements RbacRoleContract
 
     /**
      * 获取角色信息
+     *
      * @param int  $id    角色id
      * @param null $key   key
      * @param bool $cache 是否缓存
+     *
      * @return null
      */
     public static function info($id, $key = null, $cache = true)

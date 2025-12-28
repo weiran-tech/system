@@ -21,6 +21,7 @@ class UserCommand extends Command
 {
     /**
      * 前端部署.
+     *
      * @var string
      */
     protected $signature = 'system:user 
@@ -32,13 +33,16 @@ class UserCommand extends Command
 
     /**
      * 描述
+     *
      * @var string
      */
     protected $description = 'user handler.';
 
     /**
      * Execute the console command.
+     *
      * @return void
+     *
      * @throws Throwable
      */
     public function handle()
@@ -121,6 +125,7 @@ class UserCommand extends Command
             case 'auto_enable':
                 if (!sys_setting('weiran-system::pam.auto_enable')) {
                     $this->info(sys_gen_mk(self::class, 'auto enable disabled!'));
+
                     return;
                 }
                 (new Pam())->autoEnable();
@@ -154,7 +159,6 @@ class UserCommand extends Command
         }
     }
 
-
     /**
      * 将权限赋值给指定的用户组
      */
@@ -174,12 +178,12 @@ class UserCommand extends Command
         $permissions = (new PamPermission())::where('type', $type)->get();
         if (!$permissions) {
             $this->error(sys_gen_mk(self::class, 'Permission type [' . $type . '] has no permissions !'));
+
             return;
         }
         $role->syncPermission($permissions);
         $this->info(sys_gen_mk(self::class, "Save [{$type}] permission to role [{$name}] !"));
     }
-
 
     /**
      * 将角色赋值给指定的用户
@@ -191,18 +195,19 @@ class UserCommand extends Command
 
         if (!$role) {
             $this->error(sys_gen_mk(self::class, 'Role [' . $role . '] not exists in table !'));
+
             return;
         }
 
         $pam = PamAccount::passport($passport);
         if (!$pam) {
             $this->error(sys_gen_mk(self::class, 'No such pam account !'));
+
             return;
         }
         $pam->attachRole($role);
         $this->info(sys_gen_mk(self::class, "Save [{$role->id}, {$role->type}] role to account [{$passport}] !"));
     }
-
 
     /**
      * @param string $permission 需要检测的权限
