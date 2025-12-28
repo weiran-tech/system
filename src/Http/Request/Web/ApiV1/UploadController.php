@@ -14,6 +14,7 @@ use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Classes\Contracts\FileContract;
 use Weiran\System\Classes\File\DefaultFileProvider;
+use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
 use Weiran\System\Http\Request\Web\Validation\UploadFileRequest;
 use Weiran\System\Http\Request\Web\Validation\UploadImageRequest;
 
@@ -31,7 +32,7 @@ class UploadController extends JwtApiController
             content: [
                 new OA\MediaType(
                     mediaType: 'multipart/form-data',
-                    schema: new OA\Schema(ref: '#/components/schemas/SystemUploadImageRequest')
+                    schema: new OA\Schema(ref: UploadImageRequest::class)
                 ),
             ]
         ),
@@ -40,7 +41,7 @@ class UploadController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '图片上传',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -163,7 +164,7 @@ class UploadController extends JwtApiController
             content: [
                 new OA\MediaType(
                     mediaType: 'multipart/form-data',
-                    schema: new OA\Schema(ref: '#/components/schemas/SystemUploadFileRequest')
+                    schema: new OA\Schema(ref: UploadFileRequest::class)
                 ),
             ]
         ),
@@ -172,11 +173,11 @@ class UploadController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '上传成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
-    public function file(UploadFileRequest $request)
+    public function file(UploadFileRequest $request): Response|JsonResponse|RedirectResponse
     {
         $type   = $request->getType();
         $folder = $request->getFolder();
@@ -214,7 +215,7 @@ class UploadController extends JwtApiController
     }
 
 
-    private function demo()
+    private function demo(): Response|JsonResponse|RedirectResponse
     {
         return Resp::success('上传成功', [
             'url' => [

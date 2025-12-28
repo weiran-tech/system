@@ -10,7 +10,6 @@ use Weiran\Framework\Validation\Rule;
 use Weiran\System\Models\PamAccount;
 
 #[OA\Schema(
-    schema: 'SystemAuthLoginRequest',
     required: ['passport'],
     properties: [
         new OA\Property(

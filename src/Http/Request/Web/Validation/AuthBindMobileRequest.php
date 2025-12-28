@@ -9,7 +9,6 @@ use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
-    schema: 'SystemAuthBindMobileRequest',
     required: ['passport', 'captcha', 'verify_code'],
     properties: [
         new OA\Property(property: 'passport', description: '通行证', type: 'string'),

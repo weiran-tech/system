@@ -9,7 +9,6 @@ use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
-    schema: 'SystemAuthExistsRequest',
     required: ['passport'],
     properties: [
         new OA\Property(

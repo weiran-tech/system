@@ -7,6 +7,7 @@ namespace Weiran\System\Http\Request\Web\ApiV1;
 use OpenApi\Attributes as OA;
 use Weiran\Framework\Auth\ThrottlesLogins;
 use Weiran\Framework\Classes\Resp;
+use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
 
 
 /**
@@ -24,7 +25,7 @@ class CoreController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '翻译信息',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -45,7 +46,7 @@ class CoreController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '系统信息',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]

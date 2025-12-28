@@ -10,7 +10,6 @@ use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
-    schema: 'SystemUploadFileRequest',
     required: ['file', 'type'],
     properties: [
         new OA\Property(

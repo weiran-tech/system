@@ -21,6 +21,9 @@ use Weiran\System\Action\Verification;
 use Weiran\System\Events\LoginSuccessEvent;
 use Weiran\System\Events\LoginTokenPassedEvent;
 use Weiran\System\Events\TokenRenewEvent;
+use Weiran\System\Http\Request\Web\OpenApi\Auth\SystemAuthAccessBody;
+use Weiran\System\Http\Request\Web\OpenApi\Auth\SystemAuthLoginBody;
+use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
 use Weiran\System\Http\Request\Web\Validation\AuthBindMobileRequest;
 use Weiran\System\Http\Request\Web\Validation\AuthExistsRequest;
 use Weiran\System\Http\Request\Web\Validation\AuthLoginRequest;
@@ -65,9 +68,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '获取成功',
-                content: new OA\JsonContent(
-                    ref: '#/components/schemas/SystemAuthAccessBody'
-                )
+                content: new OA\JsonContent(ref: SystemAuthAccessBody::class)
             )
         ]
     )]
@@ -94,14 +95,14 @@ class AuthController extends JwtApiController
         summary: '登录',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthLoginRequest')
+            content: new OA\JsonContent(ref: AuthLoginRequest::class)
         ),
         tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: '登录成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthLoginBody')
+                content: new OA\JsonContent(ref: SystemAuthLoginBody::class)
             )
         ]
     )]
@@ -178,14 +179,14 @@ class AuthController extends JwtApiController
         summary: '重设密码',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthPasswordRequest')
+            content: new OA\JsonContent(ref: AuthPasswordRequest::class)
         ),
         tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -242,14 +243,14 @@ class AuthController extends JwtApiController
         summary: '换绑手机',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthBindMobileRequest')
+            content: new OA\JsonContent(ref: AuthBindMobileRequest::class)
         ),
         tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -294,7 +295,7 @@ class AuthController extends JwtApiController
         tags: ['System'],
         responses: [
             new OA\Response(response: 200, description: '操作成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -332,7 +333,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]
@@ -347,14 +348,14 @@ class AuthController extends JwtApiController
         summary: '检查通行证是否存在',
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/SystemAuthExistsRequest')
+            content: new OA\JsonContent(ref: AuthExistsRequest::class)
         ),
         tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: '#/components/schemas/ResponseBaseBody')
+                content: new OA\JsonContent(ref: ResponseBaseBody::class)
             )
         ]
     )]

@@ -4,9 +4,7 @@ namespace Weiran\System\Http\Request\Web\OpenApi;
 
 use OpenApi\Attributes as OA;
 
-#[OA\Schema(
-    schema: 'ResponseBaseBody'
-)]
+#[OA\Schema()]
 abstract class ResponseBaseBody
 {
 

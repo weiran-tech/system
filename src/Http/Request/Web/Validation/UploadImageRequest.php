@@ -9,7 +9,6 @@ use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;
 
 #[OA\Schema(
-    schema: 'SystemUploadImageRequest',
     required: ['image', 'type'],
     properties: [
         new OA\Property(
