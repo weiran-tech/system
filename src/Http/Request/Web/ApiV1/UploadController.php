@@ -29,12 +29,10 @@ class UploadController extends JwtApiController
         summary: '图片上传',
         requestBody: new OA\RequestBody(
             required: true,
-            content: [
-                new OA\MediaType(
-                    mediaType: 'multipart/form-data',
-                    schema: new OA\Schema(ref: UploadImageRequest::class)
-                ),
-            ]
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(ref: UploadImageRequest::class)
+            ),
         ),
         tags: ['System'],
         responses: [
