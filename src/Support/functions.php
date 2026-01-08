@@ -190,12 +190,8 @@ if (!function_exists('sys_get')) {
 if (!function_exists('sys_parent_id')) {
     /**
      * 父级用户
-     *
-     * @param PamAccount|int|string $pam
-     *
-     * @return false|string
      */
-    function sys_parent_id($pam)
+    function sys_parent_id(int|string|PamAccount $pam): int
     {
         static $rel;
 
@@ -203,21 +199,52 @@ if (!function_exists('sys_parent_id')) {
             return 0;
         }
 
-        if (!$rel) {
-            $rel = sys_cache('weiran-system')->get(WeiranSystemDef::ckPamRelParent());
+        if (is_string($pam) && !is_numeric($pam)) {
+            return 0;
         }
 
-        $pamId = ($pam instanceof PamAccount) ? $pam->id : $pam;
+        /*
+        |--------------------------------------------------------------------------
+        | 定义缓存的策略
+        |--------------------------------------------------------------------------
+        | 分片策略：每 10000 个用户一个分片
+        | 缓存策略: 设置 7 天过期时间
+        */
+        $shardSize     = 10000;
+        $cachedSeconds = 60 * 60 * 24 * 7;
 
-        if (is_numeric($pam) && !isset($rel[$pam])) {
-            /** @var PamAccount $pam */
-            $pam = PamAccount::find($pam);
+        $pamId = ($pam instanceof PamAccount) ? $pam->id : (int) $pam;
+
+        // 优先从静态缓存中获取
+        if (isset($rel[$pamId])) {
+            return $rel[$pamId];
         }
 
-        if (!isset($rel[$pamId])) {
-            $rel[$pamId] = $pam->parent_id ?: $pam->id;
-            sys_cache('weiran-system')->forever(WeiranSystemDef::ckPamRelParent(), $rel);
+        $shardIndex = (string) floor($pamId / $shardSize);
+        $cacheKey   = WeiranSystemDef::ckPamRelParent($shardIndex);
+
+        // 从 Redis Hash 分片中获取
+        $cached = sys_tag('weiran-system')->hGet($cacheKey, (string) $pamId);
+
+        if ($cached !== null) {
+            $rel[$pamId] = (int) $cached;
+
+            return $rel[$pamId];
         }
+
+        // 从数据库加载
+        $pamObj = PamAccount::whereKey($pamId)->first(['id', 'parent_id']);
+        if (!$pamObj) {
+            return 0;
+        }
+
+        // 计算并缓存结果
+        $parentId    = $pamObj->parent_id ?: $pamObj->id;
+        $rel[$pamId] = $parentId;
+
+        // 存储到 Redis Hash 分片
+        sys_tag('weiran-system')->hSet($cacheKey, (string) $pamId, (string) $parentId);
+        sys_tag('weiran-system')->expire($cacheKey, $cachedSeconds);
 
         return $rel[$pamId] ?? 0;
     }

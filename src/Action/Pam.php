@@ -199,7 +199,7 @@ class Pam
             // 注册用户时候的正则匹配
             if ($this->parentId) {
                 // 子用户中必须包含 ':' 冒号
-                if (strpos($initDb[$type], ':') === false) {
+                if (!str_contains($initDb[$type], ':')) {
                     return $this->setError(trans('weiran-system::action.pam.sub_user_account_need_colon'));
                 }
                 // 初始化子用户数据

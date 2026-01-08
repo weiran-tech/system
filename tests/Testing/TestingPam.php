@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Tests\Testing;
 
+use Throwable;
+use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\StrHelper;
+use Weiran\System\Action\Pam;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\PamRoleAccount;
@@ -63,6 +66,49 @@ class TestingPam
     public static function randUser(): PamAccount
     {
         return PamAccount::where('type', PamAccount::TYPE_USER)->inRandomOrder()->first();
+    }
+
+    /**
+     * @throws Throwable
+     * @throws ApplicationException
+     */
+    public static function randParentUser(): PamAccount
+    {
+        $query = PamAccount::where('type', PamAccount::TYPE_USER)
+            ->where('parent_id', 0)
+            ->inRandomOrder();
+        $user  = (clone $query)->first();
+        if (!$user) {
+            $Pam = new Pam();
+            $Pam->register(poppy_faker()->phoneNumber);
+            $user = $Pam->getPam();
+        }
+
+        return $user;
+    }
+
+    /**
+     * 获取随机子用户
+     *
+     * @param int $parentId 父级用户ID
+     *
+     * @throws Throwable
+     * @throws ApplicationException
+     */
+    public static function randChildUser(int $parentId): PamAccount
+    {
+        $query = PamAccount::where('type', PamAccount::TYPE_USER)
+            ->where('parent_id', $parentId)
+            ->inRandomOrder();
+        $user  = (clone $query)->first();
+        if (!$user) {
+            $username = PamAccount::whereKey($parentId)->value('username');
+            $Pam      = new Pam();
+            $Pam->setParentId($parentId);
+            $Pam->register($username . ':' . poppy_faker()->phoneNumber);
+            $user = $Pam->getPam();
+        }
+        return $user;
     }
 
     /**

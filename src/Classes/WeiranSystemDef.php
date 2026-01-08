@@ -39,9 +39,9 @@ class WeiranSystemDef
     /**
      * 设置
      */
-    public static function ckPamRelParent(): string
+    public static function ckPamRelParent(string $splice = ''): string
     {
-        return 'pam-rel-parent';
+        return 'pam-rel-parent' . ($splice !== '' ? ':' . $splice : '');
     }
 
     /**
