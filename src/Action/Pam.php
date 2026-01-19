@@ -19,7 +19,7 @@ use Weiran\Framework\Classes\Traits\AppTrait;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\EnvHelper;
 use Weiran\Framework\Validation\Rule;
-use Weiran\MgrPage\Http\MgrPage\FormSettingLog;
+use Weiran\MgrPage\Http\Backend\Pam\PamSettingLogForm;
 use Weiran\System\Classes\Contracts\PasswordContract;
 use Weiran\System\Classes\Traits\PamTrait;
 use Weiran\System\Classes\Traits\UserSettingTrait;
@@ -669,7 +669,7 @@ class Pam
     public function clearLog(): bool
     {
         $days = sys_setting('weiran-system::log.days');
-        if ($days === FormSettingLog::DAYS_FOREVER) {
+        if ($days === PamSettingLogForm::DAYS_FOREVER) {
             return true;
         }
 

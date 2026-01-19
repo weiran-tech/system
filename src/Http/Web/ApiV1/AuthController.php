@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web\ApiV1;
+namespace Weiran\System\Http\Web\ApiV1;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -21,13 +21,13 @@ use Weiran\System\Action\Verification;
 use Weiran\System\Events\LoginSuccessEvent;
 use Weiran\System\Events\LoginTokenPassedEvent;
 use Weiran\System\Events\TokenRenewEvent;
-use Weiran\System\Http\Request\Web\OpenApi\Auth\SystemAuthAccessBody;
-use Weiran\System\Http\Request\Web\OpenApi\Auth\SystemAuthLoginBody;
-use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
-use Weiran\System\Http\Request\Web\Validation\AuthBindMobileRequest;
-use Weiran\System\Http\Request\Web\Validation\AuthExistsRequest;
-use Weiran\System\Http\Request\Web\Validation\AuthLoginRequest;
-use Weiran\System\Http\Request\Web\Validation\AuthPasswordRequest;
+use Weiran\System\Http\OpenApi\BaseResponseBody;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthAccessResponseBody;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthBindMobileRequest;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthExistsRequest;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthLoginRequest;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthLoginResponseBody;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthPasswordRequest;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\Resources\PamResource;
 
@@ -66,7 +66,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '获取成功',
-                content: new OA\JsonContent(ref: SystemAuthAccessBody::class)
+                content: new OA\JsonContent(ref: AuthAccessResponseBody::class)
             ),
         ]
     )]
@@ -99,7 +99,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '登录成功',
-                content: new OA\JsonContent(ref: SystemAuthLoginBody::class)
+                content: new OA\JsonContent(ref: AuthLoginResponseBody::class)
             ),
         ]
     )]
@@ -182,7 +182,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -246,7 +246,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -292,7 +292,7 @@ class AuthController extends JwtApiController
         tags: ['System'],
         responses: [
             new OA\Response(response: 200, description: '操作成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -330,7 +330,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -353,7 +353,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]

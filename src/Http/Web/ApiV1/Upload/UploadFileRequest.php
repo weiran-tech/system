@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web\Validation;
+namespace Weiran\System\Http\Web\ApiV1\Upload;
 
 use Illuminate\Http\UploadedFile;
 use OpenApi\Attributes as OA;

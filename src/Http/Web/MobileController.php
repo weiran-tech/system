@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Mobile;
+namespace Weiran\System\Http\Web;
 
 use Auth;
 use Weiran\Framework\Application\Controller;

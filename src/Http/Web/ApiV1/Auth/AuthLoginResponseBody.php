@@ -1,14 +1,16 @@
 <?php
 
-namespace Weiran\System\Http\Request\Web\OpenApi\Auth;
+declare(strict_types = 1);
+
+namespace Weiran\System\Http\Web\ApiV1\Auth;
 
 use OpenApi\Attributes as OA;
-use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
+use Weiran\System\Http\OpenApi\BaseResponseBody;
 
 #[OA\Schema(
     description: '登录成功',
 )]
-class SystemAuthLoginBody extends ResponseBaseBody
+class AuthLoginResponseBody extends BaseResponseBody
 {
     #[OA\Property(
         description: '登录成功返回的token信息',

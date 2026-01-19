@@ -17,6 +17,7 @@
         "intervention/image-laravel": "^1.5",
         "mews/captcha": "^3.4",
         "mlocati/ip-lib": "^1.16",
+        "mobiledetect/mobiledetectlib": "4.*",
         "weiran/core": "1.0.*",
         "tymon/jwt-auth": "^2.1.1"
     },

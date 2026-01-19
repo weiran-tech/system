@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web\Validation;
+namespace Weiran\System\Http\Web\ApiV1\Auth;
 
 use Weiran\Framework\Application\Request;
 use Weiran\Framework\Validation\Rule;

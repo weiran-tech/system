@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web\ApiV1;
+namespace Weiran\System\Http\Web\ApiV1;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -14,9 +14,9 @@ use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Classes\Contracts\FileContract;
 use Weiran\System\Classes\File\DefaultFileProvider;
-use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
-use Weiran\System\Http\Request\Web\Validation\UploadFileRequest;
-use Weiran\System\Http\Request\Web\Validation\UploadImageRequest;
+use Weiran\System\Http\OpenApi\BaseResponseBody;
+use Weiran\System\Http\Web\ApiV1\Upload\UploadFileRequest;
+use Weiran\System\Http\Web\ApiV1\Upload\UploadImageRequest;
 
 /**
  * 图片处理控制器
@@ -38,7 +38,7 @@ class UploadController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '图片上传',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -174,7 +174,7 @@ class UploadController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '上传成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web\ApiV1;
+namespace Weiran\System\Http\Web\ApiV1;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,9 +17,9 @@ use Weiran\System\Action\Verification;
 use Weiran\System\Events\CaptchaSendEvent;
 use Weiran\System\Exceptions\SettingKeyNotMatchException;
 use Weiran\System\Exceptions\SettingValueOutOfRangeException;
-use Weiran\System\Http\Request\Web\OpenApi\ResponseBaseBody;
-use Weiran\System\Http\Request\Web\Validation\CaptchaSendRequest;
-use Weiran\System\Http\Request\Web\Validation\CaptchaVerifyRequest;
+use Weiran\System\Http\OpenApi\BaseResponseBody;
+use Weiran\System\Http\Web\ApiV1\Captcha\CaptchaSendRequest;
+use Weiran\System\Http\Web\ApiV1\Captcha\CaptchaVerifyRequest;
 use Weiran\System\Models\PamAccount;
 
 /**
@@ -66,7 +66,7 @@ class CaptchaController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '发送成功',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]
@@ -145,7 +145,7 @@ class CaptchaController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '生成验证串',
-                content: new OA\JsonContent(ref: ResponseBaseBody::class)
+                content: new OA\JsonContent(ref: BaseResponseBody::class)
             ),
         ]
     )]

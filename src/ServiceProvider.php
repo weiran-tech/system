@@ -10,7 +10,7 @@ use Illuminate\Database\Events\QueryExecuted;
 use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Events\PermissionInitEvent;
 use Weiran\Framework\Classes\Traits\WeiranTrait;
-use Weiran\Framework\Events\WeiranOptimized;
+use Weiran\Framework\Events\WeiranOptimizedEvent;
 use Weiran\Framework\Events\WeiranSchedule;
 use Weiran\Framework\Exceptions\ModuleNotFoundException;
 use Weiran\Framework\Support\WeiranServiceProvider;
@@ -48,7 +48,7 @@ class ServiceProvider extends WeiranServiceProvider
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
         ],
-        WeiranOptimized::class          => [
+        WeiranOptimizedEvent::class => [
             Listeners\WeiranOptimized\ClearCacheListener::class,
         ],
         LoginTokenPassedEvent::class    => [

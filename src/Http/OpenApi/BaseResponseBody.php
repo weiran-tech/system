@@ -1,11 +1,13 @@
 <?php
 
-namespace Weiran\System\Http\Request\Web\OpenApi;
+declare(strict_types = 1);
+
+namespace Weiran\System\Http\OpenApi;
 
 use OpenApi\Attributes as OA;
 
 #[OA\Schema()]
-abstract class ResponseBaseBody
+abstract class BaseResponseBody
 {
     #[OA\Property(
         description: '状态码',

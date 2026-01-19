@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Weiran\System\Http\Request\Web;
+namespace Weiran\System\Http\Web;
 
 use Auth;
 use Illuminate\Contracts\Auth\Authenticatable;
