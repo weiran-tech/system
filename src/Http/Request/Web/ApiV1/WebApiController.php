@@ -1,0 +1,14 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Weiran\System\Http\Request\Web\ApiV1;
+
+/**
+ * Web api 控制器
+ *
+ * @deprecated 1.0
+ *
+ * @see        \Weiran\System\Http\Web\ApiV1\WebApiController
+ */
+abstract class WebApiController extends \Weiran\System\Http\Web\ApiV1\WebApiController {}
