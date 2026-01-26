@@ -9,18 +9,18 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use JsonException;
 use Psr\Http\Message\ResponseInterface;
 use Weiran\Framework\Application\Job;
+use Weiran\Framework\Classes\Traits\RequestIdTrait;
 use Weiran\Framework\Exceptions\ApplicationException;
 
 /**
- * 增强型的 Guzzle 调用
- *
- * @since 4.1 , 传参遵循 guzzle options 加强自定义
+ * 增强型的 Guzzle 调用, 传参遵循 guzzle options 加强自定义
  */
 class NotifyProJob extends Job implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, RequestIdTrait;
 
     /**
      * @var string 请求网址
@@ -91,8 +91,9 @@ class NotifyProJob extends Job implements ShouldQueue
      * 执行
      *
      * @throws ApplicationException
+     * @throws JsonException
      */
-    public function handle()
+    public function handle(): void
     {
         /* 重发次数
          -------------------------------------------- */
@@ -111,9 +112,10 @@ class NotifyProJob extends Job implements ShouldQueue
                     (new self($this->url, $this->method, $this->options, $this->delayTimes))
                         ->delay($this->delayMap[$this->execAt])
                         ->setExecAt($this->nextExecAt)
+                        ->setRequestId($this->requestId)
                 );
             }
-            $this->log($e, false);
+            $this->log($e);
         }
     }
 
@@ -129,8 +131,6 @@ class NotifyProJob extends Job implements ShouldQueue
 
     /**
      * 是否可以延迟执行
-     *
-     * @return void
      */
     private function canDelay(): bool
     {
@@ -148,38 +148,42 @@ class NotifyProJob extends Job implements ShouldQueue
      * 生成记录日志
      *
      * @param GuzzleException|ResponseInterface $result
+     *
+     * @throws JsonException
      */
-    private function log($result, bool $is_success = true): void
+    private function log(GuzzleException|ResponseInterface $result): void
     {
-        $resp = '';
+        $logger    = $this->logger();
+        $resp      = '';
+        $isSuccess = true;
         if ($result instanceof ResponseInterface) {
             $resp = $result->getBody()->getContents();
         }
         if ($result instanceof GuzzleException) {
-            $resp = $result->getMessage();
+            $isSuccess = false;
+            $resp      = $result->getMessage();
         }
-        $options = json_encode($this->options, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $options = json_encode($this->options, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         $tip = '';
-        if (!$is_success && $this->canDelay()) {
+        if (!$isSuccess && $this->canDelay()) {
             $delaySeconds   = $this->delayMap[$this->execAt];
             $delaySecondsAt = Carbon::now()->addSeconds($this->delayMap[$this->execAt])->toDateTimeString();
             $tip            = "Next request will exec at {$delaySeconds}s later, at {$delaySecondsAt}";
         }
 
         $mark  = md5($this->method . $this->url . $options);
-        $total = $is_success ? 1 : $this->delayTimes + 1;
+        $total = $isSuccess ? 1 : $this->delayTimes + 1;
 
-        $msg = ($this->execAt === 0 ? "1/{$total} [{$mark}] Request: " : $this->execAt + 1 . "/{$total} [{$mark}] Request: ") . PHP_EOL .
-            "Url : [{$this->method}] {$this->url}" . PHP_EOL .
-            "Options : {$options}" . PHP_EOL .
-            "Result : {$resp} " .
-            ($tip ? PHP_EOL . "Tip : {$tip}" : '');
-        if ($is_success) {
-            sys_info(self::class, $msg);
-        }
-        else {
-            sys_error(self::class, $msg);
-        }
+        $message = ($this->execAt === 0 ? "1/{$total} [{$mark}] Request: " : $this->execAt + 1 . "/{$total} [{$mark}] Request: ") . $tip;
+        $context = [
+            'Url'     => "[{$this->method}] {$this->url}",
+            'Options' => $options,
+        ];
+        $isSuccess ? $logger->info($message, array_merge($context, [
+            'response' => $resp,
+        ])) : $logger->error($message, array_merge($context, [
+            'exception' => $resp,
+        ]));
     }
 }

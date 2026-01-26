@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Classes\Logger;
 
+use Illuminate\Log\LogManager;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,9 +21,11 @@ use Psr\Log\LoggerInterface;
 class Logging
 {
     /**
-     * @return mixed|LoggerInterface
+     * @param string $name
+     *
+     * @return LogManager
      */
-    public static function logger(string $name = '')
+    public static function logger(string $name = ''): LoggerInterface
     {
         return app(LoggerFactory::class)->get($name);
     }

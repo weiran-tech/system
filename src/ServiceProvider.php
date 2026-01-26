@@ -11,7 +11,7 @@ use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Core\Events\PermissionInitEvent;
 use Weiran\Framework\Classes\Traits\WeiranTrait;
 use Weiran\Framework\Events\WeiranOptimizedEvent;
-use Weiran\Framework\Events\WeiranSchedule;
+use Weiran\Framework\Events\WeiranScheduleEvent;
 use Weiran\Framework\Exceptions\ModuleNotFoundException;
 use Weiran\Framework\Support\WeiranServiceProvider;
 use Weiran\System\Classes\Api\Sign\DefaultApiSignProvider;
@@ -48,7 +48,7 @@ class ServiceProvider extends WeiranServiceProvider
         PermissionInitEvent::class      => [
             Listeners\PermissionInit\InitToDbListener::class,
         ],
-        WeiranOptimizedEvent::class => [
+        WeiranOptimizedEvent::class     => [
             Listeners\WeiranOptimized\ClearCacheListener::class,
         ],
         LoginTokenPassedEvent::class    => [
@@ -121,7 +121,7 @@ class ServiceProvider extends WeiranServiceProvider
 
     private function registerSchedule(): void
     {
-        app('events')->listen(WeiranSchedule::class, function (Schedule $schedule) {
+        app('events')->listen(WeiranScheduleEvent::class, function (Schedule $schedule) {
 
             $schedule->command('system:user', ['auto_enable'])
                 ->everyFifteenMinutes()->appendOutputTo($this->consoleLog());

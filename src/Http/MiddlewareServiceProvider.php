@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Weiran\System\Http;
 
 use Illuminate\Contracts\Http\Kernel as KernelContract;
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Weiran\System\Http\Middlewares\CrossRequest;
@@ -23,6 +24,7 @@ class MiddlewareServiceProvider extends ServiceProvider
         $router->aliasMiddleware('sys-site_open', Middlewares\SiteOpen::class);
         $router->aliasMiddleware('sys-app_sign', Middlewares\AppSign::class);
         $router->aliasMiddleware('sys-html_purifier', Middlewares\HtmlPurifier::class);
+        $router->aliasMiddleware('sys-request-id', Middlewares\RequestIdMiddleware::class);
 
         /*
         |--------------------------------------------------------------------------
@@ -73,7 +75,7 @@ class MiddlewareServiceProvider extends ServiceProvider
         ]);
 
         // cors for api
-        /** @var \Illuminate\Foundation\Http\Kernel $kernelContract */
+        /** @var Kernel $kernelContract */
         $kernelContract = $this->app->make(KernelContract::class);
         $kernelContract->prependMiddleware(CrossRequest::class);
     }
