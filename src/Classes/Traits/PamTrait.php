@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Weiran\System\Classes\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Models\PamAccount;
 
 /**
@@ -42,6 +43,17 @@ trait PamTrait
         }
 
         return $this;
+    }
+
+    /**
+     * @return void
+     * @throws ApplicationException
+     */
+    public function throwOnDetectPam(): void
+    {
+        if (!$this->pam) {
+            throw new ApplicationException(trans('weiran-system::action.pam.check_permission_need_login'));
+        }
     }
 
     /**

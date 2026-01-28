@@ -14,24 +14,26 @@ class PamDisableEvent
     /**
      * @var PamAccount
      */
-    public $pam;
+    public PamAccount $pam;
 
     /**
-     * @var PamAccount 操作账号
+     * @var null|PamAccount 操作账号
      */
-    public $editor;
+    public ?PamAccount $editor;
 
     /**
      * @var string 禁用原因
      */
-    public $reason;
+    public string $reason;
 
     /**
      * PamDisableEvent constructor.
      *
-     * @param string $reason
+     * @param PamAccount      $pam
+     * @param PamAccount|null $editor
+     * @param string          $reason
      */
-    public function __construct(PamAccount $pam, PamAccount $editor, $reason = '')
+    public function __construct(PamAccount $pam, ?PamAccount $editor, string $reason = '')
     {
         $this->pam    = $pam;
         $this->editor = $editor;

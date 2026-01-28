@@ -8,9 +8,16 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\GuzzleException;
-use JWTAuth;
+use JsonException;
+use PHPUnit\Framework\AssertionFailedError;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Weiran\Framework\Application\TestCase;
+use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\System\Action\Sso;
+use Weiran\System\Exceptions\SettingKeyNotMatchException;
+use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Tests\Testing\TestingPam;
 
 /**
@@ -18,19 +25,15 @@ use Weiran\System\Tests\Testing\TestingPam;
  */
 class SsoTest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        config('weiran.system.sso_group', [
-            'app:' . Sso::GROUP_KICKED    => ['android', 'ios'],
-            'web:' . Sso::GROUP_UNLIMITED => ['h5', 'webapp'],
-        ]);
-    }
-
     /**
      * 测试同时登录限制
      *
-     * @throws Exception
+     * @throws JsonException
+     * @throws AssertionFailedError
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
      */
     public function testDeviceNum(): void
     {
@@ -112,7 +115,13 @@ class SsoTest extends TestCase
     /**
      * 测试单设备登录
      *
-     * @throws Exception
+     * @throws AssertionFailedError
+     * @throws ContainerExceptionInterface
+     * @throws JsonException
+     * @throws NotFoundExceptionInterface
+     * @throws SettingKeyNotMatchException
+     * @throws SettingValueOutOfRangeException
+     * @throws ApplicationException
      */
     public function testGroupKicked(): void
     {
@@ -151,6 +160,15 @@ class SsoTest extends TestCase
         $Sso->banUser($user->id);
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        config('weiran.system.sso_group', [
+            'app:' . Sso::GROUP_KICKED    => ['android', 'ios'],
+            'web:' . Sso::GROUP_UNLIMITED => ['h5', 'webapp'],
+        ]);
+    }
+
     /**
      * @throws GuzzleException
      */
@@ -158,13 +176,13 @@ class SsoTest extends TestCase
     {
         $client = new Client();
         $this->outputVariables($os);
-        $client->post(url('api/web/v1/system/auth/access'), [
+        $client->get(route('weiran-system:api_v1.auth.access'), [
             'headers'     => [
                 'Authorization' => "Bearer {$jwt}",
                 'x-os'          => $os,
             ],
             'form_params' => [
-                '_weiran_secret' => env('WEIRAN_SECRET'),
+                '_weiran_secret' => config('weiran.system.secret'),
             ],
         ]);
 

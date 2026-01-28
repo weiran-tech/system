@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Weiran\Core\Rbac\Contracts\RbacUserContract;
 use Weiran\Core\Rbac\Traits\RbacUserTrait;
@@ -21,27 +22,27 @@ use Weiran\Framework\Helper\UtilHelper;
 /**
  * 用户账号
  *
- * @property int         $id
- * @property string      $mobile           手机号
- * @property string      $username         用户名称
- * @property string      $password         用户密码
- * @property string|null $password_key     账号注册时候随机生成的6位key
- * @property Carbon      $logined_at       登录时间
- * @property int         $login_times      登录次数
- * @property string      $reg_ip           注册IP
- * @property string      $login_ip         当前登录IP
- * @property int         $parent_id        父ID
- * @property int         $is_enable        是否启用
- * @property string|null $type             类型
- * @property string|null $note             用户备注
- * @property string|null $email            邮箱
- * @property string|null $reg_platform     注册平台
- * @property string      $disable_reason   禁用原因
- * @property string|null $disable_start_at 禁用开始时间
- * @property string|null $disable_end_at   禁用结束时间
- * @property string      $remember_token   Token
- * @property Carbon      $created_at
- * @property Carbon      $updated_at
+ * @property int                       $id
+ * @property string                    $mobile           手机号
+ * @property string                    $username         用户名称
+ * @property string                    $password         用户密码
+ * @property string|null               $password_key     账号注册时候随机生成的6位key
+ * @property Carbon                    $logined_at       登录时间
+ * @property int                       $login_times      登录次数
+ * @property string                    $reg_ip           注册IP
+ * @property string                    $login_ip         当前登录IP
+ * @property int                       $parent_id        父ID
+ * @property int                       $is_enable        是否启用
+ * @property string|null               $type             类型
+ * @property string|null               $note             用户备注
+ * @property string|null               $email            邮箱
+ * @property string|null               $reg_platform     注册平台
+ * @property string                    $disable_reason   禁用原因
+ * @property string|null               $disable_start_at 禁用开始时间
+ * @property string|null               $disable_end_at   禁用结束时间
+ * @property string                    $remember_token   Token
+ * @property Carbon                    $created_at
+ * @property Carbon                    $updated_at
  *
  * @property-read PamRoleAccount       $role
  * @property-read Collection|PamRole[] $roles
@@ -272,6 +273,9 @@ class PamAccount extends Model implements Authenticatable, JWTSubject, RbacUserC
      */
     public static function beMobile($mobile): string
     {
+        if (Str::startsWith($mobile, self::BACKEND_MOBILE_PREFIX)) {
+            return $mobile;
+        }
         return self::BACKEND_MOBILE_PREFIX . $mobile;
     }
 

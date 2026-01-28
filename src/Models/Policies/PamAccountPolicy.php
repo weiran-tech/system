@@ -95,8 +95,7 @@ class PamAccountPolicy
     public function beClearMobile(PamAccount $pam, PamAccount $item): bool
     {
         return $pam->hasRole(PamRole::BE_ROOT) &&
-            $item->type === PamAccount::TYPE_BACKEND &&
-            strlen($item->mobile) === 17;   // 33023-{11};
+            $item->type === PamAccount::TYPE_BACKEND;
     }
 
     // endregion

@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Weiran\System\Commands;
 
+use Exception;
 use Illuminate\Console\Command;
 use Weiran\System\Action\Ban;
 use Weiran\System\Models\PamAccount;
@@ -35,9 +36,12 @@ class BanCommand extends Command
 
         $Ban = new Ban();
 
-        $banType = PamBan::TYPE_DEVICE;
-        if ($Ban->parseIpRange($value)) {
+        try {
+            $Ban->parseIpRange($value);
             $banType = PamBan::TYPE_IP;
+        }
+        catch (Exception) {
+            $banType = PamBan::TYPE_DEVICE;
         }
 
         $data = [

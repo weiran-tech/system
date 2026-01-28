@@ -7,19 +7,29 @@ namespace Weiran\System\Tests\Testing;
 use Throwable;
 use Weiran\Framework\Exceptions\ApplicationException;
 use Weiran\Framework\Helper\StrHelper;
+use Weiran\Framework\Support\Exceptions\TestingException;
 use Weiran\System\Action\Pam;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\PamRole;
 use Weiran\System\Models\PamRoleAccount;
+use Weiran\System\Models\SysConfig;
 
 /**
  * 随机获取数据
  */
 class TestingPam
 {
-    public static function backend()
+    /**
+     * @throws TestingException
+     */
+    public static function backend(): PamAccount
     {
-        return PamAccount::passport(env('TESTING_BACKEND'));
+        $passport = PamAccount::passport(config('testing.system.backend'));
+        if (!$passport) {
+            throw new TestingException('测试后台用户不存在');
+        }
+
+        return $passport;
     }
 
     /**
@@ -69,6 +79,17 @@ class TestingPam
     }
 
     /**
+     * 获取随机启用的用户
+     * @return PamAccount
+     */
+    public static function randEnabledUser(): PamAccount
+    {
+        return PamAccount::where('type', PamAccount::TYPE_USER)
+            ->where('is_enable', SysConfig::YES)
+            ->inRandomOrder()->first();
+    }
+
+    /**
      * @throws Throwable
      * @throws ApplicationException
      */
@@ -108,6 +129,7 @@ class TestingPam
             $Pam->register($username . ':' . poppy_faker()->phoneNumber);
             $user = $Pam->getPam();
         }
+
         return $user;
     }
 

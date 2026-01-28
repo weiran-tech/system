@@ -9,12 +9,11 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Weiran\Core\Classes\Contracts\SettingContract;
 use Weiran\Framework\Helper\StrHelper;
 use Weiran\Framework\Helper\TimeHelper;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\WeiranSystemDef;
-use Weiran\System\Exceptions\SettingKeyNotMatchException;
-use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Models\PamAccount;
 
 if (!function_exists('sys_setting')) {
@@ -23,15 +22,28 @@ if (!function_exists('sys_setting')) {
      *
      * @param null $default
      *
-     * @throws JsonException
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws SettingKeyNotMatchException
-     * @throws SettingValueOutOfRangeException
      */
     function sys_setting(string $key, $default = null): mixed
     {
-        return app('weiran.system.setting')->get($key, $default);
+        return app(SettingContract::class)->get($key, $default);
+    }
+}
+
+
+if (!function_exists('sys_setting_set')) {
+    /**
+     * Get System Setting
+     *
+     * @param string|array $key
+     * @param mixed        $default
+     *
+     * @return mixed
+     */
+    function sys_setting_set(string|array $key, mixed $default = null): mixed
+    {
+        return app(SettingContract::class)->set($key, $default);
     }
 }
 
@@ -121,6 +133,7 @@ if (!function_exists('sys_str_to_json')) {
      * 字串转换为json
      *
      * @throws JsonException
+     *
      * @deprecated 1.0 使用原生的 json_decode
      */
     function sys_str_to_json($string): array
@@ -141,6 +154,7 @@ if (!function_exists('sys_array_to_json')) {
      * 字串转换为json
      *
      * @throws JsonException
+     *
      * @deprecated 1.0 使用原生的 json_encode
      */
     function sys_array_to_json($string): string
@@ -152,6 +166,7 @@ if (!function_exists('sys_array_to_json')) {
 if (!function_exists('sys_is_pjax')) {
     /**
      * 检测是否是 pjax 请求
+     *
      * @deprecated 1.0 直接使用框架的 pjax
      */
     function sys_is_pjax(): bool
@@ -170,6 +185,7 @@ if (!function_exists('sys_get')) {
      * @param string|null|mixed $default
      *
      * @return null|array|string
+     *
      * @deprecated 1.0 使用原生有价值的来获取, 这个函数比较隐形, 不要使用这个
      */
     function sys_get($data, $key, $default = ''): mixed

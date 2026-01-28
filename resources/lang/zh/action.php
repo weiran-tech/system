@@ -13,7 +13,7 @@ return [
     /* 用户
     * ---------------------------------------- */
     'pam'          => [
-        'check_permission_need_login' => '用户需要登录',
+        'check_permission_need_login' => '需要设定操作用户',
         'not_set_name_prefix'         => '尚未设置用户名默认前缀, 无法注册, 请联系管理员',
         'account_disable_not_login'   => '本账户被禁用, 不得登入',
         'login_fail_again'            => '您输入的账号或密码有误！',

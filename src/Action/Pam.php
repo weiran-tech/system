@@ -6,12 +6,15 @@ namespace Weiran\System\Action;
 
 use Auth;
 use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use DB;
-use Exception;
 use Illuminate\Auth\SessionGuard;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Throwable;
 use Tymon\JWTAuth\JWTGuard;
 use Validator;
@@ -169,6 +172,12 @@ class Pam
      */
     public function register(string $passport, string $password = '', $role_name = PamRole::FE_USER): bool
     {
+        $passport = trim($passport);
+
+        if (preg_match('/\s+/', $passport)) {
+            return $this->setError(trans('weiran-system::action.pam.user_name_not_space'));
+        }
+
         $passport = PamAccount::fullFilledPassport($passport);
         $type     = PamAccount::passportType($passport);
 
@@ -193,9 +202,6 @@ class Pam
 
         // 完善主账号类型规则
         if ($type === PamAccount::REG_TYPE_USERNAME) {
-            if (preg_match('/\s+/', $passport)) {
-                return $this->setError(trans('weiran-system::action.pam.user_name_not_space'));
-            }
             // 注册用户时候的正则匹配
             if ($this->parentId) {
                 // 子用户中必须包含 ':' 冒号
@@ -215,10 +221,11 @@ class Pam
 
         // 密码不为空时候的检测
         if ($password !== '') {
-            $rule['password'] += [
+            $rule['password'] = [
                 Rule::between(6, 20),
                 Rule::required(),
                 Rule::simplePwd(),
+                ...$rule['password'],
             ];
         }
 
@@ -386,6 +393,10 @@ class Pam
      *
      * @param PamAccount $pam      用户
      * @param string     $password 密码
+     *
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function setPassword(PamAccount $pam, string $password): bool
     {
@@ -421,9 +432,16 @@ class Pam
 
     /**
      * 清空后台登录用户的手机通行证
+     *
+     * @param int $id
+     *
+     * @return bool
+     * @throws ApplicationException
+     * @throws ModelNotFoundException
      */
     public function clearMobile(int $id): bool
     {
+        $this->throwOnDetectPam();
         $pam = PamAccount::findOrFail($id);
         if (!$this->pam->can('beClearMobile', $pam)) {
             return $this->setError('你无权操作此账号, 请检查权限和用户类型');
@@ -525,15 +543,18 @@ class Pam
     /**
      * 更换账号主体, 支持除非ID外的更换方式
      *
-     * @param string|numeric|PamAccount $old_passport
+     * @param string|PamAccount $old_passport
+     * @param string            $new_passport
+     *
+     * @return bool
      */
-    public function rebind($old_passport, string $new_passport): bool
+    public function rebind(string|PamAccount $old_passport, string $new_passport): bool
     {
         $pam = null;
         if (PamAccount::passportExists($new_passport)) {
             return $this->setError('账号已存在, 无法更换');
         }
-        if (is_numeric($old_passport) || is_string($old_passport)) {
+        if (is_string($old_passport)) {
             $old_passport = PamAccount::fullFilledPassport($old_passport);
             $pam          = PamAccount::passport($old_passport);
         }
@@ -544,11 +565,10 @@ class Pam
             return $this->setError('原账号不存在, 无法更换');
         }
         $newPassportType = PamAccount::passportType($new_passport);
-        if ($newPassportType === 'id') {
-            return $this->setError('用户ID 无法更换, 请检查输入');
-        }
-        $pam->{$newPassportType} = PamAccount::fullFilledPassport($new_passport);
-        $pam->save();
+
+        $pam->update([
+            $newPassportType => PamAccount::fullFilledPassport($new_passport),
+        ]);
 
         event(new PamRebindEvent($pam));
 
@@ -561,6 +581,9 @@ class Pam
      * @param int    $id     用户id
      * @param string $to     解禁时间
      * @param string $reason 禁用原因
+     *
+     * @return bool
+     * @throws InvalidFormatException
      */
     public function disable(int $id, string $to, string $reason): bool
     {
@@ -664,7 +687,9 @@ class Pam
     /**
      * 清除登录日志
      *
-     * @throws Exception
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function clearLog(): bool
     {
@@ -705,7 +730,17 @@ class Pam
         return $this->setPassword($this->pam, $password);
     }
 
-    public function checkPwdStrength($type, $password): bool
+    /**
+     * 检查密码强度
+     *
+     * @param string $type     密码类型
+     * @param string $password 密码
+     *
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function checkPwdStrength(string $type, string $password): bool
     {
         $key      = "weiran-system::pam.{$type}_pwd_strength";
         $strength = array_filter((array) sys_setting($key, []));

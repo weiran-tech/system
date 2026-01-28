@@ -6,12 +6,14 @@ namespace Weiran\System\Action;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use IPLib\Factory;
 use Throwable;
 use Weiran\Core\Redis\RdsDb;
 use Weiran\Framework\Classes\Traits\AppTrait;
+use Weiran\Framework\Exceptions\ParamException;
 use Weiran\Framework\Helper\UtilHelper;
 use Weiran\System\Classes\WeiranSystemDef;
 use Weiran\System\Events\PamTokenBanEvent;
@@ -180,11 +182,14 @@ class Ban
 
     /**
      * 禁用 Ban
+     *
+     *
+     * @throws ModelNotFoundException
      */
     public function type($id, $type): bool
     {
         /** @var PamToken $item */
-        $item = PamToken::find($id);
+        $item = PamToken::findOrFail($id);
         if (!array_key_exists($type, PamBan::kvType())) {
             return $this->setError('封禁类型错误');
         }
@@ -218,23 +223,31 @@ class Ban
         }
     }
 
-    public function parseIpRange($value)
+    /**
+     * 解析IP 范围
+     *
+     * @throws ParamException
+     */
+    public function parseIpRange(string $value): array
     {
         $isRange = false;
         // ip 范围 : 192.168.1.21-192.168.1.255
         if (Str::contains($value, '-')) {
             [$start, $end] = explode('-', $value);
             if (is_null(Factory::getRangesFromBoundaries($start, $end))) {
-                return $this->setError('错误的IP段写法');
+                throw new ParamException('错误的IP段写法');
             }
             $isRange = true;
             $startIp = ip2long($start);
             $endIp   = ip2long($end);
+            if ($startIp > $endIp) {
+                throw new ParamException('错误的IP段写法');
+            }
         }
         //  192.168.1.*
         elseif (Str::contains($value, '*') || Str::contains($value, '/')) {
             if (is_null($range = Factory::parseRangeString($value))) {
-                return $this->setError('错误的IP格式写法');
+                throw new ParamException('错误的IP格式写法');
             }
             $isRange = true;
             $startIp = ip2long((string) $range->getStartAddress());
@@ -243,7 +256,7 @@ class Ban
         // 192.168.1.1
         else {
             if (!UtilHelper::isIp($value)) {
-                return $this->setError('IP地址不合法');
+                throw new ParamException('IP地址不合法');
             }
             $startIp = ip2long($value);
             $endIp   = ip2long($value);
@@ -334,6 +347,9 @@ class Ban
 
     /**
      * 获取范围值
+     *
+     *
+     * @throws ParamException
      */
     private function ranges(Collection $items): Collection
     {
