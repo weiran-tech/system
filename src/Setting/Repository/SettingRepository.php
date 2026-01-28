@@ -108,7 +108,7 @@ class SettingRepository implements SettingContract
      * @throws SettingValueOutOfRangeException
      * @throws JsonException
      */
-    public function set($key, mixed $value = ''): bool
+    public function set(string|array $key, mixed $value = ''): bool
     {
         if (is_array($key)) {
             foreach ($key as $_key => $_value) {
