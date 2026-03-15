@@ -29,8 +29,8 @@ class UploadController extends JwtApiController
 {
     #[OA\Post(
         path: '/api/web/system/v1/upload/image',
-        summary: '图片上传',
         description: '支持 multipart/form-data 文件上传和 base64 JSON 上传; 当 from=wang-editor 时返回编辑器专用响应结构',
+        summary: '图片上传',
         requestBody: new OA\RequestBody(
             required: true,
             content: [

@@ -54,7 +54,6 @@ class AuthController extends JwtApiController
         path: '/api/web/system/v1/auth/access',
         description: '检测当前 SSO 登录态',
         summary: '检测 Token',
-        security: [['ApiSsoAuth' => []]],
         tags: ['System'],
         responses: [
             new OA\Response(
@@ -84,6 +83,11 @@ class AuthController extends JwtApiController
     #[OA\Post(
         path: '/api/web/system/v1/auth/login',
         summary: '登录',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: AuthLoginRequest::class)
+        ),
+        tags: ['System'],
         parameters: [
             new OA\Parameter(
                 name: 'x-os',
@@ -107,11 +111,6 @@ class AuthController extends JwtApiController
                 schema: new OA\Schema(type: 'string')
             ),
         ],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(ref: AuthLoginRequest::class)
-        ),
-        tags: ['System'],
         responses: [
             new OA\Response(
                 response: 200,
@@ -299,7 +298,6 @@ class AuthController extends JwtApiController
     #[OA\Post(
         path: '/api/web/system/v1/auth/renew',
         summary: '续期',
-        security: [['ApiSsoAuth' => []]],
         requestBody: new OA\RequestBody(
             required: false,
             content: new OA\JsonContent(properties: [
@@ -362,7 +360,6 @@ class AuthController extends JwtApiController
         path: '/api/web/system/v1/auth/logout',
         summary: '退出登录',
         tags: ['System'],
-        security: [['ApiSsoAuth' => []]],
         responses: [
             new OA\Response(
                 response: 200,
