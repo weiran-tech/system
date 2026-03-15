@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Weiran\System\Http\Web\ApiV1\Upload;
 

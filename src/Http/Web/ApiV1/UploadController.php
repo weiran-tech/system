@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Weiran\System\Http\Web\ApiV1;
 
@@ -61,10 +61,10 @@ class UploadController extends JwtApiController
     )]
     public function image(UploadImageRequest $request): Response|JsonResponse|RedirectResponse
     {
-        $type = $request->getType();
-        $folder = $request->getFolder();
+        $type      = $request->getType();
+        $folder    = $request->getFolder();
         $watermark = $request->getWatermark();
-        $from = $request->getFrom();
+        $from      = $request->getFrom();
         if (sys_is_demo()) {
             return $this->demo();
         }
@@ -96,16 +96,18 @@ class UploadController extends JwtApiController
                 if (is_null($_img)) {
                     return Resp::error('图片内容为空, 请检查是否上传图片或者支持类型是否正确');
                 }
-                if (! $_img->isValid()) {
+                if (!$_img->isValid()) {
                     return Resp::error('文件未正确上传, 请重试');
                 }
                 if ($file->saveFile($_img)) {
                     $urls[] = $file->getUrl();
-                } else {
+                }
+                else {
                     return Resp::error($file->getError());
                 }
             }
-        } elseif ($type === 'base64') {
+        }
+        elseif ($type === 'base64') {
             $image = (array) $request->getImage();
             $file->setQuality(85);
             foreach ($image as $_img) {
@@ -113,16 +115,18 @@ class UploadController extends JwtApiController
                 if (count($data) >= 2) {
                     [$mime_info, $_img] = $data;
 
-                    $slashes_index = strpos($mime_info, '/');
+                    $slashes_index   = strpos($mime_info, '/');
                     $semicolon_index = strpos($mime_info, ';');
 
-                    $length = $semicolon_index - $slashes_index - 1;
+                    $length    = $semicolon_index - $slashes_index - 1;
                     $mime_type = substr($mime_info, $slashes_index + 1, $length);
                     $file->setMimeType($mime_type);
-                } elseif (count($data) === 1) {
+                }
+                elseif (count($data) === 1) {
                     $_img = $data[0];
                     $file->setMimeType('');
-                } else {
+                }
+                else {
                     continue;
                 }
 
@@ -131,7 +135,8 @@ class UploadController extends JwtApiController
                     if ($file->saveInput($content)) {
                         $urls[] = $file->getUrl();
                     }
-                } catch (Throwable) {
+                }
+                catch (Throwable) {
                     continue;
                 }
             }
@@ -142,15 +147,15 @@ class UploadController extends JwtApiController
             if ($from === 'wang-editor') {
                 $data = collect($urls)->map(function ($url) {
                     return [
-                        'url' => $url,
-                        'alt' => '',
+                        'url'  => $url,
+                        'alt'  => '',
                         'href' => '',
                     ];
                 });
 
                 return response()->json([
                     'errno' => 0,
-                    'data' => $data->toArray(),
+                    'data'  => $data->toArray(),
                 ]);
             }
 
@@ -160,7 +165,7 @@ class UploadController extends JwtApiController
         }
         if ($from === 'wang-editor') {
             return response()->json([
-                'errno' => 1,
+                'errno'   => 1,
                 'message' => $file->getError(),
             ]);
         }
@@ -192,7 +197,7 @@ class UploadController extends JwtApiController
     )]
     public function file(UploadFileRequest $request): Response|JsonResponse|RedirectResponse
     {
-        $type = $request->getType();
+        $type   = $request->getType();
         $folder = $request->getFolder();
 
         if (sys_is_demo()) {
@@ -207,7 +212,7 @@ class UploadController extends JwtApiController
         $urls = [];
 
         $file = RequestFacade::file('file');
-        if (! is_array($file)) {
+        if (!is_array($file)) {
             $file = [$file];
         }
 
