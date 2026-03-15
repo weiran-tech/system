@@ -31,15 +31,9 @@ if (!function_exists('sys_setting')) {
     }
 }
 
-
 if (!function_exists('sys_setting_set')) {
     /**
      * Get System Setting
-     *
-     * @param string|array $key
-     * @param mixed        $default
-     *
-     * @return mixed
      */
     function sys_setting_set(string|array $key, mixed $default = null): mixed
     {

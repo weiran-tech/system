@@ -21,9 +21,8 @@ use Weiran\System\Models\PamAccount;
 class Verification
 {
     use AppTrait;
-
-    const        TYPE_MAIL                  = 'mail';
-    const        TYPE_MOBILE                = 'mobile';
+    const TYPE_MAIL                         = 'mail';
+    const TYPE_MOBILE                       = 'mobile';
     public const CAPTCHA_SEND_TYPE_EXIST    = 'exist';
     public const CAPTCHA_SEND_TYPE_NO_EXIST = 'no-exist';
 
@@ -50,7 +49,6 @@ class Verification
      * @param int    $expired_min 过期时间
      * @param int    $length      验证码长度
      *
-     * @return bool
      * @throws RandomException
      */
     public function genCaptcha(string $passport, int $expired_min = 5, int $length = 6): bool

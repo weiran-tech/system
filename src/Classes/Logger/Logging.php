@@ -21,8 +21,6 @@ use Psr\Log\LoggerInterface;
 class Logging
 {
     /**
-     * @param string $name
-     *
      * @return LogManager
      */
     public static function logger(string $name = ''): LoggerInterface

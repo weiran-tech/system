@@ -46,7 +46,6 @@ trait PamTrait
     }
 
     /**
-     * @return void
      * @throws ApplicationException
      */
     public function throwOnDetectPam(): void

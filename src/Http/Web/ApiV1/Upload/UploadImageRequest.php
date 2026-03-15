@@ -41,7 +41,6 @@ use Weiran\Framework\Validation\Rule;
             description: '是否开启水印, Y 设置为开启',
             type: 'string',
             default: '',
-
         ),
     ],
 )]

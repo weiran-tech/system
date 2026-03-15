@@ -500,7 +500,6 @@ class PamTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws ApplicationException
      * @throws AssertionFailedError
      * @throws ExpectationFailedException
@@ -952,7 +951,6 @@ class PamTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws ApplicationException
      * @throws AssertionFailedError
      * @throws ExpectationFailedException

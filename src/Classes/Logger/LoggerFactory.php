@@ -14,14 +14,11 @@ readonly class LoggerFactory
     ) {}
 
     /**
-     * @param string $channel
-     *
      * @return LogManager
      */
     public function get(string $channel = ''): LoggerInterface
     {
         $channel = $channel ?: (string) config('app.env', 'production');
-
 
         return $this->manager->withContext([
             'channel' => $channel,

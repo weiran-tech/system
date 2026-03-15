@@ -394,7 +394,6 @@ class Pam
      * @param PamAccount $pam      用户
      * @param string     $password 密码
      *
-     * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -433,9 +432,7 @@ class Pam
     /**
      * 清空后台登录用户的手机通行证
      *
-     * @param int $id
      *
-     * @return bool
      * @throws ApplicationException
      * @throws ModelNotFoundException
      */
@@ -542,11 +539,6 @@ class Pam
 
     /**
      * 更换账号主体, 支持除非ID外的更换方式
-     *
-     * @param string|PamAccount $old_passport
-     * @param string            $new_passport
-     *
-     * @return bool
      */
     public function rebind(string|PamAccount $old_passport, string $new_passport): bool
     {
@@ -582,7 +574,6 @@ class Pam
      * @param string $to     解禁时间
      * @param string $reason 禁用原因
      *
-     * @return bool
      * @throws InvalidFormatException
      */
     public function disable(int $id, string $to, string $reason): bool
@@ -687,7 +678,6 @@ class Pam
     /**
      * 清除登录日志
      *
-     * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -736,7 +726,6 @@ class Pam
      * @param string $type     密码类型
      * @param string $password 密码
      *
-     * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */

@@ -11,9 +11,6 @@ use Weiran\System\Models\PamAccount;
  */
 class PamDisableEvent
 {
-    /**
-     * @var PamAccount
-     */
     public PamAccount $pam;
 
     /**
@@ -28,10 +25,6 @@ class PamDisableEvent
 
     /**
      * PamDisableEvent constructor.
-     *
-     * @param PamAccount      $pam
-     * @param PamAccount|null $editor
-     * @param string          $reason
      */
     public function __construct(PamAccount $pam, ?PamAccount $editor, string $reason = '')
     {

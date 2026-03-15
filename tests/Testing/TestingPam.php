@@ -80,7 +80,6 @@ class TestingPam
 
     /**
      * 获取随机启用的用户
-     * @return PamAccount
      */
     public static function randEnabledUser(): PamAccount
     {

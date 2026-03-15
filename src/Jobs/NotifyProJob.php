@@ -147,7 +147,6 @@ class NotifyProJob extends Job implements ShouldQueue
     /**
      * 生成记录日志
      *
-     * @param GuzzleException|ResponseInterface $result
      *
      * @throws JsonException
      */

@@ -9,6 +9,7 @@ use Weiran\System\Http\OpenApi\BaseResponseBody;
 
 /**
  * OpenApi 相应基础体
+ *
  * @deprecated 1.0
  *
  * @see        BaseResponseBody

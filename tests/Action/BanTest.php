@@ -508,7 +508,7 @@ class BanTest extends TestCase
      */
     public function testParseIpRangeSingleIp(): void
     {
-        $ban = new Ban();
+        $ban                         = new Ban();
         [$isRange, $startIp, $endIp] = $ban->parseIpRange('192.168.1.1');
 
         $this->assertFalse($isRange);
@@ -523,7 +523,7 @@ class BanTest extends TestCase
      */
     public function testParseIpRangeWithRange(): void
     {
-        $ban = new Ban();
+        $ban                         = new Ban();
         [$isRange, $startIp, $endIp] = $ban->parseIpRange('192.168.1.1-192.168.1.10');
 
         $this->assertTrue($isRange);
@@ -533,11 +533,12 @@ class BanTest extends TestCase
 
     /**
      * 测试 parseIpRange - IP 通配符
+     *
      * @throws ParamException
      */
     public function testParseIpRangeWithWildcard(): void
     {
-        $ban = new Ban();
+        $ban                         = new Ban();
         [$isRange, $startIp, $endIp] = $ban->parseIpRange('192.168.1.*');
 
         $this->assertTrue($isRange);
@@ -547,11 +548,12 @@ class BanTest extends TestCase
 
     /**
      * 测试 parseIpRange - CIDR 格式
+     *
      * @throws ParamException
      */
     public function testParseIpRangeWithCidr(): void
     {
-        $ban = new Ban();
+        $ban                         = new Ban();
         [$isRange, $startIp, $endIp] = $ban->parseIpRange('192.168.1.0/24');
 
         $this->assertTrue($isRange);
@@ -597,6 +599,7 @@ class BanTest extends TestCase
 
     /**
      * 测试 type 方法 - 封禁 IP
+     *
      * @throws ModelNotFoundException
      */
     public function testTypeWithIp(): void
@@ -629,6 +632,7 @@ class BanTest extends TestCase
 
     /**
      * 测试 type 方法 - 封禁设备
+     *
      * @throws ModelNotFoundException
      */
     public function testTypeWithDevice(): void
@@ -661,6 +665,7 @@ class BanTest extends TestCase
 
     /**
      * 测试 type 方法 - 无效的类型
+     *
      * @throws ModelNotFoundException
      */
     public function testTypeWithInvalidType(): void
@@ -698,6 +703,7 @@ class BanTest extends TestCase
 
     /**
      * 测试 type 方法 - establish 失败
+     *
      * @throws ModelNotFoundException
      */
     public function testTypeWhenEstablishFails(): void
@@ -927,6 +933,7 @@ class BanTest extends TestCase
 
     /**
      * 测试 type 方法异常处理
+     *
      * @throws ModelNotFoundException
      */
     public function testTypeExceptionHandling(): void
