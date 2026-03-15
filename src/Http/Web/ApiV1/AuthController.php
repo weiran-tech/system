@@ -25,9 +25,11 @@ use Weiran\System\Http\OpenApi\BaseResponseBody;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthAccessResponseBody;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthBindMobileRequest;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthExistsRequest;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthExistsResponseBody;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthLoginRequest;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthLoginResponseBody;
 use Weiran\System\Http\Web\ApiV1\Auth\AuthPasswordRequest;
+use Weiran\System\Http\Web\ApiV1\Auth\AuthRenewResponseBody;
 use Weiran\System\Models\PamAccount;
 use Weiran\System\Models\Resources\PamResource;
 
@@ -50,18 +52,10 @@ class AuthController extends JwtApiController
 
     #[OA\Get(
         path: '/api/web/system/v1/auth/access',
-        description: '检测 Token',
+        description: '检测当前 SSO 登录态',
         summary: '检测 Token',
+        security: [['ApiSsoAuth' => []]],
         tags: ['System'],
-        parameters: [
-            new OA\Parameter(
-                name: 'token',
-                description: 'Token',
-                in: 'query',
-                required: true,
-                schema: new OA\Schema(type: 'string')
-            ),
-        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -90,6 +84,29 @@ class AuthController extends JwtApiController
     #[OA\Post(
         path: '/api/web/system/v1/auth/login',
         summary: '登录',
+        parameters: [
+            new OA\Parameter(
+                name: 'x-os',
+                description: '设备平台, 未传 body.device_type 时作为回退值',
+                in: 'header',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'x-type',
+                description: '登录类型, 未传 body.guard 时作为回退值',
+                in: 'header',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'x-id',
+                description: '设备 ID, 未传 body.device_id 时作为回退值',
+                in: 'header',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: AuthLoginRequest::class)
@@ -282,17 +299,36 @@ class AuthController extends JwtApiController
     #[OA\Post(
         path: '/api/web/system/v1/auth/renew',
         summary: '续期',
+        security: [['ApiSsoAuth' => []]],
         requestBody: new OA\RequestBody(
-            required: true,
+            required: false,
             content: new OA\JsonContent(properties: [
                 new OA\Property(property: 'device_id', description: '设备 ID, 参考 header x-id', type: 'string'),
                 new OA\Property(property: 'device_type', description: '设备类型, 参考 header x-os', type: 'string'),
             ])
         ),
         tags: ['System'],
+        parameters: [
+            new OA\Parameter(
+                name: 'x-id',
+                description: '设备 ID, 未传 body.device_id 时作为回退值',
+                in: 'header',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+            new OA\Parameter(
+                name: 'x-os',
+                description: '设备平台, 未传 body.device_type 时作为回退值',
+                in: 'header',
+                required: false,
+                schema: new OA\Schema(type: 'string')
+            ),
+        ],
         responses: [
-            new OA\Response(response: 200, description: '操作成功',
-                content: new OA\JsonContent(ref: BaseResponseBody::class)
+            new OA\Response(
+                response: 200,
+                description: '操作成功',
+                content: new OA\JsonContent(ref: AuthRenewResponseBody::class)
             ),
         ]
     )]
@@ -326,6 +362,7 @@ class AuthController extends JwtApiController
         path: '/api/web/system/v1/auth/logout',
         summary: '退出登录',
         tags: ['System'],
+        security: [['ApiSsoAuth' => []]],
         responses: [
             new OA\Response(
                 response: 200,
@@ -353,7 +390,7 @@ class AuthController extends JwtApiController
             new OA\Response(
                 response: 200,
                 description: '操作成功',
-                content: new OA\JsonContent(ref: BaseResponseBody::class)
+                content: new OA\JsonContent(ref: AuthExistsResponseBody::class)
             ),
         ]
     )]

@@ -7,18 +7,17 @@ namespace Weiran\System\Http\Web\ApiV1;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
-use JsonException;
 use OpenApi\Attributes as OA;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Random\RandomException;
 use Throwable;
 use Weiran\Framework\Classes\Resp;
 use Weiran\System\Action\Verification;
 use Weiran\System\Events\CaptchaSendEvent;
-use Weiran\System\Exceptions\SettingKeyNotMatchException;
-use Weiran\System\Exceptions\SettingValueOutOfRangeException;
 use Weiran\System\Http\OpenApi\BaseResponseBody;
 use Weiran\System\Http\Web\ApiV1\Captcha\CaptchaSendRequest;
+use Weiran\System\Http\Web\ApiV1\Captcha\CaptchaVerifyCodeResponseBody;
 use Weiran\System\Http\Web\ApiV1\Captcha\CaptchaVerifyRequest;
 use Weiran\System\Models\PamAccount;
 
@@ -28,40 +27,32 @@ use Weiran\System\Models\PamAccount;
 class CaptchaController extends JwtApiController
 {
     /**
-     * @throws NotFoundExceptionInterface
      * @throws ContainerExceptionInterface
-     * @throws SettingKeyNotMatchException
-     * @throws JsonException
-     * @throws SettingValueOutOfRangeException
+     * @throws NotFoundExceptionInterface
+     * @throws RandomException
      */
-    #[OA\Get(
+    #[OA\Post(
         path: '/api/web/system/v1/captcha/send',
         summary: '发送验证码',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['passport'],
+                properties: [
+                    new OA\Property(property: 'passport', description: '通行证', type: 'string'),
+                    new OA\Property(
+                        property: 'type',
+                        description: '验证类型',
+                        type: 'string',
+                        enum: [
+                            Verification::CAPTCHA_SEND_TYPE_EXIST,
+                            Verification::CAPTCHA_SEND_TYPE_NO_EXIST,
+                        ],
+                    ),
+                ]
+            )
+        ),
         tags: ['System'],
-        parameters: [
-            new OA\Parameter(
-                name: 'passport',
-                description: '通行证',
-                in: 'query',
-                required: true,
-                schema: new OA\Schema(
-                    type: 'string',
-                ),
-            ),
-            new OA\Parameter(
-                name: 'type',
-                description: '验证类型',
-                in: 'query',
-                required: false,
-                schema: new OA\Schema(
-                    type: 'string',
-                    enum: [
-                        Verification::CAPTCHA_SEND_TYPE_EXIST,
-                        Verification::CAPTCHA_SEND_TYPE_NO_EXIST,
-                    ],
-                ),
-            ),
-        ],
         responses: [
             new OA\Response(
                 response: 200,
@@ -118,34 +109,22 @@ class CaptchaController extends JwtApiController
         path: '/api/web/system/v1/captcha/verify_code',
         summary: '获取验证串',
         tags: ['System'],
-        parameters: [
-            new OA\Parameter(
-                name: 'passport',
-                description: '通行证',
-                in: 'query',
-                required: true,
-                schema: new OA\Schema(type: 'string'),
-            ),
-            new OA\Parameter(
-                name: 'captcha',
-                description: '验证码',
-                in: 'query',
-                required: true,
-                schema: new OA\Schema(type: 'string'),
-            ),
-            new OA\Parameter(
-                name: 'expire_min',
-                description: '验证串有效期(默认:10 分钟, 最长不超过 60 分钟)',
-                in: 'query',
-                required: false,
-                schema: new OA\Schema(type: 'integer'),
-            ),
-        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['passport', 'captcha'],
+                properties: [
+                    new OA\Property(property: 'passport', description: '通行证', type: 'string'),
+                    new OA\Property(property: 'captcha', description: '验证码', type: 'string'),
+                    new OA\Property(property: 'expire_min', description: '验证串有效期(默认:10 分钟, 最长不超过 60 分钟)', type: 'integer'),
+                ]
+            )
+        ),
         responses: [
             new OA\Response(
                 response: 200,
                 description: '生成验证串',
-                content: new OA\JsonContent(ref: BaseResponseBody::class)
+                content: new OA\JsonContent(ref: CaptchaVerifyCodeResponseBody::class)
             ),
         ]
     )]
